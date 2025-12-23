@@ -13,12 +13,13 @@ function getBaseFrameSize() {
   const isMobile = window.innerWidth <= 768;
   
   if (isMobile) {
-    // Мобильный: 9:16 вертикальный формат
-    const height = Math.min(window.innerHeight - 200, 500);
-    const width = Math.round(height * (9 / 16));
-    return { width, height };
+    // Мобильный: вертикальный формат 9:16
+    const availableHeight = window.innerHeight - 140;
+    const width = Math.min(window.innerWidth - 24, 400);
+    const height = Math.round(width * (16 / 9)); // Вертикальный 9:16
+    return { width, height: Math.min(height, availableHeight) };
   } else {
-    // Десктоп: 16:9 горизонтальный формат
+    // Десктоп: горизонтальный формат 16:9
     const max = 630;
     return { width: max, height: Math.round((9 / 16) * max) };
   }
