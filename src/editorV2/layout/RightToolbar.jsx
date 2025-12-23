@@ -3,11 +3,11 @@ import React from 'react'
 
 // Импорты иконок через alias для стабильности
 import stic2Icon from '@assets/stic2.svg'
-import musicNoteIcon from '@assets/iconmusic/music-note-svgrepo-com.svg'
-import bgIcon from '@assets/fon.svg'
-import textIcon from '@assets/text.svg'
-import videoIcon from '@assets/video.svg'
-import iconsIcon from '@assets/icon.svg'
+import musicNoteIcon from '@assets/music-note-2-svgrepo-com.svg'
+import bgIcon from '@assets/screen-alt-svgrepo-com.svg'
+import textIcon from '@assets/text-size-svgrepo-com.svg'
+import videoIcon from '@assets/video-frame-svgrepo-com.svg'
+import iconsIcon from '@assets/casa-pictogram-5-svgrepo-com.svg'
 import bazaIcon from '@assets/baza.png'
 
 const TOOLS = [
