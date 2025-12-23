@@ -99,9 +99,8 @@ export default function SwipeableGallery({ items, onSelectItem, renderItem }) {
             e.stopPropagation()
             setCurrentIndex(prev => prev - 1)
           }}
-        >
-          ‹
-        </button>
+          aria-label="Предыдущий"
+        />
       )}
       {currentIndex < items.length - 1 && (
         <button
@@ -110,9 +109,8 @@ export default function SwipeableGallery({ items, onSelectItem, renderItem }) {
             e.stopPropagation()
             setCurrentIndex(prev => prev + 1)
           }}
-        >
-          ›
-        </button>
+          aria-label="Следующий"
+        />
       )}
 
       {/* Счётчик */}

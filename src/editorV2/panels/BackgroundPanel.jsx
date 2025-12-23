@@ -10,8 +10,18 @@ import SwipeableGallery from '../components/SwipeableGallery';
 
 // Функция для получения размера канваса
 function getBaseFrameSize() {
-  const max = 630;
-  return { width: max, height: Math.round((9 / 16) * max) };
+  const isMobile = window.innerWidth <= 768;
+  
+  if (isMobile) {
+    // Мобильный: 9:16 вертикальный формат
+    const height = Math.min(window.innerHeight - 200, 500);
+    const width = Math.round(height * (9 / 16));
+    return { width, height };
+  } else {
+    // Десктоп: 16:9 горизонтальный формат
+    const max = 630;
+    return { width: max, height: Math.round((9 / 16) * max) };
+  }
 }
 
 function clamp(v, min, max) {
@@ -149,8 +159,9 @@ const BACKGROUND_CATEGORIES = [
   { label: "Бардак", key: "bardak" },
 ];
 
-export default function BackgroundPanel({ project, onChangeProject, activeCategory = 'people', onPrefetchCategory, editorState }) {
+export default function BackgroundPanel({ project, onChangeProject, activeCategory = 'people', onPrefetchCategory, editorState, onClose }) {
   const toast = useToast()
+  const isMobile = useIsMobile()
   const loadMenuRef = useRef(null);
   const initialBgRef = useRef(project.backgroundType);
   const initialBgAlphaRef = useRef(
@@ -477,46 +488,17 @@ export default function BackgroundPanel({ project, onChangeProject, activeCatego
         0
       ) + 1;
 
-      // Определяем, мобильный ли это фон (из папки mob/)
-      const isMobileBg = scene.url && scene.url.includes('/mob/');
-      
-      // Рассчитываем размеры для заполнения канваса
-      let bgWidth = frameWidth;
-      let bgHeight = frameHeight;
-      let bgX = 0;
-      let bgY = 0;
-      
-      if (isMobileBg) {
-        // Мобильные фоны - вертикальные 9:16
-        // Вычисляем масштаб чтобы заполнить канвас полностью
-        const imageAspect = 9 / 16; // 0.5625
-        const frameAspect = frameWidth / frameHeight;
-        
-        if (frameAspect > imageAspect) {
-          // Канвас шире чем изображение - масштабируем по ширине
-          bgWidth = frameWidth;
-          bgHeight = frameWidth / imageAspect;
-          bgX = 0;
-          bgY = (frameHeight - bgHeight) / 2;
-        } else {
-          // Канвас уже или равен - масштабируем по высоте
-          bgHeight = frameHeight;
-          bgWidth = frameHeight * imageAspect;
-          bgX = (frameWidth - bgWidth) / 2;
-          bgY = 0;
-        }
-      }
-      
+      // Фоны всегда заполняют весь канвас
       const newSticker = {
         id: `img_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         type: 'image',
         imageUrl,
         fileName: scene.fileName || scene.name || 'image',
-        x: bgX,
-        y: bgY,
-        width: bgWidth,
-        height: bgHeight,
-        fit: 'cover', // Всегда cover - заполняет область полностью
+        x: 0,
+        y: 0,
+        width: frameWidth,
+        height: frameHeight,
+        fit: 'cover', // Заполняет канвас полностью
         rotation: 0,
         flipX: false,
         flipY: false,
@@ -538,6 +520,13 @@ export default function BackgroundPanel({ project, onChangeProject, activeCatego
         selectedStickerId: newSticker.id,
         selectedStickerClipId: newClip.id
       });
+
+      // Закрываем панель на мобильной версии после выбора
+      if (isMobile && onClose) {
+        setTimeout(() => {
+          onClose();
+        }, 150);
+      }
     };
 
     img.onerror = () => {
@@ -545,7 +534,7 @@ export default function BackgroundPanel({ project, onChangeProject, activeCatego
     };
 
     img.src = imageUrl;
-  }, [project, onChangeProject]);
+  }, [project, onChangeProject, isMobile, onClose]);
   
   // ======== INFO POPUP ========
   const [showInfoPopup, setShowInfoPopup] = useState(false);

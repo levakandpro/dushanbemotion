@@ -22,6 +22,7 @@ export default function RightPanelHost({ activeTool, project, onChangeProject, a
           onChangeProject={onChangeProject}
           editorState={editorState}
           activeCategory={activeBackgroundCategory}
+          onClose={onClose}
           onPrefetchCategory={(category) => {
             // Prefetch логика будет в BackgroundPanel
             console.log('🚀 Prefetch from RightPanelHost:', category);
