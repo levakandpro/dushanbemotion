@@ -1,14 +1,14 @@
 // src/editorV2/layout/RightToolbar.jsx
 import React from 'react'
 
-// Импорты иконок через alias - custom designed with fill
-import stic2Icon from '@assets/stic2.svg'
-import musicNoteIcon from '@assets/music-icon.svg'
-import bgIcon from '@assets/bg-icon.svg'
-import textIcon from '@assets/text-icon.svg'
-import videoIcon from '@assets/video-icon.svg'
-import iconsIcon from '@assets/icons-icon.svg'
-import bazaIcon from '@assets/baza.png'
+// Импорты иконок - относительные пути для production
+import stic2Icon from '../../assets/stic2.svg'
+import musicNoteIcon from '../../assets/music-icon.svg'
+import bgIcon from '../../assets/bg-icon.svg'
+import textIcon from '../../assets/text-icon.svg'
+import videoIcon from '../../assets/video-icon.svg'
+import iconsIcon from '../../assets/icons-icon.svg'
+import bazaIcon from '../../assets/baza.png'
 
 const TOOLS = [
   { id: 'background', label: 'Фон', icon: '●', imageSrc: bgIcon },
