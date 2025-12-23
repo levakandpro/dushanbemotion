@@ -14,10 +14,14 @@ function getBaseFrameSize() {
   
   if (isMobile) {
     // Мобильный: вертикальный формат 9:16
-    const availableHeight = window.innerHeight - 140;
-    const width = Math.min(window.innerWidth - 24, 400);
-    const height = Math.round(width * (16 / 9)); // Вертикальный 9:16
-    return { width, height: Math.min(height, availableHeight) };
+    const width = Math.floor(window.innerWidth * 0.92);
+    const height = Math.floor(width * (16 / 9));
+    
+    const maxHeight = window.innerHeight - 140;
+    const finalHeight = Math.min(height, maxHeight);
+    const finalWidth = finalHeight < height ? Math.floor(finalHeight * (9 / 16)) : width;
+    
+    return { width: finalWidth, height: finalHeight };
   } else {
     // Десктоп: горизонтальный формат 16:9
     const max = 630;

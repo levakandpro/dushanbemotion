@@ -71,15 +71,18 @@
 }
 
 .dm-swipeable-gallery-image {
-  max-width: 90%;
-  max-height: 90%;
+  max-width: 85%;
+  max-height: 85%;
   width: auto;
   height: auto;
   object-fit: contain;
   border-radius: 12px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
   cursor: pointer;
-  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 /* Кнопки навигации */
@@ -109,21 +112,18 @@
   width: 0;
   height: 0;
   border-style: solid;
-  position: absolute;
-  top: 50%;
-  left: 50%;
 }
 
 .dm-swipeable-gallery-btn-prev::before {
-  border-width: 9px 13px 9px 0;
+  border-width: 8px 12px 8px 0;
   border-color: transparent #1aff9c transparent transparent;
-  transform: translate(-45%, -50%);
+  margin-right: 2px;
 }
 
 .dm-swipeable-gallery-btn-next::before {
-  border-width: 9px 0 9px 13px;
+  border-width: 8px 0 8px 12px;
   border-color: transparent transparent transparent #1aff9c;
-  transform: translate(-55%, -50%);
+  margin-left: 2px;
 }
 
 .dm-swipeable-gallery-btn:hover {

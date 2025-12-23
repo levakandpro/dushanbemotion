@@ -24,11 +24,16 @@ import { TextPanelTabsProvider, useTextPanelTabs } from '../context/TextPanelTab
 function getBaseFrameSize(isMobileDevice = false) {
   if (isMobileDevice) {
     // Мобильный: вертикальный формат 9:16
-    // Используем почти всю высоту экрана (минус хедер 52px + тулбар 72px = 124px)
-    const availableHeight = window.innerHeight - 140
-    const width = Math.min(window.innerWidth - 24, 400) // Максимум 400px ширина с отступами
-    const height = Math.round(width * (16 / 9)) // Вертикальный 9:16 => высота больше ширины
-    return { width, height: Math.min(height, availableHeight) }
+    // Берем 92% ширины экрана для канваса
+    const width = Math.floor(window.innerWidth * 0.92)
+    const height = Math.floor(width * (16 / 9)) // Вертикальный 9:16
+    
+    // Ограничиваем высоту доступным пространством
+    const maxHeight = window.innerHeight - 140 // минус хедер + тулбар
+    const finalHeight = Math.min(height, maxHeight)
+    const finalWidth = finalHeight < height ? Math.floor(finalHeight * (9 / 16)) : width
+    
+    return { width: finalWidth, height: finalHeight }
   }
   // Десктоп: горизонтальный формат 16:9
   const max = 630
