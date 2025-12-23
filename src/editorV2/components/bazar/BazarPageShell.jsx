@@ -57,28 +57,29 @@ export default function BazarPageShell() {
     showOnMount();
   }, [showOnMount]);
 
-  // Обновляем присутствие пользователя для счётчика онлайн
+  // Запускаем автоматический heartbeat для онлайн присутствия
   useEffect(() => {
-    let presenceInterval = null;
+    let cleanup = null;
     
-    const updateUserPresence = async () => {
+    const startHeartbeat = async () => {
       try {
-        const { updatePresence } = await import('../../../services/statsService');
+        const { startPresenceHeartbeat, stopPresenceHeartbeat } = await import('../../../services/statsService');
         const { supabase } = await import('../../../lib/supabaseClient');
         const { data: { user: authUser } } = await supabase.auth.getUser();
+        
         if (authUser?.id) {
-          updatePresence(authUser.id);
+          startPresenceHeartbeat(authUser.id);
+          cleanup = stopPresenceHeartbeat;
         }
       } catch (e) {
-        // ignore
+        console.warn('[BazarPageShell] Ошибка запуска heartbeat:', e);
       }
     };
     
-    updateUserPresence();
-    presenceInterval = setInterval(updateUserPresence, 120000);
+    startHeartbeat();
     
     return () => {
-      if (presenceInterval) clearInterval(presenceInterval);
+      if (cleanup) cleanup();
     };
   }, []);
 

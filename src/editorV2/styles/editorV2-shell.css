@@ -1863,12 +1863,17 @@
   position: relative;
   width: 20px;
   height: 20px;
+  display: inline-block;
   opacity: 0.95;
   transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   transform-style: preserve-3d;
   will-change: transform, filter;
   transform-origin: center center;
-  background: linear-gradient(
+  /* Используем currentColor для управления цветом через parent color */
+  color: rgba(255, 255, 255, 0.95);
+  background-color: currentColor;
+  /* Градиент перенесен на родительский элемент или убран для единообразия */
+  /* background: linear-gradient(
     135deg,
     rgba(255, 0, 0, 0.9) 0%,
     rgba(255, 255, 255, 0.95) 33%,
@@ -1876,7 +1881,7 @@
     rgba(0, 128, 0, 0.9) 100%
   );
   background-size: 200% 200%;
-  animation: dm-flag-gradient 9s ease-in-out infinite;
+  animation: dm-flag-gradient 9s ease-in-out infinite; */
   filter: none;
 }
 
@@ -2037,22 +2042,10 @@
 /* Дополнительный эффект при hover */
 .editor-v2-logo-icon:hover {
   animation-play-state: paused;
-  transform: 
-    perspective(1000px) 
-    rotateY(0deg) 
-    rotateX(0deg) 
-    scale(1.2) 
-    translateZ(20px);
-  filter: 
-    /* drop-shadow removed */(0 10px 30px rgba(92, 255, 212, 0.6))
-    /* drop-shadow removed */(0 0 60px rgba(92, 255, 212, 0.4))
-    brightness(1.15);
-  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.editor-v2-logo-icon:hover {
   transform: scale(1.15) rotateZ(5deg);
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* Цвет иконки управляется через color родителя */
+  color: rgba(92, 255, 212, 0.95);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .editor-v2-logo-wrapper {

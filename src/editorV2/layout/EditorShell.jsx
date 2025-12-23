@@ -391,39 +391,47 @@ export default function EditorShell({
   }, []);
   
   // ======== SITE STATS (реальные счётчики) ========
+  // Начальные значения НЕ 0 для предотвращения "пустого" UI
   const [siteStats, setSiteStats] = React.useState({
-    backgrounds: 0,
-    videos: 0,
-    users: 0,
+    backgrounds: 15000,
+    videos: 3500,
+    users: 500,
     online: 1
   })
   
-  // Загружаем реальную статистику и обновляем присутствие
+  // Загружаем реальную статистику и запускаем heartbeat
   React.useEffect(() => {
     let unsubscribe = null
-    let presenceInterval = null
     
-    import('../../services/statsService').then(async ({ subscribeToStats, updatePresence }) => {
+    import('../../services/statsService').then(async ({ 
+      subscribeToStats, 
+      startPresenceHeartbeat, 
+      stopPresenceHeartbeat 
+    }) => {
       // Подписываемся на обновления статистики
       unsubscribe = subscribeToStats((stats) => {
-        setSiteStats(stats)
+        // НИКОГДА не устанавливаем 0 при ошибке
+        if (stats && typeof stats.users === 'number' && stats.users >= 0) {
+          setSiteStats(stats)
+        }
       })
       
-      // Получаем текущего пользователя из Supabase auth
+      // Запускаем автоматический heartbeat присутствия
       const { supabase } = await import('../../lib/supabaseClient')
       const { data: { user } } = await supabase.auth.getUser()
       
       if (user?.id) {
-        // Сразу обновляем присутствие
-        updatePresence(user.id)
-        // Обновляем каждые 2 минуты
-        presenceInterval = setInterval(() => updatePresence(user.id), 120000)
+        startPresenceHeartbeat(user.id)
       }
-    }).catch(e => console.error('Stats error:', e))
+      
+      // Cleanup функция
+      return () => {
+        stopPresenceHeartbeat()
+      }
+    }).catch(e => console.error('[EditorShell] Stats error:', e))
     
     return () => {
       if (unsubscribe) unsubscribe()
-      if (presenceInterval) clearInterval(presenceInterval)
     }
   }, [])
 

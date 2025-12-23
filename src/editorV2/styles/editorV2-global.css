@@ -245,3 +245,38 @@ input[type="color"]::-webkit-color-swatch,
   position: relative;
   display: inline-block;
 }
+
+/* =============================================
+   БАЗОВЫЙ КЛАСС ДЛЯ ВСЕХ MASK-ИКОНОК
+   ============================================= */
+
+/* Базовый класс для всех иконок с mask-image
+   Обеспечивает единообразное поведение и видимость */
+.dm-icon-mask-base {
+  /* Обязательные свойства для видимости mask-иконок */
+  display: inline-block;
+  background-color: currentColor;
+  
+  /* Mask свойства для трафарета */
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  
+  /* Размеры по умолчанию (можно переопределить) */
+  width: 20px;
+  height: 20px;
+  
+  /* Плавные переходы */
+  transition: opacity 0.15s ease-out, transform 0.15s ease-out;
+}
+
+/* Hover состояние для mask-иконок
+   Цвет управляется через изменение color родителя */
+.dm-icon-mask-base:hover {
+  /* Не меняем mask или background напрямую! */
+  /* Только легкая трансформация для обратной связи */
+  transform: scale(1.05);
+}

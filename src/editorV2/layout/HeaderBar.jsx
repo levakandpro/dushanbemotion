@@ -5,7 +5,7 @@ import LionIcon from '../../assets/lion.svg'
 import { exportCanvas } from '../utils/canvasExport'
 import { getUserProfile, getCurrentUser } from '../../services/userService'
 import { useToast } from '../context/ToastContext'
-import { subscribeToStats } from '../../services/statsService'
+import { subscribeToStats, startPresenceHeartbeat, stopPresenceHeartbeat } from '../../services/statsService'
 import MobileBackButton from '../components/MobileBackButton'
 
 export default function HeaderBar({
@@ -30,7 +30,8 @@ export default function HeaderBar({
   const [isMusicPlaying, setIsMusicPlaying] = useState(false)
   const [isPremium, setIsPremium] = useState(false)
   const [isExporting, setIsExporting] = useState(false)
-  const [siteStats, setSiteStats] = useState({ users: 0, online: 1 })
+  // Начальные значения НЕ 0, чтобы не показывать пустоту при загрузке
+  const [siteStats, setSiteStats] = useState({ users: 500, online: 1 })
 
   // Проверяем PREMIUM статус пользователя
   useEffect(() => {
@@ -53,34 +54,34 @@ export default function HeaderBar({
     checkPremium()
   }, [])
 
-  // Загружаем статистику сайта и обновляем присутствие
+  // Загружаем статистику сайта и запускаем heartbeat
   useEffect(() => {
-    let presenceInterval = null
-    
+    // Подписываемся на обновления статистики
     const unsubscribe = subscribeToStats((stats) => {
-      setSiteStats(stats)
+      // НИКОГДА не устанавливаем 0, если данные невалидны
+      if (stats && typeof stats.users === 'number' && stats.users >= 0) {
+        setSiteStats(stats)
+      }
     })
     
-    // Обновляем присутствие пользователя
-    const updateUserPresence = async () => {
+    // Запускаем автоматический heartbeat присутствия
+    const startHeartbeat = async () => {
       try {
-        const { updatePresence } = await import('../../services/statsService')
         const { supabase } = await import('../../lib/supabaseClient')
         const { data: { user } } = await supabase.auth.getUser()
         if (user?.id) {
-          updatePresence(user.id)
+          startPresenceHeartbeat(user.id)
         }
       } catch (e) {
-        // ignore
+        console.warn('[HeaderBar] Не удалось запустить heartbeat:', e)
       }
     }
     
-    updateUserPresence()
-    presenceInterval = setInterval(updateUserPresence, 120000)
+    startHeartbeat()
     
     return () => {
       unsubscribe()
-      if (presenceInterval) clearInterval(presenceInterval)
+      stopPresenceHeartbeat()
     }
   }, [])
 

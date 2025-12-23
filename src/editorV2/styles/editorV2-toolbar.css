@@ -61,17 +61,27 @@
   color: var(--dm-accent);
 }
 
+/* Mask-иконка для инструментов (следует принципам dm-icon-mask-base) */
 .editor-v2-tool-icon-mask {
   width: 20px;
   height: 20px;
-  display: block;
+  display: inline-block;
+  /* Обязательно: цвет источник для mask */
   background-color: currentColor;
+  /* Mask настройки */
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
   -webkit-mask-position: center;
   mask-position: center;
   -webkit-mask-size: contain;
   mask-size: contain;
+  /* Плавность */
+  transition: transform 0.15s ease-out;
+}
+
+/* Hover: цвет управляется через parent color, а не напрямую */
+.editor-v2-tool-btn:hover .editor-v2-tool-icon-mask {
+  transform: scale(1.05);
 }
 
 .editor-v2-tool-icon-image {
