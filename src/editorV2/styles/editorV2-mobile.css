@@ -1354,17 +1354,27 @@
     display: none !important;
   }
 
-  /* ========== HEADER - 48px ========== */
+  /* ========== HEADER - 52px компактная + auto-hide ========== */
   .editor-v2-header {
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
-    height: 48px !important;
-    min-height: 48px !important;
-    padding: 0 12px !important;
-    background: rgba(10, 10, 12, 0.95) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+    height: 52px !important;
+    min-height: 52px !important;
+    padding: 0 16px !important;
+    background: linear-gradient(180deg, rgba(8, 10, 12, 0.98) 0%, rgba(8, 10, 12, 0.95) 100%) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border-bottom: 1px solid rgba(61, 191, 160, 0.12) !important;
     flex-shrink: 0 !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  /* Auto-hide когда скроллят */
+  .editor-v2-header--hidden {
+    transform: translateY(-100%) !important;
+    opacity: 0 !important;
   }
 
   .editor-v2-header-left {
@@ -1990,22 +2000,80 @@
     }
   }
 
+  @keyframes slideUpSheet {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
   /* Плавное появление панелей */
   .mobile-panel {
     animation: slideUp 0.3s cubic-bezier(0.32, 0.72, 0, 1) !important;
   }
 
-  /* Pull-to-close индикатор */
+  /* Pull-to-close индикатор - мировой уровень */
   .mobile-panel::before {
     content: '';
     position: absolute;
-    top: 8px;
+    top: 12px;
     left: 50%;
     transform: translateX(-50%);
-    width: 40px;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 2px;
+    width: 48px;
+    height: 5px;
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      rgba(61, 191, 160, 0.4) 20%,
+      rgba(61, 191, 160, 0.6) 50%,
+      rgba(61, 191, 160, 0.4) 80%,
+      transparent 100%);
+    border-radius: 10px;
     z-index: 10000002;
+    animation: pullHint 2s ease-in-out infinite;
+  }
+
+  @keyframes pullHint {
+    0%, 100% { opacity: 0.4; transform: translateX(-50%) scaleX(1); }
+    50% { opacity: 0.8; transform: translateX(-50%) scaleX(1.1); }
+  }
+
+  /* Свайп индикаторы - красивые */
+  .swipe-indicator {
+    position: fixed !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 60px !important;
+    height: 60px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: rgba(61, 191, 160, 0.15) !important;
+    border: 2px solid rgba(61, 191, 160, 0.4) !important;
+    border-radius: 50% !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    color: var(--dm-accent) !important;
+    box-shadow: 0 4px 20px rgba(61, 191, 160, 0.3) !important;
+    animation: swipePulse 0.6s ease-in-out infinite !important;
+  }
+
+  @keyframes swipePulse {
+    0%, 100% { transform: translateY(-50%) scale(1); }
+    50% { transform: translateY(-50%) scale(1.1); }
+  }
+
+  .swipe-back {
+    left: 20px !important;
+  }
+
+  .swipe-forward {
+    right: 20px !important;
   }
 }
