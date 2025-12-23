@@ -1375,18 +1375,6 @@ export default function BackgroundPanel({ project, onChangeProject, activeCatego
                 <SwipeableGallery
                   items={visibleScenes}
                   onSelectItem={handleAddGalleryImage}
-                  renderItem={(scene) => (
-                    <img
-                      src={scene.url}
-                      alt=""
-                      style={{
-                        maxWidth: '100%',
-                        maxHeight: '100%',
-                        objectFit: 'contain',
-                        borderRadius: '12px'
-                      }}
-                    />
-                  )}
                 />
               ) : (
                 /* ДЕСКТОП ВЕРСИЯ: Обычная сетка */

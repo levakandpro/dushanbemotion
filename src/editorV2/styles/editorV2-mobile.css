@@ -312,8 +312,7 @@
   }
 
   .editor-v2-canvas-frame {
-    max-width: calc(100vw - 24px) !important;
-    max-height: calc(100vh - 200px) !important;
+    /* Размеры задаются через inline style, не ограничиваем здесь */
   }
 
   /* Увеличиваем touch targets для слоёв */
@@ -1453,13 +1452,10 @@
     height: 100% !important;
   }
 
-  /* Canvas 9:16 вертикальный */
+  /* Canvas 9:16 вертикальный - используется inline style из canvasFrameStyle */
   .editor-v2-canvas-frame,
   .dm-editor-canvas-frame {
-    width: auto !important;
-    height: calc(100vh - 48px - 60px - 24px) !important;
-    max-height: calc(100vh - 132px) !important;
-    aspect-ratio: 9 / 16 !important;
+    /* Размеры задаются через inline style из canvasFrameStyle, не переопределяем! */
     border-radius: 12px !important;
     overflow: hidden !important;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
