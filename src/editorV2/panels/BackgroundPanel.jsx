@@ -1,5 +1,6 @@
 ﻿import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useToast } from "../context/ToastContext";
+import { useIsMobile } from '../../hooks/useMobileGestures';
 import logofiolIcon from '../../assets/icons/logofiol.svg';
 import { createStickerClip } from '../timeline/stickers/stickerTimelineState';
 import { makeShuffleSeed, stableShuffle } from '../utils/stableShuffle';
@@ -223,9 +224,12 @@ export default function BackgroundPanel({ project, onChangeProject, activeCatego
     try {
       // Определяем базовый URL для API (worker)
       const workerUrl = import.meta.env.VITE_WORKER_URL || 'https://stickers-manifest.natopchane.workers.dev';
-      const apiUrl = `${workerUrl}/api/scenes?category=${category}`;
+      // Для мобильных используем папку mob/
+      const isMobile = window.innerWidth <= 768;
+      const categoryPath = isMobile ? `mob/${category}` : category;
+      const apiUrl = `${workerUrl}/api/scenes?category=${categoryPath}`;
       
-      console.log('🎨 Fetching from:', apiUrl);
+      console.log('🎨 Fetching from:', apiUrl, isMobile ? '(MOBILE)' : '(DESKTOP)');
       const response = await fetch(apiUrl, {
         signal: abortController.signal,
         // Нам важно быстро видеть новые добавления - не полагаемся на HTTP-кэш
@@ -377,7 +381,10 @@ export default function BackgroundPanel({ project, onChangeProject, activeCatego
     // Prefetch в фоне (без изменения UI)
     console.log('🚀 Prefetching category:', category);
     const workerUrl = import.meta.env.VITE_WORKER_URL || 'https://stickers-manifest.natopchane.workers.dev';
-    const apiUrl = `${workerUrl}/api/scenes?category=${category}`;
+    // Для мобильных используем папку mob/
+    const isMobile = window.innerWidth <= 768;
+    const categoryPath = isMobile ? `mob/${category}` : category;
+    const apiUrl = `${workerUrl}/api/scenes?category=${categoryPath}`;
     
     fetch(apiUrl, { 
       cache: 'default',
