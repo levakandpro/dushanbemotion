@@ -1,0 +1,1207 @@
+/* src/pricing/PricingScreen.css */
+
+.dm-pricing-page {
+  min-height: 100vh;
+  background: radial-gradient(circle at top left, #0b1c1c 0, #050b0b 45%, #020404 100%);
+  color: #e8f4f4;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  padding: 20px 20px 40px;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  height: auto !important;
+}
+
+/* Разрешаем прокрутку для страницы тарифов */
+html:has(.dm-pricing-page),
+body:has(.dm-pricing-page),
+#root:has(.dm-pricing-page) {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  height: auto !important;
+}
+
+.dm-pricing-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.dm-pricing-back-btn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 8px 16px;
+  border-radius: 6px;
+  background: transparent;
+  border: 1px solid rgba(100, 170, 150, 0.4);
+  color: rgba(195, 230, 222, 0.9);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 10;
+}
+
+.dm-pricing-back-btn__arrow {
+  transition: transform 0.2s ease;
+}
+
+.dm-pricing-back-btn:hover {
+  border-color: rgba(61, 240, 163, 0.6);
+  color: #3df0a3;
+  background: rgba(61, 240, 163, 0.05);
+}
+
+.dm-pricing-back-btn:hover .dm-pricing-back-btn__arrow {
+  transform: translateX(-2px);
+}
+
+.dm-pricing-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.dm-pricing-title {
+  margin: 0 0 12px;
+  font-size: 32px;
+  font-weight: 600;
+  color: #e8f4f4;
+}
+
+.dm-pricing-subtitle {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: rgba(182, 216, 209, 0.75);
+}
+
+.dm-pricing-rotating-text {
+  margin-top: 12px;
+  min-height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.dm-pricing-rotating-text__item {
+  font-size: 14px;
+  color: rgba(150, 190, 182, 0.7);
+  white-space: nowrap;
+  display: inline-block;
+  animation: fadeInRotatingText 0.6s ease-in-out;
+}
+
+@keyframes fadeInRotatingText {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dm-pricing-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 968px) {
+  .dm-pricing-cards {
+    grid-template-columns: 1fr;
+    max-width: 500px;
+    margin: 0 auto 32px;
+  }
+}
+
+.dm-pricing-card {
+  position: relative;
+  border-radius: 16px;
+  border: 1px solid rgba(120, 255, 200, 0.15);
+  background: radial-gradient(
+    circle at top left,
+    rgba(61, 240, 163, 0.08),
+    rgba(5, 11, 11, 0.95) 60%
+  );
+  padding: 20px 16px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dm-pricing-card:first-child {
+  background: radial-gradient(
+    circle at top left,
+    rgba(61, 240, 163, 0.04),
+    rgba(5, 11, 11, 0.98) 60%
+  );
+  border-color: rgba(100, 150, 140, 0.1);
+  opacity: 0.85;
+}
+
+.dm-pricing-card:hover {
+  border-color: rgba(120, 255, 200, 0.3);
+  box-shadow: 0 0 30px rgba(61, 240, 163, 0.1);
+}
+
+.dm-pricing-card--featured {
+  border-color: rgba(61, 240, 163, 0.4);
+  background: radial-gradient(
+    circle at top left,
+    rgba(61, 240, 163, 0.12),
+    rgba(5, 11, 11, 0.95) 60%
+  );
+}
+
+.dm-pricing-card__badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(61, 240, 163, 0.2);
+  border: 1px solid rgba(61, 240, 163, 0.4);
+  color: #3df0a3;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dm-pricing-card__badge--savings {
+  background: rgba(255, 180, 80, 0.2);
+  border-color: rgba(255, 180, 80, 0.4);
+  color: rgba(255, 220, 160, 0.95);
+}
+
+.dm-pricing-card__header {
+  margin-bottom: 20px;
+}
+
+.dm-pricing-card__title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #e8f4f4;
+}
+
+.dm-pricing-card__price {
+  margin-bottom: 24px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.dm-pricing-card__price-amount {
+  font-size: 40px;
+  font-weight: 700;
+  color: #3df0a3;
+}
+
+.dm-pricing-card__price-currency {
+  font-size: 16px;
+  color: rgba(195, 230, 222, 0.8);
+}
+
+.dm-pricing-card__price-hint {
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  color: rgba(182, 216, 209, 0.8);
+}
+
+.dm-pricing-card__savings {
+  color: rgba(255, 180, 80, 0.95);
+  font-weight: 500;
+}
+
+.dm-pricing-card__features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dm-pricing-card__features li {
+  font-size: 14px;
+  color: rgba(195, 230, 222, 0.9);
+  line-height: 1.5;
+}
+
+.dm-pricing-card__hint {
+  margin: 0 0 24px;
+  font-size: 12px;
+  color: rgba(170, 206, 199, 0.7);
+  line-height: 1.4;
+}
+
+.dm-pricing-card__btn {
+  width: 100%;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.dm-pricing-card__btn--ghost {
+  background: transparent;
+  color: rgba(195, 230, 222, 0.9);
+  border-color: rgba(100, 170, 150, 0.6);
+}
+
+.dm-pricing-card__btn--ghost:hover {
+  border-color: rgba(61, 240, 163, 0.6);
+  color: #e8f4f4;
+}
+
+.dm-pricing-card__btn--primary {
+  background: linear-gradient(135deg, #3df0a3 0%, #2dd495 50%, #1fb885 100%);
+  color: #041010;
+  border: 2px solid #3df0a3;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dm-pricing-card__btn--primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.dm-pricing-card__btn--primary:hover {
+  background: linear-gradient(135deg, #4df5b8 0%, #3df0a3 50%, #2dd495 100%);
+  border-color: #4df5b8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.dm-pricing-card__btn--primary:hover::before {
+  left: 100%;
+}
+
+.dm-pricing-card__btn--primary:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.dm-pricing-card__btn--premium {
+  background: linear-gradient(135deg, #3df0a3 0%, #2dd495 50%, #1fb885 100%);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.dm-pricing-card__btn--premium:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+}
+
+.dm-pricing-card__payment-hint {
+  margin: 12px 0 0;
+  font-size: 11px;
+  color: rgba(150, 190, 182, 0.6);
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* Как проходит оплата */
+.dm-pricing-howto {
+  margin: 20px 0 16px;
+  padding: 20px 16px;
+  border-radius: 16px;
+  background: rgba(4, 16, 16, 0.6);
+  border: 1px solid rgba(60, 140, 120, 0.2);
+  text-align: center;
+}
+
+.dm-pricing-howto__title {
+  margin: 0 0 32px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #e8f4f4;
+}
+
+.dm-pricing-howto__steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 968px) {
+  .dm-pricing-howto__steps {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+.dm-pricing-howto__step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.dm-pricing-howto__step-number {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(61, 240, 163, 0.2);
+  border: 1px solid rgba(61, 240, 163, 0.4);
+  color: #3df0a3;
+  font-size: 18px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dm-pricing-howto__step-text {
+  margin: 0;
+  font-size: 13px;
+  color: rgba(195, 230, 222, 0.9);
+  line-height: 1.5;
+  text-align: center;
+}
+
+.dm-pricing-howto__btn {
+  padding: 16px 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #3df0a3 0%, #2dd495 50%, #1fb885 100%);
+  border: 2px solid #3df0a3;
+  color: #041010;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: uppercase;
+}
+
+.dm-pricing-howto__btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.6s ease;
+}
+
+.dm-pricing-howto__btn:hover {
+  background: linear-gradient(135deg, #4df5b8 0%, #3df0a3 50%, #2dd495 100%);
+  border-color: #4df5b8;
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+.dm-pricing-howto__btn:hover::before {
+  left: 100%;
+}
+
+.dm-pricing-howto__btn:active {
+  transform: translateY(-1px) scale(1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+/* Поддержка */
+.dm-pricing-support {
+  margin: 32px 0 0;
+  padding: 24px;
+  border-radius: 16px;
+  background: rgba(4, 16, 16, 0.6);
+  border: 1px solid rgba(60, 140, 120, 0.2);
+  text-align: center;
+}
+
+.dm-pricing-support__title {
+  margin: 0 0 16px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #e8f4f4;
+}
+
+.dm-pricing-support__text {
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: rgba(195, 230, 222, 0.9);
+  line-height: 1.6;
+}
+
+.dm-pricing-support__text:last-child {
+  margin-bottom: 0;
+}
+
+.dm-pricing-support__link {
+  color: #3df0a3;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.dm-pricing-support__link:hover {
+  color: #4dd4b3;
+  text-decoration: underline;
+}
+
+/* Блок соцсетей на странице тарифов */
+.dm-pricing-social {
+  margin: 24px 0;
+  text-align: center;
+}
+
+.dm-pricing-social__title {
+  margin: 0 0 12px;
+  font-size: 18px;
+  font-weight: 600;
+  color: rgba(232, 244, 244, 0.8);
+  opacity: 0.8;
+}
+
+.dm-pricing-social__text {
+  margin: 0 0 16px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(195, 230, 222, 0.75);
+  opacity: 0.75;
+}
+
+.dm-pricing-social__icons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.dm-pricing-social__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  color: rgba(195, 230, 222, 0.7);
+  opacity: 0.7;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.dm-pricing-social__icon:hover {
+  color: #3dbfa0;
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.dm-pricing-social__icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.dm-pricing-social__note {
+  margin: 0;
+  font-size: 11px;
+  color: rgba(195, 230, 222, 0.6);
+  opacity: 0.7;
+  line-height: 1.4;
+}
+
+.dm-pricing-footer {
+  text-align: center;
+  font-size: 10px;
+  color: rgba(150, 190, 182, 0.6);
+  margin: 16px 0 0;
+  line-height: 1.4;
+}
+
+/* LOGIN GATE */
+.dm-pricing-login-gate {
+  margin-bottom: 20px;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(61, 240, 163, 0.08);
+  border: 1px solid rgba(61, 240, 163, 0.3);
+  text-align: center;
+}
+
+.dm-pricing-login-gate__title {
+  margin: 0 0 12px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #e8f4f4;
+}
+
+.dm-pricing-login-gate__subtitle {
+  margin: 0 0 20px;
+  font-size: 13px;
+  color: rgba(195, 230, 222, 0.9);
+  line-height: 1.5;
+}
+
+.dm-pricing-login-gate__buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.dm-pricing-login-gate__btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.dm-pricing-login-gate__btn--primary {
+  background: linear-gradient(135deg, #3df0a3 0%, #2dd495 50%, #1fb885 100%);
+  color: #041010;
+  border-color: #3df0a3;
+}
+
+.dm-pricing-login-gate__btn--primary:hover {
+  background: linear-gradient(135deg, #4df5b8 0%, #3df0a3 50%, #2dd495 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.dm-pricing-login-gate__btn--secondary {
+  background: transparent;
+  color: rgba(195, 230, 222, 0.9);
+  border-color: rgba(100, 170, 150, 0.6);
+}
+
+.dm-pricing-login-gate__btn--secondary:hover {
+  border-color: rgba(61, 240, 163, 0.6);
+  color: #3df0a3;
+  background: rgba(61, 240, 163, 0.05);
+}
+
+.dm-pricing-login-gate__hint {
+  margin: 0;
+  font-size: 11px;
+  color: rgba(150, 190, 182, 0.6);
+}
+
+/* Login gate в карточках */
+.dm-pricing-card__login-gate {
+  padding: 20px 0 0;
+  text-align: center;
+}
+
+.dm-pricing-card__login-gate-title {
+  margin: 0 0 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #e8f4f4;
+}
+
+.dm-pricing-card__login-gate-subtitle {
+  margin: 0 0 16px;
+  font-size: 12px;
+  color: rgba(195, 230, 222, 0.8);
+  line-height: 1.4;
+}
+
+.dm-pricing-card__login-gate-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.dm-pricing-card__login-gate-btn {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  width: 100%;
+}
+
+.dm-pricing-card__login-gate-btn--primary {
+  background: linear-gradient(135deg, #3df0a3 0%, #2dd495 50%, #1fb885 100%);
+  color: #041010;
+  border-color: #3df0a3;
+}
+
+.dm-pricing-card__login-gate-btn--primary:hover {
+  background: linear-gradient(135deg, #4df5b8 0%, #3df0a3 50%, #2dd495 100%);
+}
+
+.dm-pricing-card__login-gate-btn--secondary {
+  background: transparent;
+  color: rgba(195, 230, 222, 0.9);
+  border-color: rgba(100, 170, 150, 0.6);
+}
+
+.dm-pricing-card__login-gate-btn--secondary:hover {
+  border-color: rgba(61, 240, 163, 0.6);
+  color: #3df0a3;
+}
+
+.dm-pricing-card__login-gate-hint {
+  margin: 0;
+  font-size: 10px;
+  color: rgba(150, 190, 182, 0.6);
+}
+
+/* Login gate в блоке "Как проходит оплата" */
+.dm-pricing-howto__login-gate {
+  text-align: center;
+}
+
+.dm-pricing-howto__login-gate-title {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #e8f4f4;
+}
+
+.dm-pricing-howto__login-gate-subtitle {
+  margin: 0 0 20px;
+  font-size: 13px;
+  color: rgba(195, 230, 222, 0.9);
+  line-height: 1.5;
+}
+
+.dm-pricing-howto__login-gate-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.dm-pricing-howto__login-gate-btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.dm-pricing-howto__login-gate-btn--primary {
+  background: linear-gradient(135deg, #3df0a3 0%, #2dd495 50%, #1fb885 100%);
+  color: #041010;
+  border-color: #3df0a3;
+}
+
+.dm-pricing-howto__login-gate-btn--primary:hover {
+  background: linear-gradient(135deg, #4df5b8 0%, #3df0a3 50%, #2dd495 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.dm-pricing-howto__login-gate-btn--secondary {
+  background: transparent;
+  color: rgba(195, 230, 222, 0.9);
+  border-color: rgba(100, 170, 150, 0.6);
+}
+
+.dm-pricing-howto__login-gate-btn--secondary:hover {
+  border-color: rgba(61, 240, 163, 0.6);
+  color: #3df0a3;
+}
+
+.dm-pricing-howto__login-gate-hint {
+  margin: 0;
+  font-size: 11px;
+  color: rgba(150, 190, 182, 0.6);
+}
+
+/* Что происходит после оплаты */
+.dm-pricing-after-payment {
+  margin: 16px 0;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(4, 16, 16, 0.6);
+  border: 1px solid rgba(60, 140, 120, 0.2);
+}
+
+.dm-pricing-after-payment__title {
+  margin: 0 0 20px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #e8f4f4;
+}
+
+.dm-pricing-after-payment__list {
+  margin: 0;
+  padding-left: 20px;
+  list-style: none;
+}
+
+.dm-pricing-after-payment__list li {
+  position: relative;
+  padding-left: 24px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: rgba(195, 230, 222, 0.9);
+  line-height: 1.5;
+}
+
+.dm-pricing-after-payment__list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #3df0a3;
+  font-weight: 700;
+}
+
+/* Жёсткие финансовые правила */
+.dm-pricing-financial-warning {
+  margin: 16px 0;
+  padding: 14px;
+  border-radius: 12px;
+  background: rgba(255, 180, 80, 0.1);
+  border: 1px solid rgba(255, 180, 80, 0.4);
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.dm-pricing-financial-warning__icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.dm-pricing-financial-warning__content {
+  flex: 1;
+}
+
+.dm-pricing-financial-warning__title {
+  margin: 0 0 12px;
+  font-size: 16px;
+  font-weight: 600;
+  color: rgba(255, 220, 160, 0.95);
+}
+
+.dm-pricing-financial-warning__list {
+  margin: 0;
+  padding-left: 20px;
+  list-style: none;
+}
+
+.dm-pricing-financial-warning__list li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: rgba(255, 220, 160, 0.9);
+  line-height: 1.5;
+}
+
+.dm-pricing-financial-warning__list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: rgba(255, 180, 80, 0.8);
+  font-weight: 700;
+}
+
+/* Анти-фрод */
+.dm-pricing-antifraud {
+  margin: 16px 0;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(4, 16, 16, 0.8);
+  border: 1px solid rgba(200, 60, 60, 0.3);
+}
+
+.dm-pricing-antifraud__title {
+  margin: 0 0 16px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #e8f4f4;
+}
+
+.dm-pricing-antifraud__text {
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: rgba(195, 230, 222, 0.9);
+  line-height: 1.6;
+}
+
+.dm-pricing-antifraud__subtext {
+  margin: 0;
+  font-size: 12px;
+  color: rgba(255, 180, 80, 0.9);
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+/* Юридическое предупреждение */
+.dm-pricing-legal-warning {
+  margin: 16px 0;
+  padding: 12px;
+  border-radius: 8px;
+  background: rgba(4, 16, 16, 0.8);
+  border: 1px solid rgba(100, 100, 100, 0.3);
+}
+
+.dm-pricing-legal-warning__text {
+  margin: 0;
+  font-size: 11px;
+  color: rgba(170, 190, 180, 0.8);
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* Нет нужного способа оплаты */
+.dm-pricing-alternative {
+  margin: 16px 0;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(4, 16, 16, 0.6);
+  border: 1px solid rgba(60, 140, 120, 0.2);
+  text-align: center;
+}
+
+.dm-pricing-alternative__title {
+  margin: 0 0 12px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #e8f4f4;
+}
+
+.dm-pricing-alternative__text {
+  margin: 0 0 20px;
+  font-size: 13px;
+  color: rgba(195, 230, 222, 0.9);
+  line-height: 1.5;
+}
+
+.dm-pricing-alternative__btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #3df0a3 0%, #2dd495 50%, #1fb885 100%);
+  border: 1px solid #3df0a3;
+  color: #041010;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.dm-pricing-alternative__btn:hover {
+  background: linear-gradient(135deg, #4df5b8 0%, #3df0a3 50%, #2dd495 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* Пригласи друга */
+.dm-pricing-referral {
+  margin: 16px 0;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(61, 240, 163, 0.08);
+  border: 1px solid rgba(61, 240, 163, 0.3);
+  text-align: center;
+}
+
+.dm-pricing-referral__title {
+  margin: 0 0 16px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #e8f4f4;
+}
+
+.dm-pricing-referral__text {
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: rgba(195, 230, 222, 0.9);
+  line-height: 1.5;
+}
+
+.dm-pricing-referral__text--highlight {
+  color: #3df0a3;
+  font-weight: 500;
+}
+
+.dm-pricing-referral__hint {
+  margin: 16px 0 0;
+  font-size: 11px;
+  color: rgba(150, 190, 182, 0.6);
+}
+
+/* Текущая подписка */
+.dm-pricing-current-subscription {
+  margin: 24px 0;
+}
+
+.dm-pricing-current-subscription__title {
+  margin: 0 0 16px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #e8f4f4;
+}
+
+.dm-pricing-current-subscription__card {
+  padding: 24px;
+  border-radius: 16px;
+  background: rgba(4, 16, 16, 0.6);
+  border: 1px solid rgba(61, 240, 163, 0.3);
+  margin-bottom: 16px;
+}
+
+.dm-pricing-current-subscription__info {
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dm-pricing-current-subscription__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(42, 124, 105, 0.15);
+}
+
+.dm-pricing-current-subscription__row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.dm-pricing-current-subscription__label {
+  font-size: 13px;
+  color: rgba(195, 230, 222, 0.7);
+}
+
+.dm-pricing-current-subscription__value {
+  font-size: 14px;
+  font-weight: 500;
+  color: #e8f4f4;
+}
+
+.dm-pricing-current-subscription__value--active {
+  color: #3df0a3;
+}
+
+.dm-pricing-current-subscription__period {
+  margin-bottom: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(42, 124, 105, 0.2);
+}
+
+.dm-pricing-current-subscription__period-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.dm-pricing-current-subscription__period-label {
+  font-size: 13px;
+  color: rgba(195, 230, 222, 0.9);
+}
+
+.dm-pricing-current-subscription__period-remaining {
+  font-size: 13px;
+  font-weight: 600;
+  color: #3df0a3;
+}
+
+.dm-pricing-current-subscription__period-remaining--warning {
+  color: rgba(255, 180, 80, 0.95);
+}
+
+.dm-pricing-current-subscription__progress {
+  width: 100%;
+  height: 6px;
+  background: rgba(42, 124, 105, 0.2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.dm-pricing-current-subscription__progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #3df0a3, #2dd495);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.dm-pricing-current-subscription__progress-bar--warning {
+  background: linear-gradient(90deg, rgba(255, 180, 80, 0.9), rgba(255, 160, 60, 0.9));
+}
+
+.dm-pricing-current-subscription__actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.dm-pricing-current-subscription__btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.dm-pricing-current-subscription__btn--primary {
+  background: linear-gradient(135deg, #3df0a3 0%, #2dd495 50%, #1fb885 100%);
+  color: #041010;
+  border-color: #3df0a3;
+}
+
+.dm-pricing-current-subscription__btn--primary:hover {
+  background: linear-gradient(135deg, #4df5b8 0%, #3df0a3 50%, #2dd495 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.dm-pricing-current-subscription__btn--secondary {
+  background: transparent;
+  color: #3df0a3;
+  border-color: rgba(61, 240, 163, 0.4);
+}
+
+.dm-pricing-current-subscription__btn--secondary:hover {
+  background: rgba(61, 240, 163, 0.1);
+  border-color: rgba(61, 240, 163, 0.6);
+}
+
+.dm-pricing-current-subscription__btn--ghost {
+  background: transparent;
+  color: rgba(195, 230, 222, 0.9);
+  border-color: rgba(100, 170, 150, 0.4);
+}
+
+.dm-pricing-current-subscription__btn--ghost:hover {
+  border-color: rgba(61, 240, 163, 0.6);
+  color: #3df0a3;
+}
+
+.dm-pricing-current-subscription__note {
+  font-size: 12px;
+  color: rgba(150, 190, 182, 0.7);
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* История оплат */
+.dm-pricing-payment-history {
+  margin: 24px 0;
+}
+
+.dm-pricing-payment-history__title {
+  margin: 0 0 16px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #e8f4f4;
+}
+
+.dm-pricing-payment-history__list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dm-pricing-payment-history__item {
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(4, 16, 16, 0.4);
+  border: 1px solid rgba(42, 124, 105, 0.2);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 12px;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .dm-pricing-payment-history__item {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
+.dm-pricing-payment-history__date {
+  font-size: 13px;
+  color: rgba(195, 230, 222, 0.9);
+}
+
+.dm-pricing-payment-history__plan {
+  font-size: 13px;
+  font-weight: 600;
+  color: #3df0a3;
+}
+
+.dm-pricing-payment-history__amount {
+  font-size: 14px;
+  font-weight: 600;
+  color: #e8f4f4;
+}
+
+.dm-pricing-payment-history__status {
+  font-size: 12px;
+  color: rgba(61, 240, 163, 0.8);
+  font-weight: 500;
+}
+
+.dm-pricing-payment-history__id {
+  font-size: 11px;
+  color: rgba(150, 190, 182, 0.6);
+  font-family: monospace;
+}
+
+.dm-pricing-payment-history__empty {
+  padding: 24px;
+  text-align: center;
+  font-size: 13px;
+  color: rgba(150, 190, 182, 0.7);
+  background: rgba(4, 16, 16, 0.4);
+  border-radius: 12px;
+  border: 1px solid rgba(42, 124, 105, 0.2);
+}
+
+/* Компактный юридический блок */
+.dm-pricing-legal-compact {
+  margin: 16px 0;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: rgba(4, 16, 16, 0.6);
+  border: 1px solid rgba(100, 100, 100, 0.2);
+}
+
+.dm-pricing-legal-compact__text {
+  margin: 0;
+  font-size: 12px;
+  color: rgba(170, 190, 180, 0.8);
+  line-height: 1.5;
+  text-align: center;
+}
+

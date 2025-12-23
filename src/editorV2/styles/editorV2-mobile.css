@@ -1,0 +1,1881 @@
+/* ============================================================================
+   D MOTION - МОБИЛЬНАЯ АДАПТАЦИЯ
+   ВАЖНО: Все стили только внутри @media (max-width: 768px)
+   Веб-версия НЕ затрагивается!
+   ============================================================================ */
+
+/* ============================================================================
+   1. ОБЩИЕ МОБИЛЬНЫЕ СТИЛИ
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  /* Скрываем ВСЕ скроллбары на мобильных */
+  ::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+  
+  * {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    box-sizing: border-box !important;
+  }
+
+  html, body {
+    overscroll-behavior: none;
+    overflow: hidden !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar,
+  *::-webkit-scrollbar,
+  div::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    background: transparent !important;
+    -webkit-appearance: none !important;
+  }
+  
+  /* Все div без скроллбаров */
+  div {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+  
+  /* Убираем обводку у панелей */
+  .editor-v2-panel,
+  .dm-text-panel,
+  .dm-text-panel-surface,
+  .editor-v2-panel-host {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  
+  /* Скроллбар сплошной без рамки - цвет фона */
+  ::-webkit-scrollbar {
+    width: 4px !important;
+    background: #080a0c !important;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #080a0c !important;
+    border: none !important;
+    border-radius: 0 !important;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #080a0c !important;
+    border: none !important;
+  }
+  
+  ::-webkit-scrollbar-button,
+  ::-webkit-scrollbar-corner {
+    display: none !important;
+    background: #080a0c !important;
+  }
+  
+  /* Принудительно скрываем для всех элементов */
+  * {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    scrollbar-color: transparent transparent !important;
+  }
+  
+  /* Убираем ВСЕ скроллбары */
+  #root,
+  .dm-editor-shell,
+  .editor-v2-panel,
+  .dm-text-panel,
+  .dm-text-panel-surface,
+  .dm-text-panel-body,
+  .dm-font-list,
+  .editor-v2-panel-host,
+  div[style*="position: fixed"],
+  div[style*="overflow"] {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    overflow-x: hidden !important;
+  }
+  
+  /* MobilePanel контейнер */
+  div[style*="inset: 0"] {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+  
+  div[style*="inset: 0"]::-webkit-scrollbar,
+  div[style*="overflow"]::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+  }
+}
+
+/* ============================================================================
+   SPLASH / INTRO PAGE - МОБИЛЬНАЯ ВЕРСИЯ
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  .dm-intro-splash .container {
+    padding: 16px !important;
+    padding-top: 50vh !important;
+    gap: 8px !important;
+  }
+
+  .dm-intro-splash .title {
+    font-size: 18px !important;
+    letter-spacing: 4px !important;
+    text-align: center !important;
+  }
+
+  .dm-intro-splash .subtitle {
+    font-size: 12px !important;
+    max-width: 90% !important;
+    padding: 0 10px !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Кнопка БА ПЕШ - красивая мобильная версия */
+  .dm-intro-splash .premium-button {
+    margin-top: 40px !important;
+    padding: 20px 60px !important;
+    font-size: 28px !important;
+    letter-spacing: 3px !important;
+    border-radius: 16px !important;
+    background: linear-gradient(
+      180deg,
+      rgba(43, 231, 166, 0.2) 0%,
+      rgba(20, 120, 95, 0.15) 100%
+    ) !important;
+    border: 2px solid rgba(43, 231, 166, 0.5) !important;
+    box-shadow: 
+      0 8px 32px rgba(43, 231, 166, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+  }
+
+  .dm-intro-splash .premium-button:active {
+    transform: scale(0.95) !important;
+    box-shadow: 
+      0 4px 16px rgba(43, 231, 166, 0.15),
+      inset 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+  }
+
+  /* Скрываем подсказки свайпов на мобильных */
+  .dm-splash-hints {
+    display: none !important;
+  }
+}
+
+/* ============================================================================
+   2. МОБИЛЬНЫЙ HEADER
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  .editor-v2-header {
+    height: 56px !important;
+    padding: 0 12px !important;
+  }
+
+  .editor-v2-header .logo-text {
+    font-size: 16px !important;
+  }
+
+  /* Скрываем лишние элементы в хедере */
+  .editor-v2-header .header-stats,
+  .editor-v2-header .header-center-actions {
+    display: none !important;
+  }
+
+  /* Компактные кнопки */
+  .editor-v2-header button {
+    padding: 8px 12px !important;
+    font-size: 12px !important;
+  }
+
+  .header-user-stats {
+    display: none !important;
+  }
+}
+
+/* ============================================================================
+   3. МОБИЛЬНАЯ БОКОВАЯ ПАНЕЛЬ ИНСТРУМЕНТОВ
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  /* Превращаем вертикальную панель в горизонтальную внизу */
+  .editor-v2-sidebar {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: auto !important;
+    width: 100% !important;
+    height: 60px !important;
+    flex-direction: row !important;
+    justify-content: space-around !important;
+    padding: 8px 4px !important;
+    z-index: 1000 !important;
+    background: rgba(10, 10, 12, 0.98) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-right: none !important;
+    backdrop-filter: blur(20px) !important;
+  }
+
+  .editor-v2-sidebar .sidebar-tool {
+    width: 48px !important;
+    height: 44px !important;
+    padding: 6px !important;
+    margin: 0 !important;
+  }
+
+  .editor-v2-sidebar .sidebar-tool span {
+    font-size: 9px !important;
+    margin-top: 2px !important;
+  }
+
+  .editor-v2-sidebar .sidebar-tool svg {
+    width: 20px !important;
+    height: 20px !important;
+  }
+
+  /* Скрываем текст на очень маленьких экранах */
+  @media (max-width: 400px) {
+    .editor-v2-sidebar .sidebar-tool span {
+      display: none !important;
+    }
+  }
+}
+
+/* ============================================================================
+   4. МОБИЛЬНАЯ ПАНЕЛЬ СВОЙСТВ (ПРАВАЯ) - внутри MobilePanel
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  /* Панели внутри MobilePanel - обычный flex layout */
+  .editor-v2-panel {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 !important;
+    width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    transform: none !important;
+    background: transparent !important;
+  }
+
+  .editor-v2-panel::before {
+    display: none !important;
+  }
+
+  /* Скрываем ВСЕ скроллбары */
+  .dm-text-panel-surface::-webkit-scrollbar,
+  .dm-font-list::-webkit-scrollbar,
+  .editor-v2-panel::-webkit-scrollbar,
+  .editor-v2-panel *::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  .editor-v2-panel,
+  .editor-v2-panel * {
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+}
+
+/* ============================================================================
+   5. МОБИЛЬНЫЙ CANVAS
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  .editor-v2-canvas-container {
+    padding: 12px !important;
+    padding-bottom: 70px !important; /* Место для нижней панели */
+  }
+
+  .editor-v2-canvas-stage {
+    max-width: 100% !important;
+  }
+
+  .editor-v2-canvas-frame {
+    max-width: calc(100vw - 24px) !important;
+    max-height: calc(100vh - 200px) !important;
+  }
+
+  /* Увеличиваем touch targets для слоёв */
+  .text-layer,
+  .sticker-layer,
+  .icon-layer,
+  .video-layer {
+    min-width: 44px !important;
+    min-height: 44px !important;
+  }
+
+  /* Увеличиваем handles для resize */
+  .resizeHandle,
+  .video-resize-handle,
+  [class*="resize"] {
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  /* Увеличиваем кнопку поворота */
+  .rotateBtn,
+  .video-rotate-handle,
+  [class*="rotate"] {
+    width: 20px !important;
+    height: 20px !important;
+    top: -40px !important;
+  }
+}
+
+/* ============================================================================
+   6. МОБИЛЬНЫЕ КАРТОЧКИ В ПАНЕЛЯХ
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  /* Сетка фонов/стикеров */
+  .backgrounds-grid,
+  .stickers-grid,
+  .icons-grid,
+  .videos-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 8px !important;
+    padding: 8px !important;
+  }
+
+  .background-card,
+  .sticker-card,
+  .icon-card,
+  .video-card {
+    aspect-ratio: 1 !important;
+    border-radius: 8px !important;
+  }
+
+  /* Категории - горизонтальный скролл */
+  .categories-list,
+  .category-tabs {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    gap: 8px !important;
+    padding: 8px 16px !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .category-tab,
+  .category-item {
+    flex-shrink: 0 !important;
+    padding: 8px 16px !important;
+    font-size: 13px !important;
+    white-space: nowrap !important;
+  }
+}
+
+/* ============================================================================
+   7. МОБИЛЬНЫЙ BAZAR - ПОЛНАЯ АДАПТАЦИЯ
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  /* Основной контейнер BAZAR */
+  .bz-page {
+    padding-bottom: 80px !important;
+  }
+
+  .bz-wrap {
+    padding: 8px 12px 100px !important;
+  }
+
+  /* Topbar BAZAR */
+  .bz-topbar {
+    padding: 8px 12px !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  .bz-topbar__left {
+    width: 100% !important;
+    justify-content: space-between !important;
+  }
+
+  .bz-topbar__right {
+    width: 100% !important;
+    justify-content: flex-start !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .bz-title {
+    font-size: 11px !important;
+  }
+
+  /* Сегменты и кнопки */
+  .bz-seg {
+    flex-shrink: 0 !important;
+  }
+
+  .bz-segBtn {
+    padding: 0 10px !important;
+    font-size: 11px !important;
+    height: 28px !important;
+  }
+
+  /* КРИТИЧНО: Masonry сетка - 2 колонки на мобильных */
+  .bz-masonry {
+    columns: 2 !important;
+    column-gap: 8px !important;
+  }
+
+  /* КРИТИЧНО: Grid сетка - 2 колонки */
+  .bz-grid,
+  .bz-grid--3,
+  .bz-grid--2 {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  /* КРИТИЧНО: Карточки работ - правильный aspect ratio */
+  .bz-work {
+    margin-bottom: 8px !important;
+    border-radius: 12px !important;
+  }
+
+  .bz-work__media {
+    aspect-ratio: 4/5 !important;
+    min-height: 150px !important;
+  }
+
+  .bz-work--normal .bz-work__media,
+  .bz-work--big .bz-work__media {
+    aspect-ratio: 4/5 !important;
+  }
+
+  .bz-work__img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
+
+  .bz-work__footer {
+    padding: 8px !important;
+  }
+
+  .bz-work__title {
+    font-size: 11px !important;
+  }
+
+  .bz-work__sub {
+    font-size: 10px !important;
+  }
+
+  .bz-authorMini__name {
+    font-size: 10px !important;
+    max-width: 80px !important;
+  }
+
+  .bz-authorMini__ava {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  /* Strip горизонтальный скролл */
+  .bz-strip {
+    gap: 8px !important;
+  }
+
+  .bz-strip__item,
+  .bz-strip > .bz-work {
+    min-width: 200px !important;
+    max-width: 200px !important;
+  }
+
+  /* Секции */
+  .bz-sec {
+    margin-top: 12px !important;
+    padding-top: 12px !important;
+  }
+
+  .bz-sec__title {
+    font-size: 11px !important;
+  }
+
+  /* Rank bar */
+  .bz-rankbar {
+    padding: 8px 10px !important;
+    gap: 6px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .bz-rankBtn {
+    height: 32px !important;
+    padding: 0 12px !important;
+    font-size: 11px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .bz-rankHint {
+    display: none !important;
+  }
+
+  /* Сервисы */
+  .bz-service {
+    border-radius: 12px !important;
+  }
+
+  .bz-service__content {
+    padding: 10px !important;
+  }
+
+  .bz-service__title {
+    font-size: 12px !important;
+  }
+
+  .bz-service__price {
+    font-size: 14px !important;
+  }
+
+  /* Авторы */
+  .bz-author {
+    padding: 10px !important;
+    border-radius: 12px !important;
+  }
+
+  .bz-author__ava {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .bz-author__name {
+    font-size: 12px !important;
+  }
+
+  /* Коллабы */
+  .bz-collab {
+    border-radius: 12px !important;
+  }
+
+  .bz-collab__body {
+    padding: 10px !important;
+  }
+
+  /* Footer BAZAR */
+  .bz-footer {
+    display: none !important;
+  }
+
+  /* Старые классы для совместимости */
+  .bazar-container {
+    padding: 12px !important;
+    padding-bottom: 80px !important;
+  }
+
+  .bazar-header {
+    flex-direction: column !important;
+    gap: 12px !important;
+    padding: 12px !important;
+  }
+
+  .bazar-search {
+    width: 100% !important;
+  }
+
+  .bazar-filters {
+    display: flex !important;
+    overflow-x: auto !important;
+    gap: 8px !important;
+    padding-bottom: 8px !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .bazar-filter-btn {
+    flex-shrink: 0 !important;
+    padding: 8px 16px !important;
+    font-size: 13px !important;
+  }
+
+  .bazar-grid,
+  .works-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .bazar-card,
+  .work-card {
+    border-radius: 12px !important;
+  }
+
+  .bazar-card-info {
+    padding: 8px !important;
+  }
+
+  .bazar-card-title {
+    font-size: 12px !important;
+  }
+
+  .bazar-card-author {
+    font-size: 10px !important;
+  }
+}
+
+/* ============================================================================
+   8. МОБИЛЬНЫЙ ПРОФИЛЬ АВТОРА
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  .author-profile-header {
+    flex-direction: column !important;
+    text-align: center !important;
+    padding: 16px !important;
+  }
+
+  .author-avatar {
+    width: 80px !important;
+    height: 80px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .author-stats {
+    justify-content: center !important;
+    gap: 24px !important;
+  }
+
+  .author-actions {
+    width: 100% !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .author-actions button {
+    width: 100% !important;
+  }
+
+  /* Табы автора */
+  .author-tabs {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .author-tab {
+    flex-shrink: 0 !important;
+    padding: 12px 20px !important;
+  }
+}
+
+/* ============================================================================
+   9. МОБИЛЬНЫЕ МОДАЛЬНЫЕ ОКНА
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  .modal-overlay {
+    align-items: flex-end !important;
+    padding: 0 !important;
+  }
+
+  .modal-content {
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 90vh !important;
+    border-radius: 20px 20px 0 0 !important;
+    margin: 0 !important;
+  }
+
+  .modal-header {
+    padding: 20px 16px 12px !important;
+  }
+
+  /* Ручка для свайпа */
+  .modal-content::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+  }
+
+  .modal-body {
+    padding: 16px !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .modal-footer {
+    padding: 16px !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .modal-footer button {
+    width: 100% !important;
+  }
+}
+
+/* ============================================================================
+   10. МОБИЛЬНЫЕ КНОПКИ И ИНПУТЫ
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  /* Увеличиваем touch targets */
+  button,
+  .btn,
+  [role="button"] {
+    min-height: 44px !important;
+    min-width: 44px !important;
+  }
+
+  input,
+  textarea,
+  select {
+    min-height: 44px !important;
+    font-size: 16px !important; /* Предотвращает zoom на iOS */
+    padding: 12px !important;
+  }
+
+  /* Слайдеры */
+  input[type="range"] {
+    height: 44px !important;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    width: 24px !important;
+    height: 24px !important;
+  }
+}
+
+/* ============================================================================
+   11. МОБИЛЬНЫЙ КОНТЕКСТНОЕ МЕНЮ
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  .glassMenu,
+  .dm-sticker-context-menu,
+  [class*="context-menu"] {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    top: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 20px 20px 0 0 !important;
+    padding: 16px !important;
+    padding-bottom: calc(16px + env(safe-area-inset-bottom)) !important;
+  }
+
+  .menuItem,
+  .video-ctx-menu-item {
+    padding: 14px 16px !important;
+    font-size: 15px !important;
+  }
+}
+
+/* ============================================================================
+   12. SAFE AREA (для iPhone с notch)
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  .editor-v2-header {
+    padding-top: env(safe-area-inset-top) !important;
+  }
+
+  .editor-v2-sidebar,
+  .bazar-nav {
+    padding-bottom: env(safe-area-inset-bottom) !important;
+    height: calc(60px + env(safe-area-inset-bottom)) !important;
+  }
+
+  .editor-v2-canvas-container {
+    padding-bottom: calc(70px + env(safe-area-inset-bottom)) !important;
+  }
+}
+
+/* ============================================================================
+   13. МОБИЛЬНЫЕ АНИМАЦИИ
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  /* Отключаем hover эффекты на touch */
+  @media (hover: none) {
+    *:hover {
+      transform: none !important;
+    }
+  }
+
+  /* Плавные переходы для панелей */
+  .editor-v2-panel,
+  .modal-content {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  /* Активное состояние для touch */
+  button:active,
+  .btn:active,
+  [role="button"]:active {
+    transform: scale(0.95) !important;
+    opacity: 0.8 !important;
+  }
+}
+
+/* ============================================================================
+   14. МОБИЛЬНЫЙ TIMELINE (если есть)
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  .editor-v2-timeline {
+    height: 80px !important;
+    padding: 8px !important;
+  }
+
+  .timeline-track {
+    height: 40px !important;
+  }
+
+  .timeline-controls {
+    gap: 8px !important;
+  }
+
+  .timeline-controls button {
+    width: 36px !important;
+    height: 36px !important;
+  }
+}
+
+/* ============================================================================
+   15. СКРЫТИЕ ЭЛЕМЕНТОВ НА МОБИЛЬНЫХ
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  /* Элементы только для десктопа */
+  .desktop-only,
+  .hide-mobile {
+    display: none !important;
+  }
+}
+
+/* Элементы только для мобильных */
+.mobile-only {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .mobile-only {
+    display: flex !important;
+  }
+}
+
+/* ============================================================================
+   16. МОБИЛЬНАЯ КНОПКА НАЗАД
+   ============================================================================ */
+
+.mobile-back-btn {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .mobile-back-btn {
+    display: flex !important;
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 1001;
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .mobile-back-btn:active {
+    transform: scale(0.9);
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  .mobile-back-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Кнопка назад в хедере */
+  .editor-v2-header .mobile-back-btn {
+    position: relative;
+    top: auto;
+    left: auto;
+    margin-right: 8px;
+  }
+}
+
+/* ============================================================================
+   МОБИЛЬНАЯ ПАНЕЛЬ ТЕКСТА - FULLSCREEN
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  /* Контейнер панелей внутри MobilePanel */
+  .editor-v2-panel-host {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100dvh !important;
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    background: #080a0c !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow-x: hidden !important;
+    max-width: 100% !important;
+  }
+
+  /* Панель текста */
+  .editor-v2-panel.dm-text-panel,
+  .dm-text-panel {
+    position: relative !important;
+    width: 100% !important;
+    height: 100% !important;
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    background: #080a0c !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow-x: hidden !important;
+    max-width: 100% !important;
+  }
+
+  /* Полный экран для текстовой панели */
+  .editor-v2-panel-host,
+  .dm-text-panel,
+  .dm-text-panel-surface {
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+  }
+
+  /* КРИТИЧНО: Убеждаемся что MobilePanel правильно работает с текстовой панелью */
+  .mobile-panel .dm-text-panel,
+  .mobile-panel .dm-text-panel-surface {
+    height: 100% !important;
+    max-height: 100% !important;
+  }
+
+  .dm-text-panel-surface {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: visible !important; /* Разрешаем прокрутку внутри дочерних элементов */
+    min-height: 0 !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: #080a0c !important;
+    max-width: 100% !important;
+  }
+
+  /* Табы панели текста - скрываем на мобильных, они в header */
+  .dm-text-panel-tabs-row {
+    display: none !important;
+  }
+
+  /* Скрываем кнопку символов на мобильных */
+  .dm-text-symbols-inline-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 10px 12px !important;
+    border-radius: 10px !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: rgba(255, 255, 255, 0.85) !important;
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  /* Уменьшаем поле ввода текста */
+  .dm-text-content-input,
+  .dm-textarea.dm-text-content-input {
+    min-height: 40px !important;
+    max-height: 50px !important;
+    padding: 10px 12px !important;
+    font-size: 14px !important;
+    margin-bottom: 8px !important;
+  }
+
+  /* Скрываем нумерацию шрифтов */
+  .dm-font-row-index {
+    display: none !important;
+  }
+
+  /* Убираем отступы у секции шрифтов */
+  .dm-text-font-section {
+    margin-top: 0 !important;
+  }
+
+  .dm-font-groups-tabs {
+    margin-bottom: 6px !important;
+    flex-shrink: 0 !important;
+    display: flex !important;
+    gap: 8px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+
+  .dm-font-groups-tabs::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .dm-font-group-label {
+    flex-shrink: 0 !important;
+    padding: 8px 12px !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+    white-space: nowrap !important;
+    cursor: pointer !important;
+  }
+
+  .dm-font-group-label-active {
+    background: rgba(0, 255, 162, 0.15) !important;
+    color: #00ffa2 !important;
+  }
+
+  /* Поиск шрифтов */
+  .dm-font-search-container {
+    margin-bottom: 8px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .dm-font-search-input {
+    width: 100% !important;
+    padding: 10px 12px !important;
+    font-size: 14px !important;
+    border-radius: 10px !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #fff !important;
+  }
+
+  .dm-font-search-toggle {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 8px !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: none !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .dm-font-search-toggle-active {
+    background: rgba(0, 255, 162, 0.15) !important;
+    color: #00ffa2 !important;
+  }
+
+  .dm-text-panel-tabs {
+    display: flex !important;
+    gap: 6px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    flex: 1 !important;
+    padding: 0 8px !important;
+  }
+
+  .dm-text-panel-tabs::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .dm-text-panel-tab-btn {
+    padding: 10px 14px !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+
+  .dm-text-panel-tab-btn-active {
+    background: rgba(0, 255, 162, 0.15) !important;
+    border-color: rgba(0, 255, 162, 0.4) !important;
+    color: #00ffa2 !important;
+  }
+
+  /* Контент панели */
+  .dm-text-panel-body {
+    flex: 1 !important;
+    overflow: visible !important; /* Разрешаем прокрутку внутри дочерних элементов */
+    min-height: 0 !important;
+    padding: 10px 12px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    background: #080a0c !important;
+    position: relative !important;
+  }
+
+  /* Верхняя секция (кнопка символов + textarea) не должна съедать много места */
+  .dm-text-content-section {
+    flex: 0 0 auto !important;
+  }
+
+  /* Секция шрифтов должна занимать остаток до низа */
+  .dm-text-font-section {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+  }
+
+  /* Секция шрифтов заполняет всё оставшееся место */
+  .dm-text-font-section {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 !important;
+    min-height: 0 !important;
+  }
+
+  /* КРИТИЧНО: Список шрифтов должен прокручиваться на мобильных */
+  .dm-text-panel .dm-font-list,
+  .dm-text-font-section .dm-font-list {
+    flex: 1 !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: #080a0c !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    position: relative !important;
+    z-index: 1 !important;
+    height: 100% !important;
+  }
+
+  .dm-text-panel .dm-font-list::-webkit-scrollbar,
+  .dm-text-font-section .dm-font-list::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+  /* Карточки шрифтов на всю ширину без "пустоты" справа */
+  .dm-text-panel .dm-font-row,
+  .dm-text-font-section .dm-font-row {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 12px !important;
+    margin-bottom: 8px !important;
+    border-radius: 10px !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
+
+  .dm-text-panel .dm-font-row-active,
+  .dm-text-font-section .dm-font-row-active {
+    border-color: #00ffa2 !important;
+    background: rgba(0, 255, 162, 0.08) !important;
+  }
+
+  .dm-font-row-main {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+  }
+
+  .dm-font-row-ab {
+    font-size: 20px !important;
+    font-weight: 600 !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    min-width: 40px !important;
+    text-align: center !important;
+  }
+
+  .dm-font-row-text {
+    flex: 1 !important;
+  }
+
+  .dm-font-row-label {
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    margin-bottom: 2px !important;
+  }
+
+  .dm-font-row-meta {
+    font-size: 10px !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+  }
+
+  .dm-font-fav-btn {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 8px !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: none !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+    font-size: 16px !important;
+  }
+
+  .dm-font-fav-btn-active {
+    color: #ffb800 !important;
+  }
+
+  /* Секции контента */
+  .dm-text-panel-body > * {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  /* Поле ввода текста */
+  .dm-text-content-textarea,
+  .dm-text-panel textarea {
+    width: 100% !important;
+    min-height: 80px !important;
+    font-size: 16px !important;
+    padding: 12px !important;
+    border-radius: 10px !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: #fff !important;
+    margin-bottom: 12px !important;
+  }
+
+  /* Секция панели */
+  .dm-text-section,
+  .dm-text-panel-section {
+    margin-bottom: 16px !important;
+    display: block !important;
+  }
+
+  .dm-text-section-title,
+  .dm-section-title {
+    font-size: 11px !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+    margin-bottom: 8px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+  }
+
+  /* Шрифты сетка */
+  .dm-font-grid,
+  .dm-fonts-list {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .dm-font-item,
+  .dm-font-card {
+    padding: 12px 8px !important;
+    border-radius: 10px !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    text-align: center !important;
+  }
+
+  .dm-font-item.active,
+  .dm-font-card.active {
+    border-color: #00ffa2 !important;
+    background: rgba(0, 255, 162, 0.08) !important;
+  }
+}
+
+/* ============================================================================
+   МОБИЛЬНЫЙ РЕДАКТОР - ИДЕАЛЬНЫЙ ДИЗАЙН
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  /* ========== ОСНОВНОЙ LAYOUT ========== */
+  .dm-editor-root {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    overflow: hidden !important;
+  }
+
+  .dm-editor-main,
+  .dm-editor-main--with-rail,
+  .dm-editor-main--with-rail-collapsed,
+  .dm-editor-main--with-sticker-rail,
+  .dm-editor-main--with-sticker-rail-collapsed,
+  .dm-editor-main--right-wide {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 !important;
+    grid-template-columns: unset !important;
+    overflow: hidden !important;
+  }
+
+  /* Скрываем боковые панели */
+  .dm-editor-sidebar,
+  .dm-editor-right,
+  .dm-editor-right-inner,
+  .dm-bg-categories-rail,
+  .dm-sticker-categories-rail,
+  [class*="categories-rail"] {
+    display: none !important;
+  }
+
+  /* ========== HEADER - 48px ========== */
+  .editor-v2-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    height: 48px !important;
+    min-height: 48px !important;
+    padding: 0 12px !important;
+    background: rgba(10, 10, 12, 0.95) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+    flex-shrink: 0 !important;
+  }
+
+  .editor-v2-header-left {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  .editor-v2-logo-icon {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  .editor-v2-logo,
+  .editor-v2-logo-wrapper,
+  .editor-v2-header-history,
+  .editor-v2-header-center,
+  .dm-playing-indicator {
+    display: none !important;
+  }
+
+  /* Только онлайн счётчик */
+  .dm-header-stats {
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  .dm-header-stats-item:not(.dm-header-stats-online) {
+    display: none !important;
+  }
+
+  .dm-header-stats-online {
+    font-size: 11px !important;
+    gap: 4px !important;
+  }
+
+  .editor-v2-header-right {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  .editor-v2-header-right button {
+    padding: 8px 14px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    border-radius: 10px !important;
+    min-height: 36px !important;
+  }
+
+  /* ========== CANVAS AREA ========== */
+  .dm-editor-canvas-area {
+    flex: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 12px !important;
+    padding-bottom: 72px !important;
+    background: #0a0a0c !important;
+    overflow: hidden !important;
+  }
+
+  .editor-v2-canvas-wrapper {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  /* Canvas 9:16 вертикальный */
+  .editor-v2-canvas-frame,
+  .dm-editor-canvas-frame {
+    width: auto !important;
+    height: calc(100vh - 48px - 60px - 24px) !important;
+    max-height: calc(100vh - 132px) !important;
+    aspect-ratio: 9 / 16 !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  .editor-v2-canvas-stage {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .konvajs-content,
+  .konvajs-content canvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+
+/* ============================================================================
+   МОБИЛЬНАЯ ПРАВАЯ ПАНЕЛЬ (RightPanelHost) - КРАСИВЫЙ ДИЗАЙН
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  /* Основной контейнер панели */
+  .dm-right-panel,
+  .right-panel-host {
+    background: transparent !important;
+    padding: 0 !important;
+  }
+
+  /* Табы вверху панели */
+  .dm-panel-tabs,
+  .panel-tabs,
+  .text-panel-tabs {
+    display: flex !important;
+    gap: 6px !important;
+    padding: 4px 4px 12px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+  }
+
+  .dm-panel-tabs::-webkit-scrollbar,
+  .panel-tabs::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .dm-panel-tab,
+  .panel-tab {
+    padding: 8px 16px !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    border-radius: 20px !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    border: none !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    transition: all 0.2s !important;
+  }
+
+  .dm-panel-tab.active,
+  .panel-tab.active {
+    background: rgba(0, 255, 162, 0.15) !important;
+    color: #00ffa2 !important;
+  }
+
+  /* Контент панели */
+  .dm-panel-content,
+  .panel-content {
+    padding: 0 4px !important;
+  }
+
+  /* ========== ШРИФТЫ ========== */
+  .fonts-grid,
+  .font-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+    padding: 4px 0 !important;
+  }
+
+  .font-card,
+  .font-item {
+    padding: 12px !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    border-radius: 12px !important;
+    text-align: center !important;
+    min-height: 60px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .font-card.active,
+  .font-item.active {
+    border-color: #00ffa2 !important;
+    background: rgba(0, 255, 162, 0.08) !important;
+  }
+
+  .font-preview {
+    font-size: 16px !important;
+  }
+
+  /* ========== ШАБЛОНЫ ТЕКСТА ========== */
+  /* Контейнер шаблонов на всю ширину и высоту - ТОЛЬКО В МОБИЛЬНОЙ ПАНЕЛИ */
+  .mobile-panel .dm-templates-container,
+  .mobile-panel .dm-text-panel-body .dm-templates-container {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    padding: 12px !important;
+    padding-top: 70px !important; /* Отступ под шапку MobilePanel */
+    padding-bottom: 24px !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Сетка шаблонов - ровная на всю ширину (2 колонки) - ТОЛЬКО В МОБИЛЬНОЙ ПАНЕЛИ */
+  .mobile-panel .dm-templates-container .dm-text-styles-grid,
+  .mobile-panel .dm-text-panel-body .dm-text-styles-grid,
+  .mobile-panel .dm-text-styles-container .dm-text-styles-grid,
+  .mobile-panel .dm-templates-container div.dm-text-styles-grid[style],
+  .mobile-panel .dm-text-panel-body div.dm-text-styles-grid[style] {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Карточки шаблонов внутри сетки - на всю ширину, одинаковые - ТОЛЬКО В МОБИЛЬНОЙ ПАНЕЛИ */
+  .mobile-panel .dm-templates-container .dm-text-styles-grid > button,
+  .mobile-panel .dm-text-panel-body .dm-text-styles-grid > button,
+  .mobile-panel .dm-text-styles-container .dm-text-styles-grid > button {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Контейнер шаблонов */
+  .dm-text-styles-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .text-styles-grid,
+  .text-templates {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+    padding: 4px 0 !important;
+    width: 100% !important;
+  }
+
+  .text-style-card,
+  .text-template {
+    padding: 16px 12px !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    border-radius: 14px !important;
+    min-height: 70px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    width: 100% !important;
+  }
+
+  /* Карточки шаблонов - ровные на всю ширину - ТОЛЬКО В МОБИЛЬНОЙ ПАНЕЛИ */
+  .mobile-panel .dm-text-panel-body button[style*="width: \"100%\""],
+  .mobile-panel .dm-text-panel-body button[style*="width: '100%'"] {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  /* Категории стикеров в header - горизонтальная прокрутка */
+  .mobile-panel > div:first-child > div[style*="flex: 1"] {
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    min-width: 0 !important;
+  }
+
+  .mobile-panel > div:first-child > div[style*="flex: 1"]::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  /* Контейнер с категориями внутри headerContent */
+  .mobile-panel > div:first-child > div[style*="flex: 1"] > div {
+    display: flex !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    touch-action: pan-x !important;
+  }
+
+  .mobile-panel > div:first-child > div[style*="flex: 1"] > div::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  /* ========== НАСТРОЙКИ ТЕКСТА ========== */
+  .text-settings,
+  .panel-section {
+    padding: 12px 0 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+  }
+
+  .section-title,
+  .setting-label {
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    color: rgba(255, 255, 255, 0.4) !important;
+    margin-bottom: 10px !important;
+  }
+
+  /* Слайдеры */
+  .slider-row {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 8px 0 !important;
+  }
+
+  .slider-label {
+    font-size: 12px !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    min-width: 80px !important;
+  }
+
+  input[type="range"] {
+    flex: 1 !important;
+    height: 4px !important;
+    border-radius: 2px !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    width: 18px !important;
+    height: 18px !important;
+    border-radius: 50% !important;
+    background: #00ffa2 !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+  }
+
+  /* Кнопки выравнивания */
+  .align-buttons {
+    display: flex !important;
+    gap: 6px !important;
+  }
+
+  .align-btn {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 10px !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .align-btn.active {
+    background: rgba(0, 255, 162, 0.15) !important;
+    color: #00ffa2 !important;
+  }
+
+  /* Цвет */
+  .color-picker {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 10px !important;
+    border: 2px solid rgba(255, 255, 255, 0.1) !important;
+  }
+
+  /* Кнопки эффектов */
+  .fx-btn,
+  .effect-btn {
+    padding: 10px 16px !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    border-radius: 10px !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: none !important;
+  }
+
+  .fx-btn.active,
+  .effect-btn.active {
+    background: rgba(0, 255, 162, 0.15) !important;
+    color: #00ffa2 !important;
+  }
+
+  /* Toggle переключатели */
+  .toggle-switch {
+    width: 44px !important;
+    height: 24px !important;
+    border-radius: 12px !important;
+  }
+
+  /* Инпуты */
+  .panel-input,
+  .text-input {
+    width: 100% !important;
+    padding: 12px 14px !important;
+    font-size: 14px !important;
+    border-radius: 12px !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    color: #fff !important;
+  }
+
+  .panel-input:focus,
+  .text-input:focus {
+    border-color: #00ffa2 !important;
+    outline: none !important;
+  }
+}
+
+/* ============================================================================
+   19. МОБИЛЬНЫЙ BAZAR TOPBAR С КНОПКОЙ НАЗАД
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  .bz-topbar {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 100 !important;
+  }
+
+  /* Добавляем место для кнопки назад */
+  .bz-topbar__left {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+
+  /* Кнопка назад в BAZAR */
+  .bz-back-btn {
+    display: flex !important;
+    width: 36px;
+    height: 36px;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .bz-back-btn:active {
+    transform: scale(0.9);
+  }
+
+  .bz-back-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* ============================================================================
+   20. МОБИЛЬНАЯ ПАНЕЛЬ МУЗЫКИ
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  /* Панель музыки должна занимать всю высоту */
+  .dm-music-panel,
+  .dm-music-panel-surface {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    overflow: visible !important;
+  }
+
+  /* Layout музыки */
+  .dm-music-layout {
+    display: flex !important;
+    flex: 1 !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* Контейнер треков */
+  .dm-music-tracks {
+    flex: 1 !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: visible !important;
+  }
+
+  /* КРИТИЧНО: Список треков должен прокручиваться на мобильных */
+  .dm-music-tracks-scroll {
+    flex: 1 !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    max-height: none !important;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+
+  .dm-music-tracks-scroll::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+}

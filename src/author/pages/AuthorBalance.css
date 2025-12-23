@@ -1,0 +1,368 @@
+.au-balance {
+  padding: 0;
+}
+
+.au-balance__loading {
+  padding: 60px;
+  text-align: center;
+  color: rgba(230, 237, 234, 0.58);
+}
+
+/* Карточки баланса */
+.au-balance__cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 900px) {
+  .au-balance__cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+.au-balance__card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.au-balance__cardLabel {
+  font-size: 13px;
+  color: rgba(230, 237, 234, 0.58);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.au-balance__cardValue {
+  font-size: 32px;
+  font-weight: 700;
+  color: #fff;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.au-balance__cardValue--primary {
+  color: #00e0ff;
+}
+
+.au-balance__cardValue--warning {
+  color: #ff9500;
+}
+
+.au-balance__cardValue--success {
+  color: #4caf50;
+}
+
+.au-balance__hint {
+  font-size: 12px;
+  color: rgba(230, 237, 234, 0.45);
+  line-height: 1.4;
+}
+
+/* Информация */
+.au-balance__info {
+  margin-top: 20px;
+}
+
+.au-balance__infoTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  margin: 12px 0 16px;
+}
+
+.au-balance__infoList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.au-balance__infoItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: rgba(230, 237, 234, 0.75);
+}
+
+.au-balance__infoIcon {
+  width: 24px;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(230, 237, 234, 0.70);
+}
+
+.au-balance__infoIconSvg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.au-balance__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.au-balance__sectionTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  margin: 8px 0 0;
+}
+
+/* Empty state */
+.au-balance__empty {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.au-balance__empty p {
+  font-size: 15px;
+  color: rgba(230, 237, 234, 0.7);
+  margin: 0 0 8px;
+}
+
+.au-balance__empty span {
+  font-size: 13px;
+  color: rgba(230, 237, 234, 0.45);
+}
+
+/* Транзакции */
+.au-balance__transactions {
+  display: flex;
+  flex-direction: column;
+}
+
+.au-balance__tx {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.au-balance__tx:last-child {
+  border-bottom: none;
+}
+
+.au-balance__txInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.au-balance__txTitle {
+  font-size: 14px;
+  color: #fff;
+}
+
+.au-balance__txDate {
+  font-size: 12px;
+  color: rgba(230, 237, 234, 0.45);
+}
+
+.au-balance__txAmount {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.au-balance__txAmount--positive {
+  color: #4caf50;
+}
+
+.au-balance__txAmount--negative {
+  color: #ff6b6b;
+}
+
+/* Выплаты */
+.au-balance__payouts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.au-balance__payout-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.au-balance__payout-card:last-child {
+  border-bottom: none;
+}
+
+.au-balance__payout-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.au-balance__payout-amount {
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.au-balance__payout-amount--success {
+  color: #4caf50;
+}
+
+.au-balance__payout-period {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.au-balance__payout-method {
+  font-size: 13px;
+  color: rgba(230, 237, 234, 0.6);
+  text-transform: uppercase;
+}
+
+.au-balance__payout-date {
+  font-size: 12px;
+  color: rgba(230, 237, 234, 0.45);
+}
+
+.au-balance__payout-status {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Модалка */
+.au-balance__modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.au-balance__modal {
+  background: #1a1a1a;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 420px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.au-balance__modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.au-balance__modal-header h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+}
+
+.au-balance__modal-header button {
+  background: none;
+  border: none;
+  color: rgba(230, 237, 234, 0.6);
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.au-balance__modal-body {
+  padding: 20px;
+}
+
+.au-balance__modal-amount {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.au-balance__modal-amount span {
+  color: rgba(230, 237, 234, 0.6);
+  font-size: 14px;
+}
+
+.au-balance__modal-amount strong {
+  color: #00e0ff;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.au-balance__modal-field {
+  margin-bottom: 16px;
+}
+
+.au-balance__modal-field label {
+  display: block;
+  font-size: 13px;
+  color: rgba(230, 237, 234, 0.6);
+  margin-bottom: 8px;
+}
+
+.au-balance__modal-field select,
+.au-balance__modal-field input {
+  width: 100%;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 14px;
+}
+
+.au-balance__modal-field select:focus,
+.au-balance__modal-field input:focus {
+  outline: none;
+  border-color: #00e0ff;
+}
+
+.au-balance__modal-footer {
+  display: flex;
+  gap: 12px;
+  padding: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.au-balance__modal-cancel {
+  flex: 1;
+  padding: 12px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: rgba(230, 237, 234, 0.7);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.au-balance__modal-submit {
+  flex: 2;
+  padding: 12px;
+  background: #00e0ff;
+  border: none;
+  border-radius: 8px;
+  color: #000;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}

@@ -1,0 +1,105 @@
+/* src/editorV2/components/ErrorDisplay.css */
+
+.dm-error-container {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 11000;
+  pointer-events: none;
+}
+
+.dm-error-toast {
+  pointer-events: auto;
+  min-width: 300px;
+  max-width: 420px;
+  background: rgba(15, 15, 20, 0.9);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 71, 87, 0.3);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  animation: slideInRight 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(120%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.dm-error-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dm-error-icon {
+  font-size: 18px;
+  filter: drop-shadow(0 0 8px rgba(255, 71, 87, 0.5));
+}
+
+.dm-error-message {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.dm-error-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dm-error-retry {
+  background: rgba(255, 71, 87, 0.1);
+  border: 1px solid rgba(255, 71, 87, 0.2);
+  color: #ff4757;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.dm-error-retry:hover {
+  background: #ff4757;
+  color: #fff;
+}
+
+.dm-error-close {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px;
+  transition: 0.2s;
+}
+
+.dm-error-close:hover {
+  color: #fff;
+  transform: rotate(90deg);
+}
+
+/* Полоска времени жизни ошибки */
+.dm-error-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: #ff4757;
+  width: 100%;
+  animation: progressDrain 5s linear forwards;
+}
+
+@keyframes progressDrain {
+  from { width: 100%; }
+  to { width: 0%; }
+}

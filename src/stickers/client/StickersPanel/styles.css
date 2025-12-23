@@ -1,0 +1,786 @@
+﻿/* === STICKERS PANEL === */
+
+.dm-stickers-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  margin-top: -4px;
+}
+
+.dm-stickers-icon {
+  width: 18px;
+  height: 18px;
+  filter: none;
+  animation: sticIconPulse 3s ease-in-out infinite;
+}
+
+@keyframes sticIconPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+.dm-stickers-panel-title span {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: #e8e9ff;
+  font-weight: 600;
+  text-shadow: none;
+}
+
+.dm-stickers-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Вкладки БЕСПЛАТНО/М/Ж - всегда видны */
+.dm-stickers-main-tabs {
+  flex-shrink: 0;
+}
+
+/* Контейнер для скролла стикеров */
+.dm-stickers-scroll-container {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+  position: relative;
+}
+
+.dm-stickers-scroll-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dm-stickers-scroll-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dm-stickers-scroll-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.dm-stickers-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Кнопка "Вверх" - маленькая, рядом со скроллом */
+.dm-stickers-scroll-top-btn {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: none;
+  background: rgba(92, 255, 212, 0.15);
+  color: var(--dm-accent, #5cffd4);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  z-index: 50;
+  opacity: 0.7;
+}
+
+.dm-stickers-scroll-top-btn:hover {
+  background: rgba(92, 255, 212, 0.25);
+  opacity: 1;
+}
+
+.dm-stickers-scroll-top-btn:active {
+  transform: scale(0.9);
+}
+
+.dm-stickers-scroll-top-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Женская версия кнопки вверх */
+.dm-stickers-panel-feminine .dm-stickers-scroll-top-btn {
+  background: rgba(255, 105, 180, 0.15);
+  color: #FF69B4;
+}
+
+.dm-stickers-panel-feminine .dm-stickers-scroll-top-btn:hover {
+  background: rgba(255, 105, 180, 0.25);
+}
+
+/* Загрузка */
+.dm-stickers-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 16px;
+  text-align: center;
+}
+
+.dm-stickers-loading-icon {
+  width: 40px;
+  height: 40px;
+  opacity: 0.8;
+  animation: pulse 2s ease-in-out infinite;
+  display: block;
+  margin: 0 auto;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+.dm-stickers-loading p {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--dm-text-soft);
+  opacity: 0.6;
+  text-align: center;
+  margin: 0;
+  max-width: 400px;
+  line-height: 1.5;
+}
+
+.dm-stickers-error {
+  padding: 40px 20px;
+  text-align: center;
+  color: rgba(255, 100, 100, 0.7);
+  font-size: 12px;
+}
+
+/* === ГЛАВНЫЕ ВКЛАДКИ (БЕСПЛАТНО / М / Ж) === */
+.dm-stickers-main-tabs {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+  background: #1a1f1e;
+}
+
+.dm-stickers-main-tab {
+  flex: 1;
+  padding: 10px 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.dm-stickers-main-tab:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dm-stickers-main-tab.active {
+  background: linear-gradient(135deg, rgba(92, 255, 212, 0.12) 0%, rgba(92, 255, 212, 0.06) 100%);
+  border-color: rgba(92, 255, 212, 0.4);
+  color: rgba(92, 255, 212, 0.95);
+}
+
+.dm-stickers-main-tab-premium {
+  background: linear-gradient(135deg, rgba(255, 200, 50, 0.05) 0%, rgba(255, 150, 50, 0.03) 100%);
+}
+
+.dm-stickers-main-tab-premium.active {
+  background: linear-gradient(135deg, rgba(255, 200, 50, 0.2) 0%, rgba(255, 150, 50, 0.12) 100%);
+  border-color: rgba(255, 200, 50, 0.5);
+  color: rgba(255, 215, 0, 0.95);
+}
+
+/* Female premium tab */
+.dm-stickers-main-tab-female {
+  background: linear-gradient(135deg, rgba(255, 105, 180, 0.05) 0%, rgba(255, 182, 193, 0.03) 100%);
+}
+
+.dm-stickers-main-tab-female.active {
+  background: linear-gradient(135deg, rgba(255, 105, 180, 0.2) 0%, rgba(255, 182, 193, 0.12) 100%);
+  border-color: rgba(255, 105, 180, 0.5);
+  color: rgba(255, 182, 193, 0.95);
+}
+
+/* Crown icons - без свечения */
+.dm-crown-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Tab crown styling */
+.dm-stickers-main-tab .dm-crown-icon {
+  margin-right: 4px;
+}
+
+/* === КОНТЕЙНЕР КОНТЕНТА (категории + сетка) === */
+.dm-stickers-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* === ВЕРТИКАЛЬНЫЙ СПИСОК КАТЕГОРИЙ (как в фонах) === */
+.dm-stickers-categories-rail {
+  width: 90px;
+  min-width: 90px;
+  max-width: 90px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 4px 8px 8px;
+  overflow-y: auto;
+  border-right: 1px solid rgba(255, 255, 255, 0.04);
+  flex-shrink: 0;
+}
+
+.dm-stickers-category-rail-btn {
+  width: 100%;
+  padding: 8px 6px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.dm-stickers-category-rail-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dm-stickers-category-rail-btn.active {
+  background: rgba(92, 255, 212, 0.1);
+  color: rgba(92, 255, 212, 0.95);
+  font-weight: 600;
+}
+
+.dm-stickers-category-rail-btn.premium {
+  color: rgba(255, 200, 50, 0.7);
+}
+
+.dm-stickers-category-rail-btn.premium:hover {
+  background: rgba(255, 200, 50, 0.08);
+  color: rgba(255, 200, 50, 0.9);
+}
+
+.dm-stickers-category-rail-btn.premium.active {
+  background: rgba(255, 200, 50, 0.15);
+  color: rgba(255, 215, 0, 0.95);
+}
+
+.dm-crown-small {
+  font-size: 9px;
+  margin-left: auto;
+}
+
+/* Premium badge на стикере - без фона */
+.dm-sticker-premium-badge {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dm-sticker-item.premium {
+  border: 1px solid rgba(255, 200, 50, 0.2);
+}
+
+.dm-sticker-item.premium:hover {
+  border-color: rgba(255, 200, 50, 0.4);
+  background: linear-gradient(135deg, rgba(255, 200, 50, 0.1) 0%, rgba(255, 150, 50, 0.06) 100%);
+}
+
+/* ============================================
+   ЖЕНСКИЙ ИНТЕРФЕЙС - FEMININE UI THEME
+   ============================================ */
+.dm-stickers-panel-feminine {
+  background: linear-gradient(180deg, 
+    rgba(255, 182, 193, 0.03) 0%, 
+    rgba(255, 105, 180, 0.02) 50%,
+    rgba(219, 112, 147, 0.03) 100%
+  );
+}
+
+.dm-stickers-panel-feminine::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent 0%,
+    rgba(255, 105, 180, 0.4) 20%,
+    rgba(255, 182, 193, 0.6) 50%,
+    rgba(255, 105, 180, 0.4) 80%,
+    transparent 100%
+  );
+}
+
+/* Женские вкладки */
+.dm-stickers-panel-feminine .dm-stickers-main-tabs {
+  background: linear-gradient(180deg, #2a1f25 0%, #1f1a1c 100%);
+  border-bottom-color: rgba(255, 105, 180, 0.15);
+}
+
+/* Женский скроллбар контейнера */
+.dm-stickers-panel-feminine .dm-stickers-scroll-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dm-stickers-panel-feminine .dm-stickers-scroll-container::-webkit-scrollbar-track {
+  background: rgba(255, 105, 180, 0.05);
+}
+
+.dm-stickers-panel-feminine .dm-stickers-scroll-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 105, 180, 0.25);
+  border-radius: 3px;
+}
+
+.dm-stickers-panel-feminine .dm-stickers-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 105, 180, 0.4);
+}
+
+.dm-stickers-panel-feminine .dm-stickers-main-tab {
+  border-color: rgba(255, 182, 193, 0.15);
+}
+
+.dm-stickers-panel-feminine .dm-stickers-main-tab:hover {
+  border-color: rgba(255, 105, 180, 0.3);
+  background: rgba(255, 182, 193, 0.08);
+}
+
+.dm-stickers-panel-feminine .dm-stickers-main-tab.active {
+  background: linear-gradient(135deg, rgba(255, 105, 180, 0.15) 0%, rgba(255, 182, 193, 0.1) 100%);
+  border-color: rgba(255, 105, 180, 0.4);
+  color: rgba(255, 182, 193, 1);
+}
+
+/* Женская сетка стикеров */
+.dm-stickers-panel-feminine .dm-stickers-grid {
+  background: linear-gradient(180deg, transparent 0%, rgba(255, 182, 193, 0.02) 100%);
+}
+
+.dm-stickers-panel-feminine .dm-sticker-item {
+  border-color: rgba(255, 182, 193, 0.1);
+  background: rgba(255, 182, 193, 0.02);
+}
+
+.dm-stickers-panel-feminine .dm-sticker-item:hover {
+  border-color: rgba(255, 105, 180, 0.3);
+  background: rgba(255, 182, 193, 0.08);
+}
+
+/* Женские premium стикеры */
+.dm-stickers-panel-feminine .dm-sticker-item.premium {
+  border-color: rgba(255, 105, 180, 0.25);
+  background: linear-gradient(135deg, rgba(255, 105, 180, 0.05) 0%, rgba(255, 182, 193, 0.03) 100%);
+}
+
+.dm-stickers-panel-feminine .dm-sticker-item.premium:hover {
+  border-color: rgba(255, 105, 180, 0.4);
+  background: linear-gradient(135deg, rgba(255, 105, 180, 0.12) 0%, rgba(255, 182, 193, 0.08) 100%);
+}
+
+/* Женский premium badge - без фона */
+.dm-stickers-panel-feminine .dm-sticker-premium-badge {
+  background: transparent;
+}
+
+/* Женская кнопка избранного */
+.dm-stickers-panel-feminine .dm-sticker-favorite-btn {
+  color: rgba(255, 182, 193, 0.5);
+}
+
+.dm-stickers-panel-feminine .dm-sticker-favorite-btn:hover {
+  color: rgba(255, 105, 180, 0.8);
+}
+
+.dm-stickers-panel-feminine .dm-sticker-favorite-btn-active {
+  color: #FF69B4;
+}
+
+/* Женский скроллбар */
+.dm-stickers-panel-feminine .dm-stickers-grid::-webkit-scrollbar-thumb {
+  background: rgba(255, 105, 180, 0.2);
+}
+
+.dm-stickers-panel-feminine .dm-stickers-grid::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 105, 180, 0.4);
+}
+
+/* Кнопки пола М/Ж (старые, для совместимости) */
+.dm-stickers-gender-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 12px 16px 8px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  flex-shrink: 0;
+}
+
+.dm-gender-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--dm-border-soft);
+  background: var(--dm-surface-soft);
+  color: var(--dm-text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+.dm-gender-btn:hover {
+  background: var(--dm-surface-strong);
+  border-color: var(--dm-border-strong);
+  color: var(--dm-text);
+}
+
+.dm-gender-btn.active {
+  background: linear-gradient(135deg, rgba(92, 255, 212, 0.15) 0%, rgba(88, 101, 242, 0.1) 100%);
+  border: 1px solid rgba(92, 255, 212, 0.4);
+  color: rgba(92, 255, 212, 0.95);
+  font-weight: 600;
+  box-shadow: 0 0 8px rgba(92, 255, 212, 0.2);
+}
+
+/* Кнопки PREMIUM */
+.dm-premium-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--dm-border-soft);
+  background: var(--dm-surface-soft);
+  color: var(--dm-text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+.dm-premium-btn:hover {
+  background: var(--dm-surface-strong);
+  border-color: var(--dm-border-strong);
+  color: var(--dm-text);
+}
+
+.dm-premium-btn.active {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(255, 193, 7, 0.15) 100%);
+  border: 1px solid rgba(255, 215, 0, 0.5);
+  color: rgba(255, 215, 0, 0.95);
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+}
+
+.dm-premium-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Заголовок PREMIUM по центру */
+.dm-stickers-title-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 4px 0;
+  margin-bottom: 2px;
+}
+
+.dm-premium-button {
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border-radius: 4px;
+  padding: 6px 12px;
+}
+
+.dm-premium-button:hover {
+  background: var(--dm-surface-soft);
+}
+
+.dm-premium-button:hover .dm-stickers-title-icon,
+.dm-premium-button:hover .dm-stickers-title-text {
+  opacity: 0.7;
+}
+
+.dm-stickers-title-icon {
+  width: 16px;
+  height: 16px;
+  opacity: 0.5;
+  filter: brightness(0) saturate(100%) invert(89%) sepia(14%) saturate(1091%) hue-rotate(76deg) brightness(104%) contrast(92%);
+  transition: opacity 0.15s ease;
+}
+
+.dm-stickers-title-text {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dm-accent);
+  opacity: 0.5;
+  transition: opacity 0.15s ease;
+}
+
+/* Подпись под PREMIUM */
+.dm-premium-subtitle {
+  text-align: center;
+  font-size: 8px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--dm-text);
+  opacity: 0.75;
+  margin-top: -4px;
+  margin-bottom: 6px;
+}
+
+
+/* Переключатель сетки */
+.dm-stickers-grid-switcher {
+  display: flex;
+  gap: 4px;
+  padding: 8px 0;
+  margin-bottom: 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.dm-stickers-grid-switcher-btn {
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--dm-border-soft);
+  background: var(--dm-surface-soft);
+  color: var(--dm-text-muted);
+  font-size: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex: 1;
+  text-align: center;
+}
+
+.dm-stickers-grid-switcher-btn:hover {
+  background: var(--dm-surface-strong);
+  border-color: var(--dm-border-strong);
+  color: var(--dm-text);
+}
+
+.dm-stickers-grid-switcher-btn-active {
+  background: linear-gradient(135deg, rgba(92, 255, 212, 0.15) 0%, rgba(88, 101, 242, 0.1) 100%);
+  border: 1px solid rgba(92, 255, 212, 0.4);
+  color: rgba(92, 255, 212, 0.95);
+  font-weight: 600;
+}
+
+/* Грид стикеров */
+.dm-stickers-grid {
+  flex: 1;
+  display: grid;
+  gap: 8px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 8px;
+  align-content: start;
+  align-items: center;
+  justify-items: center;
+  contain: layout;
+  min-width: 0;
+}
+
+/* Когда 1 колонка - центрируем и ограничиваем ширину */
+.dm-stickers-grid[style*="repeat(1"] {
+  justify-content: center;
+}
+
+.dm-stickers-grid[style*="repeat(1"] > * {
+  max-width: 300px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.dm-sticker-item-wrapper {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 8px;
+  width: 100%;
+  min-height: 0;
+}
+
+.dm-sticker-item {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  box-sizing: border-box;
+  margin: 0;
+  perspective: 1000px;
+}
+
+.dm-sticker-item:hover {
+  background: linear-gradient(135deg, rgba(92, 255, 212, 0.1) 0%, rgba(88, 101, 242, 0.08) 100%);
+  border: none;
+  border-radius: 16px;
+  transform: translateY(-4px) rotateX(5deg) rotateY(-5deg);
+}
+
+.dm-sticker-item:active {
+  transform: translateY(-2px) rotateX(2deg) rotateY(-2deg);
+}
+
+.dm-sticker-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  transition: filter 0.3s ease;
+  transform-origin: center;
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+}
+
+
+
+.dm-sticker-favorite-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+  padding: 0;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.dm-sticker-favorite-btn:hover {
+  background: rgba(0, 0, 0, 0.7);
+  color: rgba(255, 255, 255, 0.8);
+  transform: scale(1.1);
+}
+
+.dm-sticker-favorite-btn-active {
+  background: rgba(0, 0, 0, 0.7);
+  color: #fbbf24;
+}
+
+.dm-sticker-favorite-btn-active svg {
+  fill: #fbbf24;
+  stroke: #fbbf24;
+}
+
+.dm-sticker-favorite-btn svg {
+  width: 10px;
+  height: 10px;
+  display: block;
+}
+
+.dm-sticker-item:hover img {
+  filter: brightness(1.1) saturate(1.2);
+}
+
+.dm-sticker-item:active img {
+  filter: brightness(1.05) saturate(1.1);
+}
+
+/* Скроллбары - очень тонкие везде в стикерах */
+.dm-stickers-panel,
+.dm-stickers-panel *,
+.dm-stickers-categories,
+.dm-stickers-grid {
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(255, 255, 255, 0.1) transparent !important;
+}
+
+.dm-stickers-panel *::-webkit-scrollbar,
+.dm-stickers-categories::-webkit-scrollbar,
+.dm-stickers-grid::-webkit-scrollbar {
+  width: 2px !important;
+}
+
+.dm-stickers-panel *::-webkit-scrollbar-track,
+.dm-stickers-categories::-webkit-scrollbar-track,
+.dm-stickers-grid::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+.dm-stickers-panel *::-webkit-scrollbar-thumb,
+.dm-stickers-categories::-webkit-scrollbar-thumb,
+.dm-stickers-grid::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-radius: 1px !important;
+}
+
+.dm-stickers-panel *::-webkit-scrollbar-thumb:hover,
+.dm-stickers-categories::-webkit-scrollbar-thumb:hover,
+.dm-stickers-grid::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+}
+

@@ -1,0 +1,486 @@
+.dm-music-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+  min-height: 0;
+}
+
+.dm-music-panel-surface {
+  background: rgba(0, 0, 0, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  /* фиксируем контент внутри панели */
+  overflow: visible;
+}
+
+.dm-music-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dm-music-panel-title {
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.78);
+  margin: 0;
+}
+
+/* Секции: МУЗЫКА | ЗВУКИ | PREMIUM */
+.dm-music-sections {
+  display: flex;
+  gap: 6px;
+  padding: 0 12px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.dm-music-section-btn {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 8px;
+}
+
+.dm-music-section-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.dm-music-section-btn--active {
+  background: rgba(92, 255, 212, 0.12);
+  border-color: rgba(92, 255, 212, 0.3);
+  color: rgba(92, 255, 212, 0.95);
+}
+
+.dm-music-section-btn--premium {
+  background: linear-gradient(135deg, rgba(255, 193, 7, 0.08) 0%, rgba(255, 152, 0, 0.05) 100%);
+  border-color: rgba(255, 193, 7, 0.2);
+  color: rgba(255, 193, 7, 0.7);
+}
+
+.dm-music-section-btn--premium:hover {
+  background: linear-gradient(135deg, rgba(255, 193, 7, 0.15) 0%, rgba(255, 152, 0, 0.1) 100%);
+  color: rgba(255, 193, 7, 0.9);
+}
+
+.dm-music-section-btn--premium.dm-music-section-btn--active {
+  background: linear-gradient(135deg, rgba(255, 193, 7, 0.2) 0%, rgba(255, 152, 0, 0.15) 100%);
+  border-color: rgba(255, 193, 7, 0.4);
+  color: #ffc107;
+}
+
+.dm-music-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 0 16px;
+  margin: 0;
+}
+
+.dm-music-tab {
+  flex: 1;
+  padding: 10px 12px;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 2px solid transparent;
+  position: relative;
+}
+
+.dm-music-tab:hover {
+  color: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.dm-music-tab.dm-music-tab-active {
+  color: rgba(92, 255, 212, 0.95);
+  border-bottom-color: rgba(92, 255, 212, 0.6);
+  background: rgba(92, 255, 212, 0.05);
+}
+
+.dm-music-layout {
+  display: flex;
+  gap: 0;
+  align-items: stretch;
+  flex: 1;
+  min-height: 0;
+}
+
+.dm-music-genres {
+  flex: 0 0 auto;
+  padding-right: 10px;
+}
+
+.dm-music-genres.dm-music-genres-collapsed {
+  padding-right: 6px;
+}
+
+.dm-music-tracks {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+  overflow: visible;
+  padding-left: 10px;
+  border-left: 1px solid rgba(255, 255, 255, 0.06);
+  position: relative;
+}
+
+.dm-music-refresh-indicator {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  font-size: 10px;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.55);
+  pointer-events: none;
+}
+
+.dm-music-tracks-scroll {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0 12px 12px;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+  max-height: calc(100vh - 300px);
+}
+
+.dm-music-tracks-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+
+.dm-music-tracks-scroll::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 5px;
+}
+
+.dm-music-tracks-scroll::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(92, 255, 212, 0.4) 0%, rgba(61, 191, 160, 0.3) 100%);
+  border-radius: 5px;
+}
+
+.dm-music-tracks-scroll::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba(92, 255, 212, 0.6) 0%, rgba(61, 191, 160, 0.5) 100%);
+}
+
+.dm-music-tracks-empty {
+  padding: 14px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  background: rgba(10, 31, 26, 0.22);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+}
+
+.dm-music-track-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.02);
+  transition: all 0.2s ease;
+}
+
+.dm-music-track-row:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.dm-music-track-line {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.dm-music-track-name {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.1;
+}
+
+.dm-music-track-name::after {
+  content: attr(data-artist);
+  display: block;
+  margin-top: 2px;
+  font-size: 9px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.4);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dm-music-progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dm-music-progress {
+  flex: 1;
+  height: 5px;
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 10px;
+  outline: none;
+  cursor: pointer;
+  margin: 0;
+  transition: height 0.2s ease;
+}
+
+.dm-music-progress:hover {
+  height: 6px;
+}
+
+.dm-music-progress::-webkit-slider-runnable-track {
+  height: 5px;
+  border-radius: 10px;
+}
+
+.dm-music-progress::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #5cffd4 0%, #3dbfa0 100%);
+  border: 2px solid rgba(10, 31, 26, 0.9);
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(92, 255, 212, 0.8), 0 0 20px rgba(92, 255, 212, 0.4);
+  margin-top: -5px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.dm-music-progress::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 16px rgba(92, 255, 212, 1), 0 0 30px rgba(92, 255, 212, 0.6);
+}
+
+.dm-music-progress::-moz-range-track {
+  height: 5px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.12);
+}
+
+.dm-music-progress::-moz-range-progress {
+  height: 5px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #5cffd4, #3dbfa0);
+}
+
+.dm-music-progress::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #5cffd4 0%, #3dbfa0 100%);
+  border: 2px solid rgba(10, 31, 26, 0.9);
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(92, 255, 212, 0.8);
+}
+
+.dm-music-time {
+  font-variant-numeric: tabular-nums;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.45);
+  white-space: nowrap;
+  min-width: 65px;
+  text-align: right;
+  flex-shrink: 0;
+  letter-spacing: 0.5px;
+}
+
+/* При открытых actions - скрываем время, прогресс остаётся. Высота строки фиксирована, поэтому скачков нет */
+.dm-music-row-actions-open .dm-music-time {
+  display: none;
+}
+
+/* Активный трек */
+.dm-music-track-row--active {
+  background: rgba(92, 255, 212, 0.06);
+  border-color: rgba(92, 255, 212, 0.15);
+}
+
+.dm-music-track-row--active .dm-music-track-name {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.dm-music-track-row--active .dm-music-time {
+  color: rgba(92, 255, 212, 0.6);
+}
+
+/* Кнопка Play */
+.dm-music-play-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: #5cffd4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.dm-music-play-btn:hover {
+  color: #fff;
+  transform: scale(1.1);
+}
+
+.dm-music-play-btn:active {
+  transform: scale(0.9);
+}
+
+/* Кнопка скачивания */
+.dm-music-download-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: rgba(92, 255, 212, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.dm-music-download-btn:hover {
+  color: #5cffd4;
+  transform: scale(1.1);
+}
+
+.dm-music-download-btn:active {
+  transform: scale(0.9);
+}
+
+/* Premium кнопка скачивания */
+.dm-music-download-btn--premium {
+  color: rgba(255, 193, 7, 0.7);
+}
+
+.dm-music-download-btn--premium:hover {
+  color: #ffc107;
+}
+
+/* Музыка: чуть аккуратнее заголовок rail */
+.dm-music-genres .dm-sticker-categories-rail-title {
+  font-size: 9px;
+  letter-spacing: 0.4px;
+  line-height: 1.05;
+  max-width: 68px;
+  white-space: normal;
+  flex: 1;
+  padding-right: 8px;
+}
+
+.dm-music-genres .dm-sticker-categories-rail-header {
+  gap: 6px;
+  padding-top: 8px;
+  padding-bottom: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Музыка: более “крутое” активное состояние */
+.dm-music-genres .dm-sticker-category-rail-btn-active {
+  background: linear-gradient(135deg, rgba(92, 255, 212, 0.18), rgba(61, 191, 160, 0.10));
+  border-color: rgba(92, 255, 212, 0.45);
+  color: rgba(92, 255, 212, 0.95);
+  box-shadow: 0 0 0 1px rgba(92, 255, 212, 0.10), 0 6px 18px rgba(0,0,0,0.28);
+}
+
+.dm-music-genres .dm-sticker-category-rail-btn {
+  position: relative;
+}
+
+.dm-music-genres .dm-sticker-category-rail-btn-active::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  border-radius: 999px;
+  background: rgba(92, 255, 212, 0.9);
+}
+
+/* В свернутых подборках - иконки всегда белые (без “подкрашивания”) */
+.dm-music-genres .dm-sticker-category-rail-icon-btn,
+.dm-music-genres .dm-sticker-category-rail-icon-btn-active {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* При “закрытии подборок” делаем rail визуально плоским (на уровне иконок) */
+.dm-music-genres .dm-sticker-categories-rail-collapsed {
+  background: transparent;
+  border: none;
+}
+
+.dm-music-genres .dm-sticker-categories-rail-collapsed .dm-sticker-categories-rail-header {
+  padding: 6px 4px;
+}
+
+.dm-music-genres .dm-sticker-categories-rail-collapsed .dm-sticker-categories-rail-list-collapsed {
+  padding: 6px 4px;
+}
+
+/* ПОДБОРКИ: стрелка без обводки/фона */
+.dm-music-genres .dm-sticker-categories-rail-toggle {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 0 !important;
+  width: 18px;
+  height: 18px;
+  border-radius: 0 !important;
+}
+
+.dm-music-genres .dm-sticker-categories-rail-toggle:hover {
+  background: transparent !important;
+}
+
+.dm-music-genres .dm-sticker-categories-rail-toggle:focus {
+  box-shadow: none !important;
+}
+
+.dm-music-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.06);
+  margin: 4px 0 0;
+}

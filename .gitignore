@@ -1,0 +1,15 @@
+node_modules
+dist
+.vite
+.idea
+.vscode
+.DS_Store
+*.log
+debug.log
+secrets.dev.vars
+tg_token
+.env
+.env.local
+.env.production
+.wrangler
+wrangler-output

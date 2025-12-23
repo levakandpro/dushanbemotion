@@ -1,0 +1,175 @@
+﻿/* === STICKER TIMELINE === */
+
+/* Переопределение для стикеров - всё идентично аудио */
+.sticker-track-label {
+  /* Наследует все стили от .audio-track-label - никаких переопределений! */
+}
+
+/* Убираем ::before (эмодзи аудио) - у нас SVG иконка вместо него */
+.sticker-track-label::before {
+  display: none !important;
+}
+
+/* Гарантируем, что span внутри тоже наследует стили */
+.sticker-track-label > span {
+  /* Наследует от .audio-track-label > span - никаких переопределений! */
+}
+
+.sticker-track-content {
+  /* Наследует все стили от .audio-track-content */
+}
+
+.sticker-track-icon-bg {
+  /* SVG иконка на фоне, как у аудио */
+}
+
+/* Стикер-клип */
+.sticker-clip-item {
+  position: absolute;
+}
+
+.sticker-clip-item:hover {
+  filter: brightness(1.1);
+}
+
+.sticker-clip-item.selected {
+  z-index: 10;
+}
+
+.clip-trim-handle {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.sticker-clip-item:hover .clip-trim-handle {
+  opacity: 1;
+}
+
+.sticker-clip-item.selected .clip-trim-handle {
+  opacity: 1;
+}
+
+/* Магнитная линия снэпа */
+.snap-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(255, 193, 7, 0.8);
+  box-shadow: 0 0 8px rgba(255, 193, 7, 0.6);
+  pointer-events: none;
+  z-index: 100;
+  animation: snapPulse 0.3s ease-out;
+}
+
+@keyframes snapPulse {
+  from {
+    opacity: 0;
+    transform: scaleY(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+/* Скрытый клип */
+.sticker-clip-item.hidden {
+  opacity: 0.3 !important;
+  filter: grayscale(0.8);
+}
+
+.sticker-clip-item.hidden::after {
+  content: '🙈';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Заблокированный клип */
+.sticker-clip-item.locked {
+  border-color: rgba(255, 193, 7, 0.5) !important;
+  cursor: not-allowed !important;
+}
+
+/* Контекстное меню клипа */
+.sticker-clip-context-menu {
+  background: linear-gradient(145deg, rgba(14, 14, 18, 0.98), rgba(18, 18, 24, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 4px;
+  min-width: 200px;
+  backdrop-filter: blur(40px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  animation: contextMenuAppear 0.12s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes contextMenuAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.context-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 12px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.12s ease;
+  font-family: inherit;
+}
+
+.context-menu-item:hover {
+  background: rgba(92, 255, 212, 0.15);
+  color: white;
+}
+
+.context-menu-item.danger:hover {
+  background: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
+}
+
+.context-menu-icon {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.context-menu-label {
+  flex: 1;
+}
+
+.context-menu-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06) 20%, rgba(255, 255, 255, 0.06) 80%, transparent);
+  margin: 3px 0;
+}
+
+/* Маркеры анимации */
+.transition-marker {
+  transition: width 0.1s ease;
+}
+
+.transition-in:hover,
+.transition-out:hover {
+  opacity: 1;
+}
+
+

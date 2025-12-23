@@ -1,0 +1,45 @@
+/* src/shared/ui/Input.css */
+
+.shared-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.shared-input-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(230, 237, 234, 0.8);
+}
+
+.shared-input {
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(42, 124, 105, 0.2);
+  border-radius: 6px;
+  color: #e6edea;
+  font-size: 13px;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.shared-input:focus {
+  outline: none;
+  border-color: rgba(61, 191, 160, 0.45);
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.shared-input::placeholder {
+  color: rgba(230, 237, 234, 0.4);
+}
+
+.shared-input-error {
+  border-color: rgba(255, 75, 106, 0.5);
+  background: rgba(255, 75, 106, 0.05);
+}
+
+.shared-input-error-text {
+  font-size: 11px;
+  color: #ff4b6a;
+  margin-top: 2px;
+}

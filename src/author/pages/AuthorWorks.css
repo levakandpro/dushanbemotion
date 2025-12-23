@@ -1,0 +1,70 @@
+/* Локальные добивки именно для страницы "Мои работы".
+   Всё остальное (карточки/сетка/табы) живёт в ../components/author-ui.css */
+
+.au-works{
+  /* чуть больше воздуха, но без жирных пустот */
+  padding-top: 2px;
+}
+
+/* Липкая панель табы+поиск: удобно, когда скроллишь список */
+.au-worksHead{
+  position: sticky;
+  top: 14px;              /* под внутренний паддинг контента */
+  z-index: 8;
+
+  padding: 10px 10px;
+  border-radius: 16px;
+
+  background: rgba(8,23,18,.62);
+  border: 1px solid rgba(42,124,105,.14);
+  backdrop-filter: blur(10px);
+
+  /* отделяем от сетки */
+  margin: 14px 0 14px;
+}
+
+/* чтобы липкая панель смотрелась легче и “дороже” */
+.au-worksHead:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius: 16px;
+  pointer-events:none;
+  background: radial-gradient(520px 220px at 20% 0%, rgba(61,191,160,.08), transparent 62%);
+  opacity: .9;
+}
+
+/* фикс: контент поверх псевдо-слоя */
+.au-worksHead > *{
+  position: relative;
+  z-index: 1;
+}
+
+/* поиск аккуратнее по высоте и в линию с табами */
+.au-worksTools .au-input{
+  height: 38px;
+}
+
+/* кнопка “Сортировка” выравниваем по высоте с инпутом */
+.au-worksTools .au-btn,
+.au-worksTools .au-btn--ghost{
+  height: 38px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* чуть плотнее сетка на мобильном */
+@media (max-width: 720px){
+  .au-worksHead{
+    top: 10px;
+    padding: 10px;
+    margin: 12px 0 12px;
+  }
+  .au-worksTools{
+    width: 100%;
+  }
+  .au-worksTools .au-input{
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}

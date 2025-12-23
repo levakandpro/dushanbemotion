@@ -1,0 +1,81 @@
+/* src/editorV2/components/AssetSearchBar.css */
+
+.dm-search-container {
+  padding: 16px;
+  background: #04120d;
+}
+
+.dm-search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.dm-search-icon {
+  position: absolute;
+  left: 12px;
+  font-size: 14px;
+  opacity: 0.5;
+}
+
+.dm-search-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 10px 35px 10px 35px;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.dm-search-input:focus {
+  outline: none;
+  border-color: #00ffa2;
+  background: rgba(0, 255, 162, 0.02);
+  box-shadow: 0 0 15px rgba(0, 255, 162, 0.1);
+}
+
+.dm-search-clear {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  padding: 5px;
+}
+
+/* Современные фильтры-чипсы */
+.dm-filter-chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.dm-chip {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.6);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.dm-chip:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.dm-chip.active {
+  background: #00ffa2;
+  color: #000;
+  border-color: #00ffa2;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(0, 255, 162, 0.2);
+}

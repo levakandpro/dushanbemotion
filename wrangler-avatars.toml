@@ -1,0 +1,19 @@
+﻿# Cloudflare Worker Configuration for Avatars
+
+name = "avatars-manifest"
+main = "src/avatars/worker/index.js"
+compatibility_date = "2025-12-05"
+
+# Р-Р°РїСѓСЃРє РЅР° *.workers.dev
+workers_dev = true
+
+# R2 Bucket Binding
+[[r2_buckets]]
+binding = "IMAGES_BUCKET"
+bucket_name = "images"
+
+# Environment Variables
+# Public URL РґР»СЏ bucket "images" (Р‘Р•Р- /images/, Р‘Р•Р- СЃР»РµС€Р° РІ РєРѕРЅС†Рµ)
+[vars]
+IMAGES_PUBLIC_BASE_URL = "https://pub-638e3dfb7bd54cbdb2145ac05d4c7662.r2.dev"
+

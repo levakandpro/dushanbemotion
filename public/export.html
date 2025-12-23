@@ -1,0 +1,1438 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Р­РєСЃРїРѕСЂС‚ РІРёРґРµРѕ вЂ” Levakand Visualizer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: auto;
+    }
+
+    body {
+      background: #000;
+      color: #f5f7f8;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", Arial, sans-serif;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      position: relative;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    @keyframes breathe {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    .container {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 1040px;          /* С€РёСЂРµ РїРѕ СЃС‚СЂР°РЅРёС†Рµ */
+      padding: 20px;
+      margin: 40px auto 40px;
+    }
+
+    /* РћРЎРќРћР’РќРћР™ Р‘Р›РћРљ РЎ GLASS */
+    .main-block {
+      width: 100%;                /* СЂР°СЃС‚СЏРіРёРІР°РµРј РЅР° РІСЃСЋ С€РёСЂРёРЅСѓ РєРѕРЅС‚РµР№РЅРµСЂР° */
+      background: rgba(18, 18, 18, 0.95);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 0;
+      padding: 36px 28px;
+      text-align: center;
+      animation: slideIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* РџР РћР•РљРў Р-РђР“РћР›РћР’РћРљ */
+    .project-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 24px;
+      animation: fadeInDown 0.9s ease-out 0.1s both;
+    }
+
+    .project-icon {
+      width: 28px;
+      height: 28px;
+      background: #1a5a4a;
+      border-radius: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #29f0a3;
+      flex-shrink: 0;
+    }
+
+    .project-icon svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .project-name {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.75);
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    /* РљРћР›Р¬Р¦Рћ РџР РћР“Р Р•РЎРЎРђ */
+    .progress-ring-wrapper {
+      position: relative;
+      width: 160px;
+      height: 160px;
+      margin: 0 auto 28px;
+      animation: fadeInDown 0.9s ease-out 0.2s both;
+    }
+
+    .ring {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: rgba(18, 18, 18, 0.8);
+    }
+
+    .ring-border {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+    }
+
+    .ring-progress {
+      position: absolute;
+      inset: 8px;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      border-top-color: #29f0a3;
+      border-right-color: rgba(41, 240, 163, 0.5);
+      animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+
+    .logo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 72px;
+      height: 72px;
+      animation: pulse 2s ease-in-out infinite;
+      object-fit: contain;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.95; }
+      50% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+    }
+
+    .progress-text {
+      position: absolute;
+      bottom: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 28px;
+      font-weight: 700;
+      color: #29f0a3;
+      letter-spacing: -0.02em;
+    }
+
+    /* РЎРўРђРўРЈРЎ Р Р’Р Р•РњРЇ */
+    .status-section {
+      margin-top: 50px;
+      margin-bottom: 24px;
+    }
+
+    .main-status {
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 8px;
+      animation: fadeInDown 0.9s ease-out 0.3s both;
+    }
+
+    .sub-status {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.65);
+      margin-bottom: 4px;
+      animation: fadeInDown 0.9s ease-out 0.4s both;
+    }
+
+    .time-remaining {
+      font-size: 12px;
+      color: #29f0a3;
+      margin-top: 6px;
+      animation: blink 2s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    /* Р­РўРђРџР« Р­РљРЎРџРћР РўРђ */
+    .stages-block {
+      margin: 24px 0;
+      text-align: left;
+      animation: fadeInDown 0.9s ease-out 0.5s both;
+    }
+
+    .stages-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.5);
+      letter-spacing: 0.12em;
+      margin-bottom: 12px;
+    }
+
+    .stage-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 0;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.7);
+      transition: all 0.3s ease;
+    }
+
+    .stage-item.active {
+      color: #29f0a3;
+      font-weight: 600;
+    }
+
+    .stage-icon {
+      width: 16px;
+      height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      flex-shrink: 0;
+    }
+
+    .stage-icon.done {
+      color: #4caf50;
+    }
+
+    .stage-icon.active {
+      animation: spin 1s linear infinite;
+    }
+
+    .stage-icon.waiting {
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* РџР РћР“Р Р•РЎРЎ Р‘РђР  */
+    .progress-bar-container {
+      margin: 24px 0;
+      animation: fadeInDown 0.9s ease-out 0.6s both;
+    }
+
+    .progress-bar-label {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 0;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: #1a5a4a;
+      border-radius: 0;
+      width: 45%;
+      animation: progressFlow 2s ease-in-out infinite;
+    }
+
+    @keyframes progressFlow {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.9; }
+    }
+
+    /* РўР Р•РљР‘РђР  Р’РР”Р•Рћ */
+    .timeline-container {
+      margin: 20px 0;
+      animation: fadeInDown 0.9s ease-out 0.7s both;
+    }
+
+    .timeline-label {
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .timeline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .timeline-bar {
+      flex: 1;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.1);
+      margin: 0 8px;
+      position: relative;
+      border-radius: 0;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: #29f0a3;
+      border-radius: 0;
+      top: 50%;
+      left: 42%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* Р’Р«РҐРћР”РќР«Р• Р’Р•Р РЎРР */
+    .versions-block {
+      margin: 24px 0;
+      animation: fadeInDown 0.9s ease-out 0.8s both;
+    }
+
+    .versions-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.5);
+      letter-spacing: 0.12em;
+      margin-bottom: 12px;
+    }
+
+    .version-items {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .version-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      background: rgba(26, 26, 26, 1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 0;
+      font-size: 12px;
+      transition: all 0.3s ease;
+    }
+
+    .version-item:hover {
+      background: rgba(30, 30, 30, 1);
+      border-color: rgba(41, 240, 163, 0.4);
+    }
+
+    .version-item.active {
+      background: #1a5a4a;
+      border-color: #29f0a3;
+    }
+
+    .version-name {
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .version-status {
+      font-size: 10px;
+      color: #29f0a3;
+    }
+
+    /* РџРђР РђРњР•РўР Р« Р¤РђР™Р›Рђ */
+    .output-params {
+      margin: 24px 0;
+      animation: fadeInDown 0.9s ease-out 0.9s both;
+    }
+
+    .params-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.5);
+      letter-spacing: 0.12em;
+      margin-bottom: 12px;
+    }
+
+    .params-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    @media (max-width: 700px) {
+      .params-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .param-item {
+      padding: 10px;
+      background: rgba(26, 26, 26, 1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 0;
+      text-align: left;
+    }
+
+    .param-label {
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 3px;
+    }
+
+    .param-value {
+      font-size: 12px;
+      color: #29f0a3;
+      font-weight: 600;
+    }
+
+    /* AI РћРџРўРРњРР-РђР¦РРЇ */
+    .ai-section {
+      margin: 20px 0;
+      padding: 12px;
+      background: rgba(26, 90, 74, 0.2);
+      border: 1px solid rgba(41, 240, 163, 0.3);
+      border-radius: 0;
+      animation: fadeInDown 0.9s ease-out 1s both;
+    }
+
+    .ai-label {
+      font-size: 10px;
+      color: #29f0a3;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+    }
+
+    .ai-status {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    /* Р›РћР“ РЎРћРћР‘Р©Р•РќРР™ */
+    .log-section {
+      margin: 20px 0;
+      text-align: left;
+      animation: fadeInDown 0.9s ease-out 1.1s both;
+    }
+
+    .log-title {
+      font-size: 10px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.4);
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .log-item {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.6);
+      padding: 4px 0;
+      border-left: 2px solid rgba(41, 240, 163, 0.3);
+      padding-left: 8px;
+      margin-bottom: 4px;
+      animation: logSlide 0.6s ease-out;
+    }
+
+    @keyframes logSlide {
+      from {
+        opacity: 0;
+        transform: translateX(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* РљРќРћРџРљР */
+    .action-buttons {
+      margin-top: 24px;
+      display: flex;
+      gap: 10px;
+      animation: fadeInDown 0.9s ease-out 1.2s both;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 12px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(26, 26, 26, 1);
+      color: #f5f7f8;
+      border-radius: 0;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .btn:hover {
+      background: #1a5a4a;
+      border-color: #29f0a3;
+      transform: translateY(-2px);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    /* РџР Р•Р”РЈРџР Р•Р–Р”Р•РќРР• */
+    .warning-section {
+      margin-top: 20px;
+      padding: 12px;
+      background: rgba(255, 193, 7, 0.08);
+      border: 1px solid rgba(255, 193, 7, 0.2);
+      border-radius: 8px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.75);
+      animation: fadeInDown 0.9s ease-out 1.3s both;
+    }
+
+    /* Р Р•Р-РћР›Р®Р¦РР */
+    .resolutions {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      margin: 20px 0;
+      flex-wrap: wrap;
+      animation: fadeInDown 0.9s ease-out 1.4s both;
+    }
+
+    .res-chip {
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.6);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .res-chip:hover {
+      border-color: rgba(41, 240, 163, 0.4);
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .res-chip.active {
+      border-color: #29f0a3;
+      background: #1a5a4a;
+      color: #f5f7f8;
+    }
+
+    /* Р¤РЈРўР•Р  */
+    .footer-nav {
+      margin-top: 28px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      animation: fadeInDown 0.9s ease-out 1.5s both;
+      flex-wrap: wrap;
+    }
+
+    .footer-nav a {
+      color: rgba(255, 255, 255, 0.4);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .footer-nav a:hover {
+      color: #29f0a3;
+    }
+
+    .footer-separator {
+      color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* РђРќРРњРђР¦РРЇ РџРћРЇР’Р›Р•РќРРЇ */
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* РЈР’Р•Р”РћРњР›Р•РќРР• РћР‘ РћРўРњР•РќР• */
+    .cancel-notification {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1000;
+      background: rgba(18, 18, 18, 0.95);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 0;
+      padding: 32px 40px;
+      text-align: center;
+      animation: notificationSlideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      min-width: 300px;
+      max-width: 90%;
+    }
+
+    @keyframes notificationSlideIn {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8) translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) translateY(0);
+      }
+    }
+
+    .cancel-notification.hiding {
+      animation: notificationSlideOut 0.4s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards;
+    }
+
+    @keyframes notificationSlideOut {
+      from {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) translateY(0);
+      }
+      to {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.9) translateY(-20px);
+      }
+    }
+
+    .cancel-notification-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      animation: iconPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes iconPulse {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.1);
+        opacity: 0.9;
+      }
+    }
+
+    .cancel-notification-text {
+      font-size: 18px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 8px;
+      letter-spacing: 0.02em;
+    }
+
+    .cancel-notification-subtext {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.6);
+      margin-top: 8px;
+    }
+
+    /* РћР’Р•Р Р›Р•Р™ */
+    .notification-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 999;
+      animation: overlayFadeIn 0.3s ease-out;
+    }
+
+    .notification-overlay.hiding {
+      animation: overlayFadeOut 0.3s ease-out forwards;
+    }
+
+    @keyframes overlayFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes overlayFadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+
+    /* РџР›РђР’РќР«Р™ РџР•Р Р•РҐРћР” РЎРўР РђРќРР¦Р« */
+    body.fade-out {
+      animation: pageFadeOut 0.5s ease-out forwards;
+    }
+
+    @keyframes pageFadeOut {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+
+    /* РђРќРРњРР РћР’РђРќРќРђРЇ РЎРўР Р•Р›РљРђ Р’РќРР- */
+    .scroll-indicator {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255, 255, 255, 0.5);
+      z-index: 1000;
+      animation: scrollBounce 2s ease-in-out infinite;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      cursor: pointer;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .scroll-indicator.hidden {
+      opacity: 0 !important;
+      pointer-events: none;
+      transform: translateX(-50%) translateY(10px);
+    }
+
+    .scroll-indicator:hover {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    @keyframes scrollBounce {
+      0%, 100% {
+        transform: translateX(-50%) translateY(0);
+      }
+      50% {
+        transform: translateX(-50%) translateY(10px);
+      }
+    }
+
+    /* РђР”РђРџРўРР’ */
+    @media (max-width: 600px) {
+      .main-block {
+        padding: 28px 20px;
+        border-radius: 20px;
+      }
+
+      .progress-ring-wrapper {
+        width: 140px;
+        height: 140px;
+        margin-bottom: 24px;
+      }
+
+      .progress-text {
+        bottom: -35px;
+        font-size: 24px;
+      }
+
+      .main-status {
+        font-size: 14px;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .main-block {
+        padding: 24px 16px;
+      }
+
+      .progress-ring-wrapper {
+        width: 120px;
+        height: 120px;
+      }
+
+      .progress-text {
+        font-size: 22px;
+      }
+
+      .main-status {
+        font-size: 13px;
+      }
+
+      .project-name {
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="main-block">
+      <!-- Р-РђР“РћР›РћР’РћРљ РџР РћР•РљРўРђ -->
+      <div class="project-header">
+        <div class="project-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <path d="M8 7h8" />
+            <path d="M8 11h8" />
+            <path d="M8 15h5" />
+            <circle cx="17" cy="17" r="1" />
+          </svg>
+        </div>
+        <div class="project-name" id="project-name">DM Project</div>
+      </div>
+
+      <!-- РљРћР›Р¬Р¦Рћ РџР РћР“Р Р•РЎРЎРђ -->
+      <div class="progress-ring-wrapper">
+        <div class="ring">
+          <div class="ring-border"></div>
+          <div class="ring-progress"></div>
+          <!-- Р¦Р•РќРўР РђР›Р¬РќРђРЇ РРљРћРќРљРђ logofiol.svg -->
+          <img
+            class="logo"
+            src="../src/assets/icons/logofiol.svg"
+            alt="Dushanbe Motion"
+          />
+        </div>
+        <div class="progress-text">45%</div>
+      </div>
+
+      <!-- РЎРўРђРўРЈРЎ Р Р’Р Р•РњРЇ -->
+      <div class="status-section">
+        <div class="main-status">РћР±СЂР°Р±РѕС‚РєР° СЃС†РµРЅС‹</div>
+        <div class="sub-status">РљРѕРґРёСЂРѕРІР°РЅРёРµ РІ H.265 / 4K</div>
+        <div class="time-remaining">вЏ± РћСЃС‚Р°Р»РѕСЃСЊ в‰€ 12 СЃРµРє</div>
+      </div>
+
+      <!-- РџР РћР“Р Р•РЎРЎ Р‘РђР  -->
+      <div class="progress-bar-container">
+        <div class="progress-bar-label">РћР±С‰РёР№ РїСЂРѕРіСЂРµСЃСЃ</div>
+        <div class="progress-bar">
+          <div class="progress-bar-fill"></div>
+        </div>
+      </div>
+
+      <!-- Р­РўРђРџР« Р­РљРЎРџРћР РўРђ -->
+      <div class="stages-block">
+        <div class="stages-title">Р­С‚Р°РїС‹ СЂРµРЅРґРµСЂР°</div>
+        <div class="stage-item done">
+          <div class="stage-icon done">вњ”</div>
+          <span>РџРѕРґРіРѕС‚РѕРІРєР° РїСЂРѕРµРєС‚Р°</span>
+        </div>
+        <div class="stage-item done">
+          <div class="stage-icon done">вњ”</div>
+          <span>Р“РµРЅРµСЂР°С†РёСЏ РєР°РґСЂРѕРІ</span>
+        </div>
+        <div class="stage-item active">
+          <div class="stage-icon active">в-Џ</div>
+          <span>РќР°Р»РѕР¶РµРЅРёРµ СЌС„С„РµРєС‚РѕРІ</span>
+        </div>
+        <div class="stage-item waiting">
+          <div class="stage-icon waiting">вЂ¦</div>
+          <span>РЎР±РѕСЂРєР° Р°СѓРґРёРѕ</span>
+        </div>
+        <div class="stage-item waiting">
+          <div class="stage-icon waiting">вЂ¦</div>
+          <span>РљРѕРґРёСЂРѕРІР°РЅРёРµ РІРёРґРµРѕ</span>
+        </div>
+        <div class="stage-item waiting">
+          <div class="stage-icon waiting">вЂ¦</div>
+          <span>Р¤РёРЅР°Р»СЊРЅР°СЏ СѓРїР°РєРѕРІРєР°</span>
+        </div>
+      </div>
+
+      <!-- РўР Р•РљР‘РђР  Р’РР”Р•Рћ -->
+      <div class="timeline-container">
+        <div class="timeline-label">РџСЂРѕРіСЂРµСЃСЃ РІРёРґРµРѕ</div>
+        <div class="timeline">
+          <span>00:00</span>
+          <div class="timeline-bar">
+            <div class="timeline-dot"></div>
+          </div>
+          <span>01:12</span>
+        </div>
+      </div>
+
+      <!-- РџРђР РђРњР•РўР Р« Р¤РђР™Р›Рђ -->
+      <div class="output-params">
+        <div class="params-title">РџР°СЂР°РјРµС‚СЂС‹ РІС‹С…РѕРґРЅРѕРіРѕ С„Р°Р№Р»Р°</div>
+        <div class="params-grid">
+          <div class="param-item">
+            <div class="param-label">Р¤РѕСЂРјР°С‚</div>
+            <div class="param-value" id="param-format">MP4 (H.264)</div>
+          </div>
+          <div class="param-item">
+            <div class="param-label">Р Р°Р·СЂРµС€РµРЅРёРµ</div>
+            <div class="param-value" id="param-resolution">720p (1280Г-720)</div>
+          </div>
+          <div class="param-item">
+            <div class="param-label">РљР°РґСЂС‹/СЃРµРє</div>
+            <div class="param-value" id="param-fps">30 FPS</div>
+          </div>
+          <div class="param-item">
+            <div class="param-label">Р”Р»РёС‚РµР»СЊРЅРѕСЃС‚СЊ</div>
+            <div class="param-value" id="param-duration">00:00</div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Р›РћР“ РЎРћРћР‘Р©Р•РќРР™ -->
+      <div class="log-section">
+        <div class="log-title">РЎС‚Р°С‚СѓСЃ РѕР±СЂР°Р±РѕС‚РєРё</div>
+      </div>
+
+
+      <!-- РљРќРћРџРљР -->
+      <div class="action-buttons">
+        <button class="btn" onclick="handleCancelExport()">РћС‚РјРµРЅР°</button>
+        <button class="btn" onclick="alert('РџР°СЂР°РјРµС‚СЂС‹')">РќР°СЃС‚СЂРѕР№РєРё</button>
+      </div>
+
+      <!-- РџР Р•Р”РЈРџР Р•Р–Р”Р•РќРР• -->
+      <div class="warning-section">
+        вљ  РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РЅРµ Р·Р°РєСЂС‹РІР°Р№С‚Рµ СЃС‚СЂР°РЅРёС†Сѓ. Р­РєСЃРїРѕСЂС‚ Р·Р°РІРµСЂС€РёС‚СЃСЏ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё.
+      </div>
+
+      <!-- Р¤РЈРўР•Р  -->
+      <div class="footer-nav">
+        <a href="#docs">Р”РѕРєСѓРјРµРЅС‚Р°С†РёСЏ</a>
+        <span class="footer-separator">вЂў</span>
+        <a href="#support">РџРѕРґРґРµСЂР¶РєР°</a>
+        <span class="footer-separator">вЂў</span>
+        <a href="#license">Р›РёС†РµРЅР·РёСЏ</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- РђРќРРњРР РћР’РђРќРќРђРЇ РЎРўР Р•Р›РљРђ Р’РќРР- -->
+  <div class="scroll-indicator" id="scroll-indicator">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 5v14M19 12l-7 7-7-7"/>
+    </svg>
+  </div>
+
+  <script>
+    // РџРѕР»СѓС‡Р°РµРј РїР°СЂР°РјРµС‚СЂС‹ РёР· URL
+    (function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const projectName = urlParams.get('project');
+      const format = urlParams.get('format') || '720p';
+      const isVideo = urlParams.get('isVideo') === 'true';
+      
+      if (projectName) {
+        const projectNameElement = document.getElementById('project-name');
+        if (projectNameElement) {
+          projectNameElement.textContent = decodeURIComponent(projectName);
+        }
+        // РћР±РЅРѕРІР»СЏРµРј title СЃС‚СЂР°РЅРёС†С‹
+        document.title = 'Р­РєСЃРїРѕСЂС‚ ' + (isVideo ? 'РІРёРґРµРѕ' : 'РёР·РѕР±СЂР°Р¶РµРЅРёСЏ') + ' вЂ” ' + decodeURIComponent(projectName);
+      }
+
+      // РћР±РЅРѕРІР»СЏРµРј РїР°СЂР°РјРµС‚СЂС‹ С„Р°Р№Р»Р° РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РѕС‚ С„РѕСЂРјР°С‚Р°
+      const formatParam = document.getElementById('param-format');
+      const resolutionParam = document.getElementById('param-resolution');
+      const fpsParam = document.getElementById('param-fps');
+      const durationParam = document.getElementById('param-duration');
+      const timelineContainer = document.getElementById('timeline-container');
+      const timelineStart = document.getElementById('timeline-start');
+      const timelineEnd = document.getElementById('timeline-end');
+
+      if (formatParam) {
+        formatParam.textContent = 'MP4 (H.264)';
+      }
+
+      if (resolutionParam) {
+        if (format === '720p') {
+          resolutionParam.textContent = '720p (1280Г-720)';
+        } else if (format === '1080p') {
+          resolutionParam.textContent = '1080p (1920Г-1080)';
+        } else {
+          resolutionParam.textContent = '720p (1280Г-720)';
+        }
+      }
+
+      if (fpsParam) {
+        fpsParam.textContent = '30 FPS';
+      }
+
+      // РћР±РЅРѕРІР»СЏРµРј РґР»РёС‚РµР»СЊРЅРѕСЃС‚СЊ
+      const duration = parseFloat(urlParams.get('duration') || '0');
+      if (durationParam) {
+        const minutes = Math.floor(duration / 60);
+        const seconds = Math.floor(duration % 60);
+        durationParam.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      }
+
+      // РџРѕРєР°Р·С‹РІР°РµРј timeline С‚РѕР»СЊРєРѕ РґР»СЏ РІРёРґРµРѕ
+      if (isVideo === 'true' && timelineContainer && timelineStart && timelineEnd) {
+        timelineContainer.style.display = 'block';
+        const minutes = Math.floor(duration / 60);
+        const seconds = Math.floor(duration % 60);
+        timelineStart.textContent = '00:00';
+        timelineEnd.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      }
+    })();
+
+    // Р¤СѓРЅРєС†РёРё РґР»СЏ РѕР±РЅРѕРІР»РµРЅРёСЏ РїСЂРѕРіСЂРµСЃСЃР° СЂРµРЅРґРµСЂРёРЅРіР° (РІС‹Р·С‹РІР°СЋС‚СЃСЏ РёР· СЂРµР°Р»СЊРЅРѕРіРѕ СЂРµРЅРґРµСЂР°)
+    window.updateRenderProgress = function(progress, stage, message) {
+      const progressText = document.querySelector('.progress-text');
+      const progressBarFill = document.querySelector('.progress-bar-fill');
+      const progressRing = document.querySelector('.ring-progress');
+      const logSection = document.querySelector('.log-section');
+      const stages = document.querySelectorAll('.stage-item');
+      const mainStatus = document.querySelector('.main-status');
+      const subStatus = document.querySelector('.sub-status');
+
+      // РћР±РЅРѕРІР»СЏРµРј РїСЂРѕРіСЂРµСЃСЃ
+      if (progressText) {
+        progressText.textContent = Math.round(progress) + '%';
+      }
+      if (progressBarFill) {
+        progressBarFill.style.width = progress + '%';
+      }
+      if (progressRing) {
+        const circumference = 2 * Math.PI * 45;
+        const offset = circumference - (progress / 100) * circumference;
+        progressRing.style.strokeDashoffset = offset;
+      }
+
+      // РћР±РЅРѕРІР»СЏРµРј СЌС‚Р°Рї
+      if (stage !== undefined && stages[stage]) {
+        // РџРѕРјРµС‡Р°РµРј РїСЂРµРґС‹РґСѓС‰РёРµ СЌС‚Р°РїС‹ РєР°Рє Р·Р°РІРµСЂС€РµРЅРЅС‹Рµ
+        for (let i = 0; i < stage; i++) {
+          if (stages[i]) {
+            stages[i].classList.remove('active', 'waiting');
+            stages[i].classList.add('done');
+            const icon = stages[i].querySelector('.stage-icon');
+            if (icon) {
+              icon.textContent = 'вњ”';
+              icon.classList.remove('active', 'waiting');
+              icon.classList.add('done');
+            }
+          }
+        }
+        // РџРѕРјРµС‡Р°РµРј С‚РµРєСѓС‰РёР№ СЌС‚Р°Рї РєР°Рє Р°РєС‚РёРІРЅС‹Р№
+        if (stages[stage]) {
+          stages[stage].classList.remove('waiting', 'done');
+          stages[stage].classList.add('active');
+          const icon = stages[stage].querySelector('.stage-icon');
+          if (icon) {
+            icon.textContent = 'в-Џ';
+            icon.classList.remove('waiting', 'done');
+            icon.classList.add('active');
+          }
+        }
+      }
+
+      // РћР±РЅРѕРІР»СЏРµРј СЃС‚Р°С‚СѓСЃ
+      if (mainStatus && message) {
+        mainStatus.textContent = message;
+      }
+      if (subStatus) {
+        const format = urlParams.get('format') || '720p';
+        subStatus.textContent = `РљРѕРґРёСЂРѕРІР°РЅРёРµ РІ H.264 / ${format}`;
+      }
+
+      // Р”РѕР±Р°РІР»СЏРµРј СЃРѕРѕР±С‰РµРЅРёРµ РІ Р»РѕРі
+      if (logSection && message) {
+        const logItem = document.createElement('div');
+        logItem.className = 'log-item';
+        logItem.textContent = (progress === 100 ? 'вњ“ ' : 'вџі ') + message;
+        logSection.appendChild(logItem);
+        logSection.scrollTop = logSection.scrollHeight;
+      }
+    };
+
+    // Р¤СѓРЅРєС†РёСЏ РґР»СЏ РѕР±РЅРѕРІР»РµРЅРёСЏ РїСЂРѕРіСЂРµСЃСЃР° РІРёРґРµРѕ (РІСЂРµРјСЏ)
+    window.updateVideoProgress = function(currentTime, totalTime) {
+      const timelineDot = document.getElementById('timeline-dot');
+      const timelineBar = document.querySelector('.timeline-bar');
+      if (timelineDot && timelineBar && totalTime > 0) {
+        const percent = (currentTime / totalTime) * 100;
+        timelineDot.style.left = percent + '%';
+      }
+    };
+
+    // РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ СЂРµРЅРґРµСЂРёРЅРіР°
+    (function() {
+      const logSection = document.querySelector('.log-section');
+      const mainStatus = document.querySelector('.main-status');
+      
+      // РџРѕРєР°Р·С‹РІР°РµРј РЅР°С‡Р°Р»СЊРЅС‹Р№ СЃС‚Р°С‚СѓСЃ
+      if (mainStatus) {
+        mainStatus.textContent = 'РџРѕРґРіРѕС‚РѕРІРєР° Рє СЌРєСЃРїРѕСЂС‚Сѓ...';
+      }
+      if (logSection) {
+        const logItem = document.createElement('div');
+        logItem.className = 'log-item';
+        logItem.textContent = 'вџі РќР°С‡Р°Р»Рѕ СЌРєСЃРїРѕСЂС‚Р°...';
+        logSection.appendChild(logItem);
+      }
+
+      // TODO: Р-РґРµСЃСЊ РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РІС‹Р·РѕРІ СЂРµР°Р»СЊРЅРѕР№ С„СѓРЅРєС†РёРё СЂРµРЅРґРµСЂРёРЅРіР°
+      // РџСЂРёРјРµСЂ:
+      // const exportData = JSON.parse(localStorage.getItem('exportData') || '{}');
+      // const project = exportData.project;
+      // const format = urlParams.get('format') || '720p';
+      // 
+      // renderProjectToMp4(project, format, {
+      //   onProgress: (progress, stage, message) => {
+      //     window.updateRenderProgress(progress, stage, message);
+      //   },
+      //   onVideoProgress: (currentTime, totalTime) => {
+      //     window.updateVideoProgress(currentTime, totalTime);
+      //   },
+      //   onComplete: (mp4Blob, thumbnailUrl) => {
+      //     window.handleRenderComplete(mp4Blob, null, thumbnailUrl);
+      //   }
+      // });
+      
+      console.log('вЏі РћР¶РёРґР°РЅРёРµ Р·Р°РІРµСЂС€РµРЅРёСЏ СЂРµРЅРґРµСЂРёРЅРіР°...');
+    })();
+
+    // Р¤СѓРЅРєС†РёРё РґР»СЏ СЃРєР°С‡РёРІР°РЅРёСЏ С„Р°Р№Р»Р°
+    window.forceDownloadMp4 = function(data, name = "video_by_dmotion.mp4") {
+      try {
+        console.log('рџ“Ґ Starting download:', { name, dataType: data?.constructor?.name, dataSize: data?.size || data?.length });
+        
+        const blob = data instanceof Blob ? data : new Blob([data], { type: "video/mp4" });
+        const url = URL.createObjectURL(blob);
+        
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = name;
+        a.style.display = "none";
+        document.body.appendChild(a);
+        a.click();
+        
+        // РЈРґР°Р»СЏРµРј СЌР»РµРјРµРЅС‚ Рё РѕСЃРІРѕР±РѕР¶РґР°РµРј РїР°РјСЏС‚СЊ
+        setTimeout(() => {
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          console.log('вњ… Download completed:', name);
+        }, 100);
+      } catch (error) {
+        console.error('вќЊ Error in forceDownloadMp4:', error);
+        alert('РћС€РёР±РєР° РїСЂРё СЃРєР°С‡РёРІР°РЅРёРё С„Р°Р№Р»Р°: ' + error.message);
+      }
+    };
+
+    window.forceDownloadMp4Url = function(url, name = "video_by_dmotion.mp4") {
+      try {
+        console.log('рџ“Ґ Starting download from URL:', { name, url });
+        
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = name;
+        a.style.display = "none";
+        document.body.appendChild(a);
+        a.click();
+        
+        // РЈРґР°Р»СЏРµРј СЌР»РµРјРµРЅС‚
+        setTimeout(() => {
+          document.body.removeChild(a);
+          console.log('вњ… Download completed:', name);
+        }, 100);
+      } catch (error) {
+        console.error('вќЊ Error in forceDownloadMp4Url:', error);
+        alert('РћС€РёР±РєР° РїСЂРё СЃРєР°С‡РёРІР°РЅРёРё С„Р°Р№Р»Р°: ' + error.message);
+      }
+    };
+
+    /**
+     * Р“Р›РђР’РќРђРЇ Р¤РЈРќРљР¦РРЇ РћР‘Р РђР‘РћРўРљР Р-РђР’Р•Р РЁР•РќРРЇ Р Р•РќР”Р•Р Рђ
+     * 
+     * Р’Р«Р-Р«Р’РђРўР¬ РР- РњР•РЎРўРђ, Р“Р”Р• Р Р•РќР”Р•Р  Р-РђР’Р•Р РЁРР›РЎРЇ:
+     * 
+     * Р’Р°СЂРёР°РЅС‚ 1: Р РµРЅРґРµСЂ РІ Р±СЂР°СѓР·РµСЂРµ (Blob/Uint8Array)
+     *   const finalMp4 = await renderVideo(); // Blob | Uint8Array
+     *   window.handleRenderComplete(finalMp4, null, thumbnailUrl);
+     * 
+     * Р’Р°СЂРёР°РЅС‚ 2: Р РµРЅРґРµСЂ РЅР° СЃРµСЂРІРµСЂРµ (URL)
+     *   const finalMp4Url = await fetchRenderUrl(); // string
+     *   window.handleRenderComplete(null, finalMp4Url, thumbnailUrl);
+     * 
+     * Р¤СѓРЅРєС†РёСЏ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё:
+     * 1. РЎРєР°С‡РёРІР°РµС‚ С„Р°Р№Р»
+     * 2. РЎРѕР·РґР°РµС‚ Р·Р°РїРёСЃСЊ РІ live_posts (РїР°СЂР°Р»Р»РµР»СЊРЅРѕ)
+     * 3. РџРѕРєР°Р·С‹РІР°РµС‚ Р±Р»РѕРє "Р­РєСЃРїРѕСЂС‚ Рё РїСѓР±Р»РёРєР°С†РёСЏ"
+     */
+    window.handleRenderComplete = async function(finalMp4, finalMp4Url, thumbnailUrl) {
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const projectTitle = urlParams.get('project') || 'video_by_dmotion';
+        const fileName = `${projectTitle.replace(/[^a-z0-9]/gi, '_')}.mp4`;
+
+        let outputUrl = null;
+        let finalThumbnailUrl = thumbnailUrl || null;
+
+        // 1. РЎР РђР-РЈ СЃРєР°С‡РёРІР°РµРј С„Р°Р№Р»
+        if (finalMp4) {
+          // Р РµРЅРґРµСЂ РІ Р±СЂР°СѓР·РµСЂРµ - РµСЃС‚СЊ Blob/Uint8Array
+          window.forceDownloadMp4(finalMp4, fileName);
+          
+          // TODO: Р-Р°РіСЂСѓР·РёС‚СЊ РІ R2 Рё РїРѕР»СѓС‡РёС‚СЊ URL
+          // const r2Url = await uploadToR2(finalMp4);
+          // outputUrl = r2Url;
+          
+          // Р’СЂРµРјРµРЅРЅРѕ РёСЃРїРѕР»СЊР·СѓРµРј С„РёРєС‚РёРІРЅС‹Р№ URL (РІ СЂРµР°Р»СЊРЅРѕСЃС‚Рё Р±СѓРґРµС‚ РёР· R2)
+          outputUrl = `https://example.com/exports/${Date.now()}.mp4`;
+        } else if (finalMp4Url) {
+          // Р РµРЅРґРµСЂ РЅР° СЃРµСЂРІРµСЂРµ - РµСЃС‚СЊ URL
+          window.forceDownloadMp4Url(finalMp4Url, fileName);
+          outputUrl = finalMp4Url;
+        } else {
+          console.error('No finalMp4 or finalMp4Url provided');
+          return;
+        }
+
+        // 2. РџР°СЂР°Р»Р»РµР»СЊРЅРѕ СЃРѕР·РґР°РµРј Р·Р°РїРёСЃСЊ РІ live_posts (РЅРµ Р±Р»РѕРєРёСЂСѓРµС‚ СЃРєР°С‡РёРІР°РЅРёРµ)
+        if (window.createLivePostAfterExport && outputUrl) {
+          window.createLivePostAfterExport(outputUrl, finalThumbnailUrl)
+            .then(post => {
+              if (post) {
+                console.log('вњ… Post created successfully:', post);
+                // РћР±РЅРѕРІР»СЏРµРј РєРЅРѕРїРєСѓ "РћС‚РєСЂС‹С‚СЊ РІ MEDIA BAZAR" РµСЃР»Рё РЅСѓР¶РЅРѕ
+                updateBazarButton(post.id);
+              }
+            })
+            .catch(error => {
+              console.error('Error creating live post:', error);
+            });
+        }
+
+        // 3. РџРѕРєР°Р·С‹РІР°РµРј Р±Р»РѕРє "Р­РєСЃРїРѕСЂС‚ Рё РїСѓР±Р»РёРєР°С†РёСЏ"
+        showExportCompleteBlock(outputUrl, finalThumbnailUrl);
+
+      } catch (error) {
+        console.error('Error in handleRenderComplete:', error);
+      }
+    };
+
+    // Р¤СѓРЅРєС†РёСЏ onRenderComplete СѓРґР°Р»РµРЅР° - С‚РµРїРµСЂСЊ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ С‚РѕР»СЊРєРѕ window.handleRenderComplete
+    // РєРѕС‚РѕСЂР°СЏ РІС‹Р·С‹РІР°РµС‚СЃСЏ РёР· РјРµСЃС‚Р°, РіРґРµ СЂРµРЅРґРµСЂ Р·Р°РІРµСЂС€РёР»СЃСЏ
+
+    function updateBazarButton(postId) {
+      const bazarButton = document.querySelector('[onclick*="bazar"]');
+      if (bazarButton && postId) {
+        // РњРѕР¶РЅРѕ РґРѕР±Р°РІРёС‚СЊ РїР°СЂР°РјРµС‚СЂ postId РґР»СЏ РїРµСЂРµС…РѕРґР° Рє РєРѕРЅРєСЂРµС‚РЅРѕРјСѓ РїРѕСЃС‚Сѓ
+        bazarButton.setAttribute('onclick', `window.location.href='/bazar?post=${postId}'`);
+      }
+    }
+
+    function showExportCompleteBlock(outputUrl, thumbnailUrl) {
+      // РЎРѕР·РґР°РµРј Р±Р»РѕРє "Р­РєСЃРїРѕСЂС‚ Рё РїСѓР±Р»РёРєР°С†РёСЏ"
+      const mainBlock = document.querySelector('.main-block');
+      if (!mainBlock) return;
+
+      const exportCompleteBlock = document.createElement('div');
+      exportCompleteBlock.className = 'export-complete-block';
+      exportCompleteBlock.innerHTML = `
+        <div style="margin-top: 40px; padding-top: 40px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+          <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 20px; color: #29f0a3;">Р­РєСЃРїРѕСЂС‚ Рё РїСѓР±Р»РёРєР°С†РёСЏ</h3>
+          <div style="display: flex; gap: 12px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap;">
+            <p style="width: 100%; text-align: center; color: rgba(255, 255, 255, 0.7); font-size: 13px; margin-bottom: 12px;">
+              Р¤Р°Р№Р» Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё СЃРєР°С‡Р°РЅ. Р’С‹ РјРѕР¶РµС‚Рµ РѕС‚РєСЂС‹С‚СЊ РµРіРѕ РІ РїР°РїРєРµ Р·Р°РіСЂСѓР·РѕРє.
+            </p>
+            <button onclick="window.location.href='/bazar'" style="padding: 12px 24px; background: rgba(41, 240, 163, 0.1); border: 1px solid rgba(41, 240, 163, 0.3); border-radius: 8px; color: #29f0a3; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.2s;">
+              РћС‚РєСЂС‹С‚СЊ РІ MEDIA BAZAR
+            </button>
+          </div>
+        </div>
+      `;
+      mainBlock.appendChild(exportCompleteBlock);
+    }
+
+    // РЈРїСЂР°РІР»РµРЅРёРµ СЃС‚СЂРµР»РєРѕР№ РїСЂРѕРєСЂСѓС‚РєРё
+    (function() {
+      const scrollIndicator = document.getElementById('scroll-indicator');
+      if (!scrollIndicator) return;
+
+      function handleScroll() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (scrollTop > 50) {
+          scrollIndicator.classList.add('hidden');
+        } else {
+          scrollIndicator.classList.remove('hidden');
+        }
+      }
+
+      // РџСЂРѕРєСЂСѓС‚РєР° РїСЂРё РєР»РёРєРµ РЅР° СЃС‚СЂРµР»РєСѓ
+      scrollIndicator.addEventListener('click', function() {
+        window.scrollTo({
+          top: window.innerHeight,
+          behavior: 'smooth'
+        });
+      });
+
+      // РћС‚СЃР»РµР¶РёРІР°РЅРёРµ РїСЂРѕРєСЂСѓС‚РєРё
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      
+      // РџСЂРѕРІРµСЂСЏРµРј РЅР°С‡Р°Р»СЊРЅРѕРµ СЃРѕСЃС‚РѕСЏРЅРёРµ
+      setTimeout(function() {
+        handleScroll();
+      }, 100);
+    })();
+
+    function handleCancelExport() {
+      // РЎРѕР·РґР°РµРј РѕРІРµСЂР»РµР№
+      const overlay = document.createElement('div');
+      overlay.className = 'notification-overlay';
+      document.body.appendChild(overlay);
+
+      // РЎРѕР·РґР°РµРј СѓРІРµРґРѕРјР»РµРЅРёРµ
+      const notification = document.createElement('div');
+      notification.className = 'cancel-notification';
+      notification.innerHTML = `
+        <div class="cancel-notification-icon">вњ•</div>
+        <div class="cancel-notification-text">РћС‚РјРµРЅР° СЌРєСЃРїРѕСЂС‚Р°</div>
+        <div class="cancel-notification-subtext">Р’РѕР·РІСЂР°С‚ РІ СЂРµРґР°РєС‚РѕСЂ...</div>
+      `;
+      document.body.appendChild(notification);
+
+      // РџР»Р°РІРЅРѕРµ СЃРєСЂС‹С‚РёРµ Рё РІРѕР·РІСЂР°С‚
+      setTimeout(() => {
+        notification.classList.add('hiding');
+        overlay.classList.add('hiding');
+        document.body.classList.add('fade-out');
+
+        setTimeout(() => {
+          // Р’РѕР·РІСЂР°С‚ РІ РєР°РЅРІР°СЃ (РіР»Р°РІРЅС‹Р№ СЂРµРґР°РєС‚РѕСЂ)
+          // РСЃРїРѕР»СЊР·СѓРµРј replace С‡С‚РѕР±С‹ РЅРµ РѕСЃС‚Р°РІР»СЏС‚СЊ СЃС‚СЂР°РЅРёС†Сѓ СЌРєСЃРїРѕСЂС‚Р° РІ РёСЃС‚РѕСЂРёРё
+          const baseUrl = window.location.origin;
+          window.location.replace(baseUrl + '/');
+        }, 400);
+      }, 1500);
+    }
+
+    // РЎРѕР·РґР°РЅРёРµ Р·Р°РїРёСЃРё РІ live_posts РїРѕСЃР»Рµ СѓСЃРїРµС€РЅРѕРіРѕ СЂРµРЅРґРµСЂР°
+    // Р­С‚Р° С„СѓРЅРєС†РёСЏ Р±СѓРґРµС‚ РІС‹Р·РІР°РЅР° РїРѕСЃР»Рµ СѓСЃРїРµС€РЅРѕРіРѕ СЂРµРЅРґРµСЂР° СЃ outputUrl Рё thumbnailUrl
+    window.createLivePostAfterExport = async function(outputUrl, thumbnailUrl, publish) {
+      try {
+        // Р•СЃР»Рё publish РЅРµ РїРµСЂРµРґР°РЅ, РїРѕР»СѓС‡Р°РµРј РёР· URL
+        if (!publish) {
+          const urlParams = new URLSearchParams(window.location.search);
+          publish = urlParams.get('publish') || 'none';
+        }
+
+        // Р•СЃР»Рё РЅРµ РІС‹Р±СЂР°РЅР° РїСѓР±Р»РёРєР°С†РёСЏ, РЅРµ СЃРѕР·РґР°РµРј Р·Р°РїРёСЃСЊ
+        if (publish === 'none' || !publish) {
+          console.log('No publish option selected, skipping live post creation');
+          return null;
+        }
+
+        // РџРѕР»СѓС‡Р°РµРј РґР°РЅРЅС‹Рµ СЌРєСЃРїРѕСЂС‚Р° РёР· localStorage
+        const exportDataStr = localStorage.getItem('exportData');
+        if (!exportDataStr) {
+          console.log('No export data found, skipping live post creation');
+          return null;
+        }
+
+        const exportData = JSON.parse(exportDataStr);
+
+        // РСЃРїРѕР»СЊР·СѓРµРј Supabase REST API РЅР°РїСЂСЏРјСѓСЋ
+        // РџРѕР»СѓС‡Р°РµРј РєР»СЋС‡ РёР· window (Р±СѓРґРµС‚ СѓСЃС‚Р°РЅРѕРІР»РµРЅ РёР· РѕСЃРЅРѕРІРЅРѕРіРѕ РїСЂРёР»РѕР¶РµРЅРёСЏ)
+        const supabaseUrl = window.SUPABASE_URL || 'https://iqgjoyqjtagiesbfahiu.supabase.co';
+        const supabaseKey = window.SUPABASE_ANON_KEY;
+        
+        if (!supabaseKey) {
+          console.error('Supabase key not found');
+          return null;
+        }
+
+        // РћРїСЂРµРґРµР»СЏРµРј СЃС‚Р°С‚СѓСЃ РёР· РїР°СЂР°РјРµС‚СЂР° publish
+        const status = publish === 'bazar' ? 'published' : publish === 'draft' ? 'draft' : null;
+        if (!status) {
+          return null;
+        }
+
+        // РЎРѕР·РґР°РµРј Р·Р°РїРёСЃСЊ С‡РµСЂРµР· REST API
+        const response = await fetch(`${supabaseUrl}/rest/v1/live_posts`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': supabaseKey,
+            'Authorization': `Bearer ${supabaseKey}`,
+            'Prefer': 'return=representation'
+          },
+          body: JSON.stringify({
+            author_id: exportData.userId,
+            media_url: outputUrl,
+            thumbnail_url: thumbnailUrl || (exportData.isVideo ? null : outputUrl),
+            title: exportData.title || 'DM Project',
+            description: exportData.description || null,
+            orientation: exportData.orientation || 'horizontal',
+            category: exportData.category && exportData.category !== 'all' ? exportData.category : 'all',
+            views: 0,
+            likes_count: 0,
+            favorites_count: 0,
+            comments_count: 0,
+            project_id: exportData.projectId || null,
+            allow_open_project: exportData.allowOpenProject || false,
+            status: status,
+            is_pinned: false,
+            pin_order: null,
+          })
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error('Error creating live post:', response.status, errorText);
+          return null;
+        }
+
+        const data = await response.json();
+        const post = Array.isArray(data) ? data[0] : data;
+
+        console.log('вњ… Live post created:', post);
+
+        // РћС‡РёС‰Р°РµРј РґР°РЅРЅС‹Рµ СЌРєСЃРїРѕСЂС‚Р° РёР· localStorage
+        localStorage.removeItem('exportData');
+
+        // Р’РѕР·РІСЂР°С‰Р°РµРј СЃРѕР·РґР°РЅРЅС‹Р№ РїРѕСЃС‚
+        return post;
+      } catch (error) {
+        console.error('Error in createLivePostAfterExport:', error);
+        return null;
+      }
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,227 @@
+/* ========================================
+   D MOTION LOADER — Premium Loading Screen
+   ======================================== */
+
+.dm-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-height: 240px;
+  background: transparent;
+  color: #fff;
+  text-align: center;
+  font-family: 'Neue Haas Grotesk Display', 'Inter', sans-serif;
+}
+
+.dm-loader--fullscreen {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(12, 20, 35, 0.98) 0%, rgba(4, 8, 16, 1) 100%);
+  z-index: 9999;
+}
+
+.dm-loader--inline {
+  display: inline-flex;
+  position: static;
+  min-height: unset;
+  width: auto;
+  height: auto;
+}
+
+.dm-loader--inline .dm-loader__content {
+  gap: 12px;
+}
+
+.dm-loader--inline .dm-loader__container {
+  width: 80px;
+  height: 80px;
+}
+
+.dm-loader--inline .dm-loader__logo {
+  width: 36px;
+  height: 36px;
+}
+
+.dm-loader--compact {
+  min-height: 160px;
+}
+
+.dm-loader--compact .dm-loader__container {
+  width: 100px;
+  height: 100px;
+}
+
+.dm-loader--compact .dm-loader__logo {
+  width: 44px;
+  height: 44px;
+}
+
+.dm-loader--minimal {
+  min-height: 100px;
+}
+
+.dm-loader--minimal .dm-loader__content {
+  gap: 10px;
+}
+
+.dm-loader--minimal .dm-loader__container {
+  width: 64px;
+  height: 64px;
+}
+
+.dm-loader--minimal .dm-loader__logo {
+  width: 28px;
+  height: 28px;
+}
+
+.dm-loader--minimal .dm-loader__dot {
+  width: 4px;
+  height: 4px;
+}
+
+.dm-loader__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+.dm-loader__container {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Логотип по центру — без фона */
+.dm-loader__logo {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 20px rgba(92, 255, 212, 0.4));
+  animation: dm-logo-breathe 3s ease-in-out infinite;
+  z-index: 2;
+}
+
+/* Орбитальные точки */
+.dm-loader__dots {
+  position: absolute;
+  inset: 0;
+  animation: dm-orbit-spin 8s linear infinite;
+}
+
+.dm-loader__dot {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(92, 255, 212, 1), rgba(56, 189, 248, 0.8));
+  box-shadow: 
+    0 0 12px rgba(92, 255, 212, 0.8),
+    0 0 24px rgba(92, 255, 212, 0.4);
+}
+
+/* Позиционирование 8 точек по кругу */
+.dm-loader__dot:nth-child(1) {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: dm-dot-pulse 1.6s ease-in-out infinite;
+  animation-delay: 0s;
+}
+
+.dm-loader__dot:nth-child(2) {
+  top: 14.6%;
+  right: 14.6%;
+  animation: dm-dot-pulse 1.6s ease-in-out infinite;
+  animation-delay: 0.2s;
+}
+
+.dm-loader__dot:nth-child(3) {
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  animation: dm-dot-pulse 1.6s ease-in-out infinite;
+  animation-delay: 0.4s;
+}
+
+.dm-loader__dot:nth-child(4) {
+  bottom: 14.6%;
+  right: 14.6%;
+  animation: dm-dot-pulse 1.6s ease-in-out infinite;
+  animation-delay: 0.6s;
+}
+
+.dm-loader__dot:nth-child(5) {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: dm-dot-pulse 1.6s ease-in-out infinite;
+  animation-delay: 0.8s;
+}
+
+.dm-loader__dot:nth-child(6) {
+  bottom: 14.6%;
+  left: 14.6%;
+  animation: dm-dot-pulse 1.6s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+.dm-loader__dot:nth-child(7) {
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  animation: dm-dot-pulse 1.6s ease-in-out infinite;
+  animation-delay: 1.2s;
+}
+
+.dm-loader__dot:nth-child(8) {
+  top: 14.6%;
+  left: 14.6%;
+  animation: dm-dot-pulse 1.6s ease-in-out infinite;
+  animation-delay: 1.4s;
+}
+
+.dm-loader__text {
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+/* ========== Анимации ========== */
+
+@keyframes dm-orbit-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dm-dot-pulse {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes dm-logo-breathe {
+  0%, 100% {
+    filter: drop-shadow(0 0 16px rgba(92, 255, 212, 0.3));
+    transform: scale(1);
+  }
+  50% {
+    filter: drop-shadow(0 0 28px rgba(92, 255, 212, 0.6));
+    transform: scale(1.03);
+  }
+}

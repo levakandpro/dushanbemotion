@@ -1,0 +1,18 @@
+/* Simplified Author Home */
+.au-home__content{
+  margin-top: 14px;
+}
+
+.au-home__headRow{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 12px;
+}
+
+.au-home__h2{
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: .2px;
+  margin: 0;
+}

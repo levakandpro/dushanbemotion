@@ -1,0 +1,29 @@
+{
+  "name": "dushanbemotion",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.86.2",
+    "dom-to-image-more": "^3.7.2",
+    "html2canvas": "^1.4.1",
+    "modern-screenshot": "^4.6.7",
+    "pdfjs-dist": "5.4.296",
+    "react": "^18.3.1",
+    "react-colorful": "^5.6.1",
+    "react-dom": "^18.3.1",
+    "react-pdf": "^10.2.0",
+    "react-router-dom": "^7.10.1",
+    "zustand": "^4.5.7"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.2",
+    "vite": "^5.4.0",
+    "wrangler": "^4.53.0"
+  }
+}

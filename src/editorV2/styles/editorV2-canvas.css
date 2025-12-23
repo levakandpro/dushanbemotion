@@ -1,0 +1,1021 @@
+﻿/* === Sticker Preview Animation === */
+@keyframes stickerPreviewAppear {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* === Sticker Layer Styles === */
+.sticker-layer {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  cursor: pointer;
+}
+
+.sticker-layer:hover {
+  opacity: 0.95;
+  transform: scale(1.02);
+}
+
+/* Креативная минималистичная индикация выделения - видна на любом фоне */
+.sticker-layer-selected,
+.frame-layer-selected,
+.icon-layer-selected,
+.video-layer-selected {
+  position: relative;
+}
+
+/* Визуальная индикация группы - стикеры в одной группе имеют одинаковый цвет обводки */
+.sticker-layer-grouped::before {
+  border-color: rgba(92, 255, 212, 0.4) !important;
+}
+
+.sticker-layer-grouped::after {
+  background: linear-gradient(135deg, 
+    rgba(92, 255, 212, 0.1) 0%, 
+    transparent 50%,
+    rgba(92, 255, 212, 0.05) 100%) !important;
+}
+
+/* Единая рамка выделения для всех элементов - адаптивная */
+.sticker-layer-selected::before,
+.frame-layer-selected::before,
+.icon-layer-selected::before,
+.video-layer-selected::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border: 1px solid rgba(59, 130, 246, 0.8);
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Для очень маленьких элементов (иконки) - минимальный отступ */
+.icon-layer-selected::before {
+  inset: -2px;
+}
+
+/* Для больших элементов (видео, фреймы) - больший отступ */
+.video-layer-selected::before,
+.frame-layer-selected::before {
+  inset: -4px;
+}
+
+/* Убираем декоративные эффекты */
+.sticker-layer-selected::after,
+.frame-layer-selected::after,
+.icon-layer-selected::after,
+.video-layer-selected::after {
+  display: none;
+}
+
+.sticker-delete-btn:active {
+  transform: scale(0.9) !important;
+}
+
+/* Контекстное меню видео */
+.video-ctx-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: transparent;
+  border: none;
+  color: #efefef;
+  font-size: 13px;
+  font-family: 'Inter', sans-serif;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+  width: 100%;
+}
+
+.video-ctx-menu-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #00ffa2;
+}
+
+.video-ctx-menu-item svg {
+  width: 16px;
+  height: 16px;
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+.video-ctx-menu-danger:hover {
+  background: rgba(255, 59, 48, 0.1);
+  color: #ff3b30;
+}
+
+@keyframes menuShow {
+  from { opacity: 0; transform: scale(0.95) translateY(-5px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Иконки в канвасе - SVG должна заполнять контейнер */
+.icon-layer-svg svg {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Контекстное меню стикера - Premium Minimalism */
+.dm-sticker-context-menu {
+  background: linear-gradient(
+    145deg,
+    rgba(14, 14, 18, 0.97) 0%,
+    rgba(18, 18, 24, 0.97) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 4px;
+  min-width: 210px;
+  backdrop-filter: blur(40px) saturate(180%);
+  box-shadow: 0 0 0 0.5px rgba(255, 255, 255, 0.03) inset;
+  animation: contextMenuAppear 0.12s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes contextMenuAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.dm-sticker-context-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: space-between;
+  width: 100%;
+  padding: 7px 10px;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 12px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', system-ui, sans-serif;
+  letter-spacing: 0.01em;
+  position: relative;
+}
+
+.dm-sticker-context-menu-item-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.dm-sticker-context-menu-item-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dm-sticker-context-menu-item-badge {
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.04);
+  flex-shrink: 0;
+}
+
+.dm-sticker-context-menu-item-badge-on {
+  border-color: rgba(92, 255, 212, 0.25);
+  color: rgba(92, 255, 212, 0.9);
+  background: rgba(92, 255, 212, 0.08);
+}
+
+.dm-sticker-context-menu-item svg {
+  width: 14px;
+  height: 14px;
+  opacity: 0.7;
+  transition: all 0.12s ease;
+  flex-shrink: 0;
+}
+
+.dm-sticker-context-menu-item:hover {
+  background: rgba(92, 255, 212, 0.12);
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.dm-sticker-context-menu-item:hover svg {
+  opacity: 1;
+  color: #a78bfa;
+}
+
+.dm-sticker-context-menu-item:active {
+  transform: scale(0.97);
+  background: rgba(92, 255, 212, 0.18);
+}
+
+.dm-sticker-context-menu-item-danger:hover {
+  background: rgba(239, 68, 68, 0.12);
+  color: #fca5a5;
+}
+
+.dm-sticker-context-menu-item-danger:hover svg {
+  color: #f87171;
+}
+
+.dm-sticker-context-menu-item-danger:active {
+  background: rgba(239, 68, 68, 0.18);
+}
+
+.dm-sticker-context-menu-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.06) 20%,
+    rgba(255, 255, 255, 0.06) 80%,
+    transparent
+  );
+  margin: 3px 0;
+}
+
+.dm-sticker-context-menu-section-title {
+  padding: 8px 10px 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.editor-v2-canvas-stage {
+  width: 100%;
+  height: 100%;
+  min-height: 200px; /* Минимальная высота для видимости */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.editor-v2-canvas-backdrop {
+  padding: 0;
+  border-radius: 15px;
+  background: transparent;
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.03),
+    0 0 0 1px rgba(0, 0, 0, 0.025);
+  overflow: visible;
+  position: relative;
+  min-width: 200px; /* Минимальная ширина для видимости */
+  min-height: 200px; /* Минимальная высота для видимости */
+}
+
+.editor-v2-canvas-frame {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.04),
+    0 0 0 1px rgba(0, 0, 0, 0.06);
+  position: relative;
+}
+
+.editor-v2-canvas-frame::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* фон холста */
+
+.editor-v2-bg-checker {
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+}
+
+/* Бледная интенсивность (по умолчанию) */
+.editor-v2-bg-checker-light,
+.editor-v2-bg-checker {
+  background-image:
+    linear-gradient(45deg, rgba(30, 33, 51, 0.15) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(30, 33, 51, 0.15) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(30, 33, 51, 0.15) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(30, 33, 51, 0.15) 75%);
+}
+
+/* Стандартная интенсивность */
+.editor-v2-bg-checker-medium {
+  background-image:
+    linear-gradient(45deg, rgba(30, 33, 51, 0.35) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(30, 33, 51, 0.35) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(30, 33, 51, 0.35) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(30, 33, 51, 0.35) 75%);
+}
+
+/* Сильная интенсивность */
+.editor-v2-bg-checker-strong {
+  background-image:
+    linear-gradient(45deg, rgba(30, 33, 51, 0.6) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(30, 33, 51, 0.6) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(30, 33, 51, 0.6) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(30, 33, 51, 0.6) 75%);
+}
+
+.editor-v2-bg-white {
+  background: #fafafa;
+}
+
+.editor-v2-bg-black {
+  background: #000000;
+}
+/* ==========================================================================
+   CANVAS WRAPPER
+   ========================================================================== */
+
+/* колонна с кадром */
+.editor-v2-canvas-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.18s ease-out; /* плавное перетаскивание */
+  min-width: 200px; /* Минимальная ширина для видимости */
+  min-height: 200px; /* Минимальная высота для видимости */
+}
+
+/* ==========================================================================
+   CANVAS FRAME (сама сцена)
+   ========================================================================== */
+
+.editor-v2-canvas-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Кадр */
+.editor-v2-canvas-frame {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  z-index: 2; /* Убеждаемся, что frame виден */
+  min-width: 100px !important; /* Минимальная ширина для видимости */
+  min-height: 100px !important; /* Минимальная высота для видимости */
+  width: 630px !important; /* Фиксированная ширина для отладки */
+  height: 354px !important; /* Фиксированная высота для отладки */
+  background: #fafafa !important; /* Временный яркий фон для отладки */
+
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.1),
+    0 20px 40px rgba(0,0,0,0.45);
+
+  transition:
+    transform 0.22s cubic-bezier(.25,.1,.25,1),
+    box-shadow 0.2s ease-out;
+}
+
+.editor-v2-canvas-frame:hover {
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.16),
+    0 24px 50px rgba(0,0,0,0.55);
+}
+
+/* Фоны */
+.editor-v2-bg-checker {
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
+
+/* Бледная интенсивность (по умолчанию) */
+.editor-v2-bg-checker-light,
+.editor-v2-bg-checker:not(.editor-v2-bg-checker-medium):not(.editor-v2-bg-checker-strong) {
+  background-image:
+    linear-gradient(45deg, rgba(13, 17, 23, 0.15) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(13, 17, 23, 0.15) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(13, 17, 23, 0.15) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(13, 17, 23, 0.15) 75%);
+}
+
+/* Стандартная интенсивность */
+.editor-v2-bg-checker-medium {
+  background-image:
+    linear-gradient(45deg, rgba(13, 17, 23, 0.35) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(13, 17, 23, 0.35) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(13, 17, 23, 0.35) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(13, 17, 23, 0.35) 75%);
+}
+
+/* Сильная интенсивность */
+.editor-v2-bg-checker-strong {
+  background-image:
+    linear-gradient(45deg, rgba(13, 17, 23, 0.6) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(13, 17, 23, 0.6) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(13, 17, 23, 0.6) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(13, 17, 23, 0.6) 75%);
+}
+
+.editor-v2-bg-white {
+  background: #fafafa;
+}
+
+.editor-v2-bg-black {
+  background: #000000;
+}
+
+/* ==========================================================================
+   GRID (правило третей)
+   ========================================================================== */
+
+.editor-v2-canvas-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.editor-v2-canvas-grid .grid-line {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* вертикальные линии */
+.grid-v1 {
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  left: 33.33%;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(255, 255, 255, 0.26) 18%,
+    rgba(255, 255, 255, 0.26) 82%,
+    transparent 100%
+  );
+}
+.grid-v2 {
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  left: 66.66%;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(255, 255, 255, 0.26) 18%,
+    rgba(255, 255, 255, 0.26) 82%,
+    transparent 100%
+  );
+}
+
+/* горизонтальные линии */
+.grid-h1 {
+  left: 0;
+  right: 0;
+  height: 1px;
+  top: 33.33%;
+}
+.grid-h2 {
+  left: 0;
+  right: 0;
+  height: 1px;
+  top: 66.66%;
+}
+
+/* ==========================================================================
+   CANVAS CONTROLS - панель снизу
+   ========================================================================== */
+
+.editor-v2-canvas-controls {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+
+  padding: 4px 8px;
+  border-radius: 6px;
+
+  background: rgba(10, 31, 26, 0.4);
+  border: 1px solid rgba(42, 124, 105, 0.2);
+  box-shadow: 
+    inset 0 1px 2px rgba(0, 0, 0, 0.2),
+    0 1px 0 rgba(255, 255, 255, 0.03);
+
+  backdrop-filter: blur(8px);
+  z-index: 50;
+  font-size: 9px;
+  opacity: 0.75;
+  transition: opacity 0.15s ease-out;
+}
+
+.editor-v2-canvas-controls:hover {
+  opacity: 0.9;
+}
+
+/* Zoom group */
+
+.canvas-zoom-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 1px 3px;
+  border-radius: 4px;
+  background: rgba(10, 31, 26, 0.3);
+  border: 1px solid rgba(42, 124, 105, 0.15);
+}
+
+/* Playback group */
+
+.canvas-playback-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  border: none;
+}
+
+.canvas-playback-btn {
+  border-radius: 3px;
+  border: 1px solid rgba(42, 124, 105, 0.2);
+  background: none !important;
+  background-color: transparent !important;
+  color: rgba(230, 237, 234, 0.7);
+  padding: 2px 6px;
+  font-size: 10px;
+  cursor: pointer;
+  transition:
+    border-color 120ms ease-out,
+    color 120ms ease-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 16px;
+  /* Единый фильтр для всех кнопок - делаем их одинакового цвета */
+  filter: grayscale(100%) brightness(0.85) contrast(1.1);
+}
+
+.canvas-playback-btn:hover {
+  border-color: rgba(42, 124, 105, 0.3);
+  color: rgba(230, 237, 234, 0.85);
+  background: none !important;
+  background-color: transparent !important;
+  filter: grayscale(100%) brightness(0.95) contrast(1.1);
+}
+
+.canvas-playback-btn-play {
+  font-size: 11px;
+  padding: 2px 8px;
+  font-weight: 600;
+}
+
+/* Убираем фон у кнопки зациклить */
+.canvas-playback-btn[data-tooltip="Зациклить"],
+.canvas-playback-btn[data-tooltip="Зациклить"]:hover,
+.canvas-playback-btn[data-tooltip="Зациклить"]:active,
+.canvas-playback-btn[data-tooltip="Зациклить"]:focus {
+  background: none !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+}
+
+
+.canvas-playback-btn-on {
+  background: rgba(92, 255, 212, 0.15);
+  border-color: rgba(92, 255, 212, 0.4);
+  color: rgba(92, 255, 212, 0.9);
+}
+
+/* Tooltip стили */
+[data-tooltip]:not(.dm-background-category-rail-icon-btn) {
+  position: relative;
+}
+
+[data-tooltip]:not(.dm-background-category-rail-icon-btn):hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 4px;
+  padding: 2px 6px;
+  background: rgba(10, 31, 26, 0.95);
+  border: 1px solid rgba(42, 124, 105, 0.3);
+  border-radius: 3px;
+  color: rgba(230, 237, 234, 0.9);
+  font-size: 9px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Buttons */
+
+.canvas-zoom-btn,
+.canvas-zoom-fit-btn,
+.canvas-toggle-btn {
+  border-radius: 3px;
+  border: 1px solid rgba(42, 124, 105, 0.2);
+  background: rgba(10, 31, 26, 0.4);
+  color: rgba(230, 237, 234, 0.7);
+  padding: 3px 7px;
+  font-size: 10px;
+  cursor: pointer;
+  transition: 0.15s ease-out;
+}
+
+.canvas-zoom-btn {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+}
+
+.canvas-zoom-btn:hover,
+.canvas-zoom-fit-btn:hover,
+.canvas-toggle-btn:hover {
+  background: rgba(10, 31, 26, 0.5);
+  border-color: rgba(42, 124, 105, 0.3);
+  color: rgba(230, 237, 234, 0.85);
+}
+
+/* включённые кнопки */
+.canvas-toggle-btn-on {
+  background: rgba(10, 31, 26, 0.5);
+  border-color: rgba(42, 124, 105, 0.3);
+  color: rgba(230, 237, 234, 0.85);
+}
+
+/* Zoom value */
+.canvas-zoom-value {
+  min-width: 36px;
+  text-align: center;
+  color: rgba(230, 237, 234, 0.7);
+  font-size: 10px;
+  font-weight: 400;
+}
+
+/* ==========================================================================
+   PARALLAX BACKGROUND
+   ========================================================================== */
+
+.parallax-bg {
+  background: radial-gradient(ellipse at center, var(--dm-bg-softer), var(--dm-bg));
+  background-size: 180% 180%;
+  animation: parallaxMove 18s ease-in-out infinite alternate;
+}
+
+@keyframes parallaxMove {
+  0% { background-position: 40% 40%; }
+  100% { background-position: 60% 60%; }
+}
+.editor-v2-layers-root {
+  position: absolute;
+  inset: 0;
+  pointer-events: none; /* пока без интерактива, только отображение */
+}
+
+.dm-layer-text {
+  font-family: 'DM Sans', system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', sans-serif;
+  line-height: 1.1;
+  text-shadow: none;
+  user-select: none;
+  pointer-events: auto;
+  background: transparent !important;
+  background-image: none !important;
+  background-color: transparent !important;
+  color: inherit;
+}
+
+/* Строгие правила для контейнеров с градиентами - градиент НЕ должен быть на фоне */
+.dm-layer-text[data-has-gradient="true"] {
+  background: transparent !important;
+  background-image: none !important;
+  background-color: transparent !important;
+  background-size: auto !important;
+  background-position: 0 0 !important;
+  background-repeat: no-repeat !important;
+  background-attachment: scroll !important;
+  background-origin: padding-box !important;
+}
+
+/* Промежуточный div должен быть полностью прозрачным при градиенте */
+.dm-layer-text[data-has-gradient="true"] > div {
+  background: transparent !important;
+  background-image: none !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.dm-layer-text > span {
+  display: inline-block;
+  vertical-align: top;
+}
+
+/* Градиент применяется ТОЛЬКО к span внутри - никак не к контейнеру */
+.dm-layer-text[data-has-gradient="true"] span {
+  text-shadow: none !important;
+  background-clip: text !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+  background-origin: border-box !important;
+}
+
+.dm-layer-text > span[style*="linear-gradient"],
+.dm-layer-text > span[style*="radial-gradient"] {
+  text-shadow: none !important;
+}
+
+/* Выделение текста - PRO стиль */
+.dm-layer-text-selected {
+  position: relative;
+}
+
+/* Тонкая рамка выделения */
+.dm-layer-text-selected::before {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border: 1px solid rgba(59, 130, 246, 0.8);
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Убираем декоративный эффект */
+.dm-layer-text-selected::after {
+  display: none;
+}
+
+/* Хэндлы resize - профессиональный стиль */
+.dm-text-handle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: #ffffff;
+  border: 1px solid rgba(59, 130, 246, 0.9);
+  border-radius: 1px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  pointer-events: auto;
+  transition: background-color 0.15s ease;
+}
+
+.dm-text-handle:hover {
+  background-color: rgba(59, 130, 246, 1);
+  border-color: rgba(59, 130, 246, 1);
+}
+
+.dm-text-handle:active {
+  background-color: rgba(59, 130, 246, 0.8);
+}
+
+/* Угловые хэндлы */
+.dm-text-handle--corner {
+  width: 8px;
+  height: 8px;
+}
+
+/* Боковые хэндлы */
+.dm-text-handle--side {
+  width: 6px;
+  height: 6px;
+}
+
+/* Хэндл rotate */
+.dm-text-handle--rotate {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  border: 1px solid rgba(59, 130, 246, 0.9);
+  cursor: grab;
+}
+
+.dm-text-handle--rotate:hover {
+  background-color: rgba(59, 130, 246, 1);
+}
+
+.dm-text-handle--rotate:active {
+  cursor: grabbing;
+}
+
+.editor-v2-canvas-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  min-width: 100%;
+  min-height: 100%;
+  width: 100%;
+  height: 100%;
+}
+
+.editor-v2-canvas-bg-image-clickable {
+  cursor: pointer;
+}
+
+.editor-v2-canvas-bg[style*="transparent"] {
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+}
+
+/* Интенсивность для inline стилей */
+.editor-v2-canvas-bg[style*="transparent"].editor-v2-bg-checker-light,
+.editor-v2-canvas-bg[style*="transparent"].editor-v2-bg-checker:not(.editor-v2-bg-checker-medium):not(.editor-v2-bg-checker-strong) {
+  background-image:
+    linear-gradient(45deg, rgba(30, 33, 51, 0.15) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(30, 33, 51, 0.15) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(30, 33, 51, 0.15) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(30, 33, 51, 0.15) 75%);
+}
+
+.editor-v2-canvas-bg[style*="transparent"].editor-v2-bg-checker-medium {
+  background-image:
+    linear-gradient(45deg, rgba(30, 33, 51, 0.35) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(30, 33, 51, 0.35) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(30, 33, 51, 0.35) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(30, 33, 51, 0.35) 75%);
+}
+
+.editor-v2-canvas-bg[style*="transparent"].editor-v2-bg-checker-strong {
+  background-image:
+    linear-gradient(45deg, rgba(30, 33, 51, 0.6) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(30, 33, 51, 0.6) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(30, 33, 51, 0.6) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(30, 33, 51, 0.6) 75%);
+}
+
+/* ==========================================================================
+   TEXT ANIMATIONS
+   ========================================================================== */
+
+/* In Animations */
+@keyframes dmAnimInfade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes dmAnimInslide {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes dmAnimInpop {
+  from { 
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to { 
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes dmAnimInscale {
+  from { 
+    opacity: 0;
+    transform: scale(0);
+  }
+  to { 
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes dmAnimInblur {
+  from { 
+    opacity: 0;
+    filter: blur(10px);
+  }
+  to { 
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes dmAnimIntypewriter {
+  from { 
+    opacity: 0;
+    width: 0;
+  }
+  to { 
+    opacity: 1;
+    width: 100%;
+  }
+}
+
+/* Out Animations */
+@keyframes dmAnimOutfade {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes dmAnimOutslide {
+  from { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to { 
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes dmAnimOutpop {
+  from { 
+    opacity: 1;
+    transform: scale(1);
+  }
+  to { 
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+
+@keyframes dmAnimOutscale {
+  from { 
+    opacity: 1;
+    transform: scale(1);
+  }
+  to { 
+    opacity: 0;
+    transform: scale(0);
+  }
+}
+
+@keyframes dmAnimOutblur {
+  from { 
+    opacity: 1;
+    filter: blur(0);
+  }
+  to { 
+    opacity: 0;
+    filter: blur(10px);
+  }
+}
+
+/* Loop Animations */
+@keyframes dmAnimLooppulse {
+  0%, 100% { 
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% { 
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+}
+
+@keyframes dmAnimLoopwobble {
+  0%, 100% { 
+    transform: rotate(0deg);
+  }
+  25% { 
+    transform: rotate(-2deg);
+  }
+  75% { 
+    transform: rotate(2deg);
+  }
+}
+
+@keyframes dmAnimLoopvibration {
+  0%, 100% { 
+    transform: translateX(0);
+  }
+  25% { 
+    transform: translateX(-2px);
+  }
+  75% { 
+    transform: translateX(2px);
+  }
+}

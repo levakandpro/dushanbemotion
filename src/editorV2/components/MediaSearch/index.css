@@ -1,0 +1,430 @@
+/* ===============================
+   ROOT & RESET
+================================ */
+:root {
+  --accent: #2be7a6;
+  --accent-soft: rgba(43, 231, 166, 0.15);
+  --bg-dark: #0a0c0e;
+  --glass: rgba(255, 255, 255, 0.04);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --text-main: rgba(255, 255, 255, 0.95);
+  --text-dim: rgba(255, 255, 255, 0.5);
+  --radius-lg: 20px;
+  --radius-md: 12px;
+  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ms-page {
+  height: 100vh; /* Строго высота экрана */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: 
+    radial-gradient(circle at 10% 10%, rgba(43, 231, 166, 0.1), transparent 40%),
+    var(--bg-dark);
+  color: var(--text-main);
+  font-family: -apple-system, system-ui, sans-serif;
+  overflow: hidden; /* Запрет внешнего скролла */
+}
+
+/* ===============================
+   TOPBAR
+================================ */
+.ms-topbar {
+  flex-shrink: 0;
+  padding: 16px 24px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  background: rgba(10, 12, 14, 0.6);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--glass-border);
+  z-index: 100;
+}
+
+.ms-searchWrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: 4px 6px 4px 14px;
+}
+
+.ms-searchWrap:focus-within {
+  border-color: var(--accent);
+  background: rgba(255,255,255,0.07);
+}
+
+.ms-input {
+  flex: 1;
+  height: 36px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 15px;
+  outline: none;
+}
+
+.ms-btn {
+  background: var(--accent);
+  color: #000;
+  font-weight: 700;
+  border: none;
+  padding: 0 20px;
+  height: 36px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.ms-btn:hover { transform: translateY(-1px); filter: brightness(1.1); }
+
+.ms-backBtn {
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  color: var(--text-main);
+  padding: 0 16px;
+  height: 36px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.ms-modes {
+  display: flex;
+  gap: 6px;
+  background: rgba(0,0,0,0.3);
+  padding: 4px;
+  border-radius: 12px;
+}
+
+.ms-chip {
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.ms-chip.is-active {
+  background: var(--glass-border);
+  color: #fff;
+}
+
+/* ===============================
+   LAYOUT
+================================ */
+.ms-layout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 20px;
+  padding: 20px;
+  min-height: 0; /* Фикс для скролла во flex */
+}
+
+.ms-results {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: rgba(255,255,255,0.02);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--glass-border);
+  overflow: hidden;
+}
+
+.ms-toolbar {
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--glass-border);
+  font-size: 13px;
+}
+
+/* СКРОЛЛ СЕТКИ */
+.ms-grid {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+/* КАРТОЧКА */
+.ms-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: var(--transition);
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+}
+
+.ms-card:hover {
+  transform: translateY(-4px);
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.2);
+}
+
+.ms-thumb {
+  aspect-ratio: 1;
+  position: relative;
+  background: #000;
+}
+
+.ms-img { width: 100%; height: 100%; object-fit: cover; }
+
+.ms-pill {
+  position: absolute; top: 8px; right: 8px;
+  background: rgba(0,0,0,0.6);
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.ms-meta { padding: 12px; }
+.ms-label { font-size: 10px; color: var(--accent); text-transform: uppercase; margin-bottom: 4px; display: block; }
+.ms-name { font-size: 13px; line-height: 1.4; color: #fff; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+
+/* БОКОВАЯ ПАНЕЛЬ */
+.ms-side {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.ms-infoCard {
+  flex: 1;
+  overflow-y: auto;
+  background: linear-gradient(180deg, rgba(255,255,255,0.05), transparent);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+}
+
+.ms-flag { width: 100%; height: 180px; border-radius: 12px; overflow: hidden; margin-bottom: 20px; border: 1px solid var(--glass-border); }
+.ms-flagImg { width: 100%; height: 100%; object-fit: cover; }
+.ms-title { font-size: 22px; font-weight: 800; margin-bottom: 12px; }
+.ms-sub { font-size: 15px; color: var(--text-dim); line-height: 1.6; }
+
+/* МОДАЛКА */
+.ms-modalBack {
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(12px);
+  display: grid; place-items: center; padding: 40px;
+}
+
+.ms-modal {
+  width: 100%; max-width: 1100px; max-height: 90vh;
+  background: #121417; border-radius: 24px;
+  display: flex; flex-direction: column; overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.ms-modalTop {
+  padding: 20px 24px; display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.ms-modalImgWrap { flex: 1; background: #000; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.ms-modalImg { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+.ms-modalMeta { padding: 24px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; background: rgba(255,255,255,0.02); }
+
+.ms-use { background: var(--accent); color: #000; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 800; cursor: pointer; }
+
+/* СКЕЛЕТОН */
+.ms-skeleton { animation: pulse 1.5s infinite; background: var(--glass); }
+@keyframes pulse { 50% { opacity: 0.5; } }
+
+@media (max-width: 1100px) {
+  .ms-layout { grid-template-columns: 1fr; }
+  .ms-side { display: none; }
+}
+.ms-title {
+  background: linear-gradient(to right, #fff, var(--accent, #2be7a6));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 900 !important;
+}
+/* 13. Улучшенные теги (SVG/IMG) с размытием */
+.ms-pill {
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,255,255,0.1);
+  letter-spacing: 1px;
+}
+/* 14. Плавное скрытие длинных названий */
+.ms-name {
+  mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+}
+/* 15. Эффект свечения кнопки "Использовать" */
+.ms-use {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 15px rgba(43,231,166,0.3);
+  transition: 0.3s;
+}
+/* 18. Текст-подсказки (Dim) с эффектом затухания */
+.ms-dim {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.6;
+}
+/* 6. Анимация появления контента (Stagger) */
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.ms-card { animation: slideUp 0.5s ease backwards; }
+/* 7. Качественный блюр для модалки */
+.ms-modalBack { backdrop-filter: blur(15px) saturate(180%) !important; }
+/* 8. Эффект стекла для инфо-панели */
+.ms-infoCard {
+    background: rgba(255, 255, 255, 0.03) !important;
+    backdrop-filter: blur(10px);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
+}
+/* 9. Стильный шиммер для скелетонов (анимация загрузки) */
+.ms-skeleton {
+    background: linear-gradient(90deg, 
+        rgba(255,255,255,0.03) 25%, 
+        rgba(255,255,255,0.08) 50%, 
+        rgba(255,255,255,0.03) 75%) !important;
+    background-size: 200% 100% !important;
+    animation: shimmer 1.5s infinite linear !important;
+}
+@keyframes shimmer { to { background-position: -200% 0; } }
+/* 12. Текст: Улучшенная читаемость заголовков */
+.ms-title {
+    background: linear-gradient(to bottom, #fff, #999);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+}
+/* 17. Боковая панель: Свечение флага */
+.ms-flag {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    transition: 0.5s;
+}
+.ms-flag:hover { transform: scale(1.02) rotate(1deg); }
+/* 13. Пиллы: эффект OLED */
+.ms-pill {
+  background: #000 !important;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-family: monospace;
+}
+/* 18. Тулбар: Стеклянная плашка */
+.ms-toolbar {
+  backdrop-filter: blur(10px);
+  background: rgba(0,0,0,0.2) !important;
+}
+/* 20. Умные отступы и типографика */
+body { letter-spacing: -0.01em; }
+.ms-chip.is-active {
+  background: rgba(0, 0, 0, 0.4) !important;
+  color: var(--accent) !important;
+  box-shadow: 
+    inset 4px 4px 8px rgba(0, 0, 0, 0.8), 
+    inset -1px -1px 2px rgba(255, 255, 255, 0.05) !important;
+  border: none !important;
+  transform: translateY(1px);
+}
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.ms-leonardo-container {
+  position: relative;
+  flex: 1;
+  max-width: 500px;
+  height: 42px;
+  padding: 1px; /* Тоньше рамка — тоньше луч */
+  border-radius: 12px;
+  /* Узкий сектор (прозрачный до 85%, яркий на 90%, снова прозрачный) делает луч острым */
+  background: conic-gradient(from var(--angle), transparent 85%, #2be7a6 90%, #a2ffde 95%, transparent 100%);
+  animation: rotate-leonardo 3s linear infinite;
+  display: flex;
+  align-items: center;
+}
+
+@keyframes rotate-leonardo {
+  to { --angle: 360deg; }
+}
+
+.ms-search-inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  background: #0a0c0e; /* Твой основной темный фон */
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  padding: 0 4px 0 16px;
+}
+
+.ms-input {
+  flex: 1;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  color: #fff;
+  font-size: 14px;
+}
+
+.ms-btn-action {
+  height: 32px;
+  padding: 0 16px;
+  background: #2be7a6;
+  color: #000;
+  border: none;
+  border-radius: 9px;
+  font-weight: 800;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* Красивое мягкое свечение (Glow) вокруг луча */
+.ms-leonardo-container::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  background: conic-gradient(from var(--angle), transparent 80%, #2be7a6 90%, transparent 100%);
+  animation: rotate-leonardo 3s linear infinite;
+  filter: blur(8px);
+  opacity: 0.4;
+}
+.ms-pager {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+}
+.ms-miniBtn {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #fff;
+}
+.ms-miniBtn:hover:not(:disabled) {
+  border-color: #2be7a6;
+  color: #2be7a6;
+}
+.ms-wiki-btn {
+  color: rgba(255,255,255,0.5);
+  font-size: 13px;
+  text-decoration: underline;
+}
+.ms-wiki-btn:hover { color: #2be7a6; }

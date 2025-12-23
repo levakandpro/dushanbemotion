@@ -1,0 +1,26 @@
+-- ============================================
+-- СИСТЕМА МЕСЯЧНЫХ ВЫПЛАТ АВТОРАМ (v2)
+-- ============================================
+-- Таблица author_payouts уже создана.
+-- Этот файл для справки.
+-- ============================================
+
+-- Если нужно пересоздать таблицу:
+-- DROP TABLE IF EXISTS author_payouts CASCADE;
+
+-- CREATE TABLE author_payouts (
+--   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+--   author_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+--   period TEXT NOT NULL,
+--   total_orders_amount DECIMAL(12,2) NOT NULL DEFAULT 0,
+--   platform_fee DECIMAL(12,2) NOT NULL DEFAULT 0,
+--   author_earnings DECIMAL(12,2) NOT NULL DEFAULT 0,
+--   orders_count INTEGER NOT NULL DEFAULT 0,
+--   status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'paid')),
+--   paid_at TIMESTAMP WITH TIME ZONE,
+--   paid_by UUID REFERENCES profiles(id),
+--   notes TEXT,
+--   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+--   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+--   UNIQUE(author_id, period)
+-- );

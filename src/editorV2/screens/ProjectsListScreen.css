@@ -1,0 +1,166 @@
+/* src/editorV2/screens/ProjectsListScreen.css */
+
+.projects-list-screen {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+  padding: 40px 20px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.projects-list-header {
+  max-width: 1200px;
+  margin: 0 auto 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.projects-list-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+  color: rgba(255, 255, 255, 1);
+  letter-spacing: -0.5px;
+}
+
+.projects-list-new-btn {
+  padding: 12px 24px;
+  background: rgba(92, 255, 212, 0.15);
+  border: 1px solid rgba(92, 255, 212, 0.4);
+  border-radius: 8px;
+  color: rgba(92, 255, 212, 1);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.projects-list-new-btn:hover {
+  background: rgba(92, 255, 212, 0.25);
+  border-color: rgba(92, 255, 212, 0.6);
+  transform: translateY(-1px);
+}
+
+.projects-list-loading,
+.projects-list-empty {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 80px 20px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.projects-list-error {
+  max-width: 1200px;
+  margin: 0 auto 40px;
+  padding: 20px;
+  background: rgba(255, 100, 100, 0.1);
+  border: 1px solid rgba(255, 100, 100, 0.3);
+  border-radius: 8px;
+  color: rgba(255, 100, 100, 1);
+  text-align: center;
+}
+
+.projects-list-error button {
+  margin-top: 12px;
+  padding: 8px 16px;
+  background: rgba(255, 100, 100, 0.2);
+  border: 1px solid rgba(255, 100, 100, 0.4);
+  border-radius: 6px;
+  color: rgba(255, 100, 100, 1);
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.projects-list-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.projects-list-item {
+  position: relative;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.projects-list-item:hover {
+  background: rgba(0, 0, 0, 0.6);
+  border-color: rgba(92, 255, 212, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.projects-list-thumbnail {
+  width: 100%;
+  height: 160px;
+  background-size: cover;
+  background-position: center;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.projects-list-thumbnail-placeholder {
+  width: 100%;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.projects-list-item-content {
+  padding: 16px;
+}
+
+.projects-list-item-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: rgba(255, 255, 255, 0.9);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.projects-list-item-date {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+}
+
+.projects-list-item-delete {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: all 0.2s;
+  opacity: 0;
+}
+
+.projects-list-item:hover .projects-list-item-delete {
+  opacity: 1;
+}
+
+.projects-list-item-delete:hover {
+  background: rgba(255, 100, 100, 0.2);
+  border-color: rgba(255, 100, 100, 0.4);
+  color: rgba(255, 100, 100, 1);
+}
+

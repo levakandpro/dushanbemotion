@@ -1,0 +1,137 @@
+/* src/shared/ui/Button.css */
+
+.shared-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', sans-serif;
+}
+
+.shared-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Variants */
+.shared-button-primary {
+  background: rgba(61, 191, 160, 0.16);
+  border: 1px solid rgba(61, 191, 160, 0.3);
+  color: #3dbfa0;
+}
+
+.shared-button-primary:hover:not(:disabled) {
+  background: rgba(61, 191, 160, 0.25);
+  border-color: rgba(61, 191, 160, 0.45);
+  transform: translateY(-1px);
+}
+
+.shared-button-secondary {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(42, 124, 105, 0.15);
+  color: #e6edea;
+}
+
+.shared-button-secondary:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.3);
+  border-color: rgba(42, 124, 105, 0.25);
+}
+
+.shared-button-danger {
+  background: rgba(255, 75, 106, 0.1);
+  border: 1px solid rgba(255, 75, 106, 0.3);
+  color: #ff4b6a;
+}
+
+.shared-button-danger:hover:not(:disabled) {
+  background: rgba(255, 75, 106, 0.2);
+  border-color: rgba(255, 75, 106, 0.5);
+}
+
+.shared-button-ghost {
+  background: transparent;
+  border: 1px solid transparent;
+  color: rgba(230, 237, 234, 0.7);
+}
+
+.shared-button-ghost:hover:not(:disabled) {
+  background: rgba(61, 191, 160, 0.08);
+  color: #e6edea;
+}
+
+/* Sizes */
+.shared-button-small {
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
+.shared-button-medium {
+  padding: 8px 16px;
+  font-size: 13px;
+}
+
+.shared-button-large {
+  padding: 12px 24px;
+  font-size: 14px;
+}
+
+/* Tooltips для кнопок */
+.shared-button {
+  position: relative;
+}
+
+.shared-button[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 8px;
+  padding: 6px 10px;
+  background: rgba(10, 31, 26, 0.95);
+  border: 1px solid rgba(42, 124, 105, 0.3);
+  border-radius: 4px;
+  color: rgba(230, 237, 234, 0.9);
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+  z-index: 1000;
+  pointer-events: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+  animation: tooltipFadeIn 0.15s ease-out;
+}
+
+.shared-button[title]:hover::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 4px;
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid rgba(42, 124, 105, 0.3);
+  z-index: 1001;
+  pointer-events: none;
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}

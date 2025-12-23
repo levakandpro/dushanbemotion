@@ -1,0 +1,77 @@
+/* Subscribe Button - YouTube style */
+.subscribe-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: #cc0000;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.subscribe-btn:hover {
+  background: #ff0000;
+  transform: scale(1.05);
+}
+
+.subscribe-btn:active {
+  transform: scale(0.98);
+}
+
+.subscribe-btn.is-subscribed {
+  background: rgba(255, 255, 255, 0.1);
+  color: #888;
+}
+
+.subscribe-btn.is-subscribed:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #aaa;
+}
+
+.subscribe-btn.is-loading {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.subscribe-btn__icon {
+  font-size: 1em;
+  font-weight: 700;
+}
+
+.subscribe-btn__text {
+  font-size: 0.9em;
+}
+
+/* Size variants */
+.subscribe-btn--small {
+  padding: 3px 8px;
+  font-size: 10px;
+  border-radius: 3px;
+}
+
+.subscribe-btn--medium {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+.subscribe-btn--large {
+  padding: 10px 20px;
+  font-size: 14px;
+}
+
+/* Mini variant - just icon */
+.subscribe-btn--mini {
+  padding: 2px 6px;
+  font-size: 10px;
+  border-radius: 3px;
+}
+
+.subscribe-btn--mini .subscribe-btn__text {
+  display: none;
+}

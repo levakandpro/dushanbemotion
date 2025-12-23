@@ -1,0 +1,303 @@
+/* ================= COLLABS PAGE ================= */
+.au-collabs-loading {
+  padding: 40px;
+  text-align: center;
+  color: rgba(230,237,234,.5);
+}
+
+/* Toggle switch */
+.au-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+.au-toggle input {
+  display: none;
+}
+.au-toggle__slider {
+  width: 44px;
+  height: 24px;
+  background: rgba(230,237,234,.15);
+  border-radius: 12px;
+  position: relative;
+  transition: background 0.2s ease;
+}
+.au-toggle__slider::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  background: rgba(230,237,234,.6);
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+.au-toggle input:checked + .au-toggle__slider {
+  background: rgba(61,191,160,.3);
+}
+.au-toggle input:checked + .au-toggle__slider::after {
+  left: 23px;
+  background: #3dbfa0;
+}
+.au-toggle__label {
+  font-size: 12px;
+  color: rgba(230,237,234,.6);
+}
+
+.au-collabs-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+/* Collab card - square like collections */
+.au-collab-card {
+  display: flex;
+  flex-direction: column;
+  aspect-ratio: 1;
+  background: rgba(0,0,0,.25);
+  border: 1px solid rgba(42,124,105,.15);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all .2s ease;
+  overflow: hidden;
+  position: relative;
+}
+.au-collab-card__cover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.au-collab-card__cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* Placeholder когда нет обложки */
+.au-collab-card:not(.has-cover)::before {
+  content: '📷';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -70%);
+  font-size: 32px;
+  opacity: 0.3;
+}
+.au-collab-card__main {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px;
+  background: linear-gradient(transparent, rgba(0,0,0,.85));
+}
+.au-collab-card__side {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+.au-collab-card:hover {
+  border-color: rgba(61,191,160,.4);
+  transform: translateY(-2px);
+}
+.au-collab-card.needs-action,
+.au-collab-card.is-pendingAction {
+  border-color: rgba(255,200,50,.4);
+}
+
+/* Pending action card - enhanced styling */
+.au-collab-card.is-pendingAction {
+  border-color: rgba(255,180,50,.35);
+  background: linear-gradient(135deg, rgba(255,180,50,.06) 0%, rgba(255,140,50,.03) 100%);
+  box-shadow: 0 0 0 1px rgba(255,180,50,.08), 0 4px 12px rgba(0,0,0,.1);
+  animation: au-card-appear 0.18s ease-out backwards;
+}
+.au-collab-card.is-pendingAction:hover {
+  border-color: rgba(255,180,50,.5);
+  background: linear-gradient(135deg, rgba(255,180,50,.1) 0%, rgba(255,140,50,.05) 100%);
+}
+
+@keyframes au-card-appear {
+  0% {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Flash-подсветка для авто-скролла */
+.au-collab-card.is-flash {
+  animation: au-card-flash 0.5s ease-out;
+}
+
+@keyframes au-card-flash {
+  0%, 100% {
+    box-shadow: 0 0 0 1px rgba(255,180,50,.08), 0 4px 12px rgba(0,0,0,.1);
+  }
+  50% {
+    box-shadow: 0 0 0 3px rgba(255,180,50,.5), 0 4px 20px rgba(255,180,50,.2);
+  }
+}
+
+.au-collab-card__title {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(230,237,234,.95);
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.au-collab-card__partner {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: rgba(230,237,234,.6);
+}
+.au-collab-card__avatar {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.au-collab-card__desc {
+  display: none;
+}
+.au-collab-card__share {
+  font-size: 10px;
+  color: rgba(230,237,234,.7);
+  background: rgba(0,0,0,.5);
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+.au-collab-card__share strong {
+  color: #3dbfa0;
+}
+.au-collab-card__action-needed {
+  font-size: 9px;
+  font-weight: 600;
+  color: #1a1a1a;
+  background: rgba(255,200,50,.9);
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+/* CTA buttons in card - hide in grid view */
+.au-collab-card__cta {
+  display: none;
+}
+
+.au-cta-btn {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: none;
+  white-space: nowrap;
+}
+
+.au-cta-btn--primary {
+  background: linear-gradient(135deg, #3dbfa0 0%, #2a9d82 100%);
+  color: #fff;
+}
+.au-cta-btn--primary:hover {
+  background: linear-gradient(135deg, #4dd4b3 0%, #3dbfa0 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(61,191,160,.3);
+}
+
+.au-cta-btn--ghost {
+  background: rgba(230,237,234,.06);
+  border: 1px solid rgba(230,237,234,.15);
+  color: rgba(230,237,234,.7);
+}
+.au-cta-btn--ghost:hover {
+  background: rgba(230,237,234,.1);
+  border-color: rgba(230,237,234,.25);
+  color: rgba(230,237,234,.9);
+}
+
+.au-cta-btn--danger {
+  background: linear-gradient(135deg, #e57373 0%, #d32f2f 100%);
+  color: #fff;
+}
+.au-cta-btn--danger:hover {
+  background: linear-gradient(135deg, #ef9a9a 0%, #e57373 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(229,115,115,.3);
+}
+
+/* Collab status */
+.au-collab-status {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .3px;
+}
+.au-collab-status.is-draft {
+  background: rgba(100,150,200,.15);
+  color: rgba(150,180,220,.9);
+}
+.au-collab-status.is-pending {
+  background: rgba(255,200,50,.15);
+  color: rgba(255,200,50,.9);
+}
+.au-collab-status.is-active {
+  background: rgba(61,191,160,.15);
+  color: #3dbfa0;
+}
+.au-collab-status.is-paused {
+  background: rgba(255,150,50,.15);
+  color: rgba(255,150,50,.9);
+}
+.au-collab-status.is-delete {
+  background: rgba(229,115,115,.15);
+  color: #e57373;
+}
+.au-collab-status.is-archived {
+  background: rgba(230,237,234,.08);
+  color: rgba(230,237,234,.4);
+}
+
+/* Empty state */
+.au-collabs-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+.au-collabs-empty__icon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  opacity: .5;
+  margin-bottom: 16px;
+}
+.au-collabs-empty__text {
+  font-size: 14px;
+  color: rgba(230,237,234,.5);
+  max-width: 320px;
+  margin: 0 0 20px;
+  line-height: 1.5;
+}

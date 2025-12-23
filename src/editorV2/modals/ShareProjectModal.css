@@ -1,0 +1,191 @@
+/* src/editorV2/modals/ShareProjectModal.css */
+
+.share-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.share-modal-content {
+  background: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  animation: shareModalSlideIn 0.2s ease-out;
+}
+
+@keyframes shareModalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.share-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.share-modal-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+.share-modal-close {
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: #999;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.share-modal-close:hover {
+  background: #f5f5f5;
+  color: #333;
+}
+
+.share-modal-body {
+  padding: 24px;
+}
+
+.share-modal-info {
+  text-align: center;
+}
+
+.share-modal-info p {
+  margin: 0 0 20px;
+  color: #666;
+  line-height: 1.5;
+}
+
+.share-modal-share-btn,
+.share-modal-retry-btn {
+  background: #667eea;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.share-modal-share-btn:hover:not(:disabled),
+.share-modal-retry-btn:hover:not(:disabled) {
+  background: #5568d3;
+}
+
+.share-modal-share-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.share-modal-loading {
+  text-align: center;
+  padding: 20px;
+}
+
+.share-modal-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e0e0e0;
+  border-top-color: #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.share-modal-loading p {
+  margin: 0;
+  color: #666;
+}
+
+.share-modal-error {
+  text-align: center;
+}
+
+.share-modal-error p {
+  margin: 0 0 16px;
+  color: #d32f2f;
+}
+
+.share-modal-success {
+  text-align: center;
+}
+
+.share-modal-success > p {
+  margin: 0 0 16px;
+  color: #4caf50;
+  font-weight: 500;
+}
+
+.share-modal-url-container {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.share-modal-url-input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: monospace;
+  background: #f9f9f9;
+  color: #333;
+}
+
+.share-modal-copy-btn {
+  background: #667eea;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.share-modal-copy-btn:hover {
+  background: #5568d3;
+}
+
+.share-modal-hint {
+  margin: 0;
+  font-size: 12px;
+  color: #999;
+}
+

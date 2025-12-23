@@ -1,0 +1,22 @@
+{
+  "name": "D MOTION",
+  "short_name": "D MOTION",
+  "description": "Создавайте красивый текстовый контент для социальных сетей",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#0a0f1a",
+  "background_color": "#0a0f1a",
+  "display": "standalone",
+  "start_url": "/",
+  "scope": "/"
+}

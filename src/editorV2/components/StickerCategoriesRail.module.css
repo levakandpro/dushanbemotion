@@ -1,0 +1,203 @@
+/* ВЕСЬ ТВОЙ ОТБОРНЫЙ СТИЛЬ ТУТ */
+
+.dm-sticker-categories-rail {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  background: rgba(6, 26, 18, 0.6);
+  backdrop-filter: blur(12px);
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.dm-sticker-categories-rail-feminine {
+  background: rgba(26, 14, 18, 0.65);
+  border-right-color: rgba(255, 105, 180, 0.12);
+}
+
+.dm-sticker-categories-rail-header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 10px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.dm-sticker-categories-rail-feminine .dm-sticker-categories-rail-header {
+  border-bottom-color: rgba(255, 105, 180, 0.12);
+}
+
+.dm-sticker-categories-rail-title {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.55);
+  user-select: none;
+}
+
+.dm-sticker-categories-rail-list {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 6px 6px 10px;
+}
+
+.dm-sticker-categories-rail-collapsed .dm-sticker-categories-rail-list {
+  padding: 6px 4px 10px;
+}
+
+.dm-collapsed-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dm-collapsed-letter {
+  width: 20px;
+  height: 20px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.dm-sticker-categories-rail-feminine .dm-collapsed-letter {
+  background: rgba(255, 105, 180, 0.06);
+  border-color: rgba(255, 105, 180, 0.12);
+  color: rgba(255, 182, 193, 0.85);
+}
+
+.dm-sticker-category-rail-btn {
+  position: relative !important;
+  overflow: hidden !important;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 8px 10px !important;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease !important;
+  border-radius: 10px;
+}
+
+.dm-sticker-categories-rail-collapsed .dm-sticker-category-rail-btn {
+  justify-content: center;
+  padding: 8px 6px !important;
+}
+
+.dm-sticker-category-rail-btn:not(:last-child) {
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.dm-sticker-categories-rail-collapsed .dm-sticker-category-rail-btn:not(:last-child) {
+  box-shadow: none;
+}
+
+.dm-sticker-categories-rail-feminine .dm-sticker-category-rail-btn:not(:last-child) {
+  box-shadow: inset 0 -1px 0 rgba(255, 105, 180, 0.12);
+}
+
+.dm-sticker-category-rail-btn:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.dm-sticker-categories-rail-feminine .dm-sticker-category-rail-btn:hover {
+  background: rgba(255, 105, 180, 0.04);
+}
+
+/* Эффект фонарика (Radial Gradient) */
+.dm-sticker-category-rail-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(45px circle at var(--x, 50%) var(--y, 50%), rgba(0, 255, 162, 0.15), transparent 100%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 0;
+}
+.dm-sticker-categories-rail-feminine .dm-sticker-category-rail-btn::before {
+  background: radial-gradient(45px circle at var(--x, 50%) var(--y, 50%), rgba(255, 105, 180, 0.2), transparent 100%) !important;
+}
+.dm-sticker-category-rail-btn:hover::before { opacity: 1; }
+
+/* Анимация "Дыхание" для активной кнопки */
+@keyframes activePulse {
+  0%, 100% { background-color: rgba(0, 255, 162, 0.05); }
+  50% { background-color: rgba(0, 255, 162, 0.12); }
+}
+@keyframes activePulseFem {
+  0%, 100% { background-color: rgba(255, 105, 180, 0.05); }
+  50% { background-color: rgba(255, 105, 180, 0.12); }
+}
+
+.dm-sticker-category-rail-btn-active {
+  animation: activePulse 3s infinite ease-in-out !important;
+}
+.dm-sticker-categories-rail-feminine .dm-sticker-category-rail-btn-active {
+  animation: activePulseFem 3s infinite ease-in-out !important;
+}
+
+/* ИСПРАВЛЕННАЯ ПОЛОСКА (Живой индикатор) */
+.dm-active-indicator {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 18px;
+  background: #00ffa2 !important;
+  box-shadow: 0 0 15px #00ffa2, 0 0 5px #fff !important;
+  z-index: 5;
+}
+.dm-sticker-categories-rail-feminine .dm-active-indicator {
+  background: #FF69B4 !important;
+  box-shadow: 0 0 15px #FF69B4, 0 0 5px #fff !important;
+}
+
+/* ТЕКСТ (Неоновый призрак) */
+.dm-label-text {
+  position: relative;
+  z-index: 1;
+  color: rgba(255, 255, 255, 0.5);
+  text-shadow: none !important; /* Убираем синюю херню */
+}
+.dm-sticker-category-rail-btn:hover .dm-label-text {
+  color: #00ffa2 !important;
+  text-shadow: 0 0 12px rgba(0, 255, 162, 0.8) !important;
+}
+.dm-sticker-categories-rail-feminine .dm-sticker-category-rail-btn:hover .dm-label-text {
+  color: #FF69B4 !important;
+  text-shadow: 0 0 12px rgba(255, 105, 180, 0.8) !important;
+}
+
+/* Контент: текст и корона */
+.dm-btn-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding-left: 5px;
+}
+
+/* СТРЕЛКА: Без рамок и фона */
+.dm-sticker-categories-rail-toggle {
+  background: none !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  color: #555;
+  cursor: pointer;
+}
+.dm-sticker-categories-rail-toggle:hover { color: #00ffa2 !important; }
+.dm-sticker-categories-rail-feminine .dm-sticker-categories-rail-toggle:hover { color: #FF69B4 !important; }

@@ -1,0 +1,825 @@
+﻿/* src/editorV2/panels/FxPanel.css */
+
+.fx-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.fx-panel-empty {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--dm-text-muted, #999);
+  font-size: 13px;
+}
+
+.fx-panel-clear-btn,
+.fx-panel-favorites-btn,
+.fx-panel-history-btn {
+  background: rgba(0, 0, 0, 0.5);
+  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  padding: 6px;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: none;
+  flex-shrink: 0;
+  position: relative;
+  margin-left: 0;
+}
+
+.fx-panel-clear-btn svg,
+.fx-panel-favorites-btn svg,
+.fx-panel-history-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.fx-panel-clear-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.fx-panel-clear-btn:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.7);
+  color: rgba(255, 100, 100, 1);
+  border-color: rgba(255, 100, 100, 0.4);
+  transform: none;
+  box-shadow: none;
+}
+
+/* Стилизованные подсказки (tooltips) - фиксированная подсказка */
+.fx-tooltip-fixed {
+  position: fixed;
+  padding: 6px 10px;
+  background: rgba(0, 0, 0, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 10px;
+  font-weight: 500;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 999999;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  letter-spacing: 0.3px;
+  margin-bottom: 8px;
+}
+
+.fx-tooltip-fixed::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid rgba(255, 255, 255, 0.15);
+}
+
+
+.fx-panel-favorites-btn:hover {
+  background: rgba(0, 0, 0, 0.7);
+  color: rgba(255, 255, 255, 0.9);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: none;
+  box-shadow: none;
+}
+
+.fx-panel-favorites-btn.active {
+  background: rgba(0, 0, 0, 0.8);
+  color: rgba(255, 215, 0, 1);
+  border-color: rgba(255, 215, 0, 0.4);
+}
+
+.fx-panel-history-btn:hover {
+  background: rgba(0, 0, 0, 0.7);
+  color: rgba(255, 255, 255, 0.9);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: none;
+  box-shadow: none;
+}
+
+.fx-panel-history-btn.active {
+  background: rgba(0, 0, 0, 0.8);
+  color: rgba(92, 255, 212, 1);
+  border-color: rgba(92, 255, 212, 0.4);
+}
+
+.fx-history-count {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: rgba(92, 255, 212, 0.9);
+  color: rgba(0, 0, 0, 0.9);
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  font-weight: 700;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.fx-favorites-count {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: rgba(255, 215, 0, 0.9);
+  color: rgba(0, 0, 0, 0.9);
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  font-weight: 700;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+/* Категории */
+.fx-panel-categories {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 6px;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(0, 0, 0, 0.2);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  cursor: grab;
+  user-select: none;
+}
+
+.fx-panel-categories:active {
+  cursor: grabbing;
+}
+
+.fx-panel-categories::-webkit-scrollbar {
+  height: 4px;
+}
+
+.fx-panel-categories::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.fx-panel-categories::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+}
+
+.fx-panel-categories::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.fx-category-btn {
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  color: rgba(255, 255, 255, 0.6);
+  border-radius: 4px;
+  font-size: 9px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  min-width: fit-content;
+}
+
+.fx-category-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.9);
+  transform: translateY(-1px);
+}
+
+.fx-category-btn.active {
+  background: rgba(0, 0, 0, 0.6);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 1);
+  box-shadow: none;
+}
+
+/* Список эффектов */
+.fx-panel-effects {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+  position: relative;
+}
+
+.fx-panel-effects::-webkit-scrollbar {
+  width: 2px;
+}
+
+.fx-panel-effects::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.fx-panel-effects::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 1px;
+}
+
+.fx-panel-effects::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.fx-panel-empty-category {
+  grid-column: 1 / -1;
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--dm-text-muted, #999);
+  font-size: 12px;
+}
+
+.fx-effect-btn {
+  position: relative;
+  padding: 0;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  min-height: 70px;
+  font-family: inherit;
+  overflow: hidden;
+  box-shadow: none;
+}
+
+.fx-effect-btn:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.5);
+  border-color: rgba(0, 0, 0, 0.5);
+  transform: none;
+  box-shadow: none;
+}
+
+.fx-effect-btn:active:not(:disabled) {
+  transform: none;
+}
+
+.fx-effect-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.3;
+}
+
+.fx-effect-btn.applied {
+  border-color: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.6);
+  box-shadow: none;
+}
+
+.fx-effect-btn.applied.enabled {
+  border-color: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.7);
+  box-shadow: none;
+}
+
+.fx-effect-label {
+  font-size: 11px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.3;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+.fx-effect-btn.applied .fx-effect-label {
+  color: rgba(92, 255, 212, 1);
+}
+
+.fx-effect-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+  pointer-events: none;
+  display: block;
+}
+
+.fx-effect-favorite {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 20px;
+  height: 20px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 10;
+  padding: 0;
+}
+
+.fx-effect-favorite:hover {
+  background: rgba(0, 0, 0, 0.8);
+  border-color: rgba(255, 215, 0, 0.5);
+  transform: scale(1.1);
+}
+
+.fx-effect-favorite.active {
+  background: rgba(255, 215, 0, 0.2);
+  border-color: rgba(255, 215, 0, 0.6);
+  color: rgba(255, 215, 0, 1);
+}
+
+.fx-effect-favorite svg {
+  width: 10px;
+  height: 10px;
+}
+
+.fx-effect-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+.fx-effect-btn {
+  position: relative;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 70px;
+  font-family: inherit;
+  overflow: hidden;
+}
+
+.fx-effect-indicator {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+  box-shadow: none;
+}
+
+.fx-effect-btn.applied.disabled .fx-effect-indicator {
+  background: rgba(0, 0, 0, 0.5);
+  color: rgba(255, 255, 255, 0.5);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Примененные эффекты - компактный горизонтальный вид */
+.fx-panel-applied {
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
+  margin-top: auto;
+}
+
+.fx-panel-applied-list {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 6px;
+  align-items: center;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+  padding-bottom: 2px;
+}
+
+.fx-panel-applied-list::-webkit-scrollbar {
+  height: 4px;
+}
+
+.fx-panel-applied-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.fx-panel-applied-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
+
+.fx-panel-applied-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.fx-applied-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: none;
+  overflow: hidden;
+}
+
+.fx-applied-item:hover {
+  background: rgba(0, 0, 0, 0.7);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: none;
+  transform: scale(1.05);
+}
+
+.fx-applied-item.disabled {
+  opacity: 0.4;
+}
+
+.fx-applied-item.enabled {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.fx-applied-label {
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+  text-align: center;
+  padding: 0 4px;
+}
+
+.fx-applied-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.fx-applied-indicator {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 12px;
+  height: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  font-size: 8px;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+  box-shadow: none;
+}
+
+.fx-applied-item.disabled .fx-applied-indicator {
+  background: rgba(0, 0, 0, 0.5);
+  color: rgba(255, 255, 255, 0.5);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Заголовок панели */
+.fx-panel .dm-panel-header-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(0, 0, 0, 0.2);
+  gap: 6px;
+  overflow: visible;
+  position: relative;
+  z-index: 1;
+}
+
+.fx-panel .dm-panel-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+.fx-panel-header-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  margin-left: auto;
+  overflow: visible;
+  position: relative;
+  z-index: 2;
+}
+
+/* Кнопка-таб Скорость и время */
+.fx-panel-tab-btn {
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--dm-text-muted, #999);
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: 0.5px;
+  margin-left: 0;
+}
+
+.fx-panel-tab-btn svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.fx-panel-tab-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: var(--dm-text, #fff);
+}
+
+.fx-panel-tab-btn.active {
+  background: rgba(0, 0, 0, 0.6);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 1);
+  box-shadow: none;
+}
+
+/* Блок Скорость и время */
+.fx-panel-speed-section {
+  padding: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.fx-speed-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.fx-speed-label {
+  display: block;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.9);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.fx-speed-reset-btn {
+  background: rgba(0, 0, 0, 0.5);
+  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  padding: 6px;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.fx-speed-reset-btn:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.7);
+  color: rgba(255, 100, 100, 1);
+  border-color: rgba(255, 100, 100, 0.4);
+}
+
+.fx-speed-reset-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.fx-speed-reset-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.fx-speed-control {
+  margin-bottom: 16px;
+}
+
+.fx-speed-control-label {
+  display: block;
+  font-size: 10px;
+  color: var(--dm-text-muted, #999);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+.fx-speed-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.fx-speed-btn {
+  padding: 10px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.4);
+  color: rgba(255, 255, 255, 0.8);
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 55px;
+  box-shadow: none;
+}
+
+.fx-speed-btn:hover {
+  background: rgba(0, 0, 0, 0.6);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 1);
+  transform: translateY(-1px);
+}
+
+.fx-speed-btn.active {
+  background: rgba(92, 255, 212, 0.15);
+  border-color: rgba(92, 255, 212, 0.4);
+  color: rgba(92, 255, 212, 1);
+  box-shadow: 0 2px 8px rgba(92, 255, 212, 0.2);
+}
+
+/* Reverse */
+.fx-reverse-control {
+  margin-bottom: 16px;
+}
+
+.fx-reverse-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  padding: 10px 14px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+}
+
+.fx-reverse-label:hover {
+  background: rgba(0, 0, 0, 0.5);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.fx-reverse-checkbox {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.5);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.fx-reverse-checkbox:hover {
+  border-color: rgba(92, 255, 212, 0.4);
+  background: rgba(0, 0, 0, 0.6);
+  transform: scale(1.05);
+  box-shadow: 0 0 8px rgba(92, 255, 212, 0.2);
+}
+
+.fx-reverse-checkbox:checked {
+  background: linear-gradient(135deg, rgba(92, 255, 212, 0.25) 0%, rgba(61, 191, 160, 0.25) 100%);
+  border-color: rgba(92, 255, 212, 0.7);
+  box-shadow: 
+    0 0 12px rgba(92, 255, 212, 0.3),
+    inset 0 0 8px rgba(92, 255, 212, 0.1);
+}
+
+.fx-reverse-checkbox:checked:hover {
+  border-color: rgba(92, 255, 212, 0.9);
+  box-shadow: 
+    0 0 16px rgba(92, 255, 212, 0.4),
+    inset 0 0 10px rgba(92, 255, 212, 0.15);
+}
+
+.fx-reverse-checkbox:checked::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -60%) rotate(45deg);
+  width: 5px;
+  height: 10px;
+  border: 2.5px solid rgba(92, 255, 212, 1);
+  border-top: none;
+  border-left: none;
+  border-radius: 0 0 2px 0;
+  animation: checkmarkAppear 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fx-reverse-label:active .fx-reverse-checkbox {
+  transform: scale(0.92);
+}
+
+.fx-reverse-label:active .fx-reverse-checkbox:checked {
+  transform: scale(0.92);
+}
+
+@keyframes checkmarkAppear {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -60%) rotate(45deg) scale(0.5);
+  }
+  50% {
+    transform: translate(-50%, -60%) rotate(45deg) scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -60%) rotate(45deg) scale(1);
+  }
+}
+
+/* Стоп-кадр */
+.fx-freeze-control {
+  margin-bottom: 8px;
+}
+
+.fx-freeze-btn {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.5);
+  color: rgba(255, 255, 255, 0.9);
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.fx-freeze-btn:hover {
+  background: rgba(0, 0, 0, 0.7);
+  border-color: rgba(92, 255, 212, 0.3);
+  color: rgba(92, 255, 212, 1);
+  box-shadow: 0 2px 8px rgba(92, 255, 212, 0.15);
+  transform: translateY(-1px);
+}
+

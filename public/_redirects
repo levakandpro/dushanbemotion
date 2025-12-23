@@ -1,0 +1,3 @@
+# SPA fallback - все несуществующие пути отправляем на index.html
+/*    /index.html   200
+

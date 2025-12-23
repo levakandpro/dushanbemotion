@@ -1,0 +1,247 @@
+/* Глобальные стили для полноэкранного редактора */
+
+/* Импорт мобильных стилей - ДОЛЖЕН быть в начале */
+@import './editorV2-mobile.css';
+
+:root {
+  /* Базовый фон */
+  --dm-bg: #061410;
+  --dm-bg-soft: #071b15;
+  --dm-bg-softer: #0a1f1a;
+
+  /* Панели / блоки */
+  --dm-surface: #0a1f1a;
+  --dm-surface-soft: #0f2922;
+  --dm-surface-strong: #13332a;
+
+  /* Таймлайн / треки */
+  --dm-timeline-bg: rgba(7, 23, 17, 0.95);
+  --dm-track-bg: rgba(9, 28, 22, 0.9);
+  --dm-track-border: rgba(44, 94, 78, 0.5);
+
+  /* Текст */
+  --dm-text: #e6edea;
+  --dm-text-muted: #a0b3ac;
+  --dm-text-soft: #60756c;
+
+  /* Акценты */
+  --dm-accent: #3dbfa0;
+  --dm-accent-soft: rgba(61, 191, 160, 0.16);
+  --dm-accent-strong: rgba(61, 191, 160, 0.45);
+
+  /* Бордеры */
+  --dm-border-soft: rgba(42, 124, 105, 0.25);
+  --dm-border-strong: rgba(42, 124, 105, 0.5);
+
+  /* Состояния */
+  --dm-danger: #ff4b6a;
+  --dm-success: #38e28f;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.dm-root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* =============================================
+   АНИМАЦИИ ПЕРЕХОДОВ
+   ============================================= */
+
+/* Появление модального окна после сплэша */
+.editor-v2-modal-backdrop.dm-modal-enter .editor-v2-modal {
+  opacity: 0;
+  transform: scale(0.92) translateY(-10px);
+  filter: blur(8px);
+  transition: 
+    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.editor-v2-modal-backdrop.dm-modal-enter-active .editor-v2-modal {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  filter: blur(0px);
+}
+
+/* Появление редактора после создания проекта */
+.dm-editor-enter {
+  opacity: 0;
+  transform: scale(0.96);
+  filter: blur(10px) brightness(0.8);
+  transition: 
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dm-editor-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0px) brightness(1);
+}
+
+/* Дополнительное свечение при появлении */
+@keyframes editorRevealGlow {
+  0% {
+    box-shadow: 0 0 0 rgba(61, 191, 160, 0);
+  }
+  50% {
+    box-shadow: 0 0 60px rgba(61, 191, 160, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 0 rgba(61, 191, 160, 0);
+  }
+}
+
+/* Плавная анимация для всех переходов */
+@keyframes smoothReveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+    filter: blur(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0px);
+  }
+}
+
+/* =============================================
+   ОЧЕНЬ ТОНКИЙ СКРОЛЛ
+   ============================================= */
+
+/* Тонкий скролл для всех элементов редактора */
+.editor-v2-panel *::-webkit-scrollbar,
+.editor-v2-panel::-webkit-scrollbar,
+.dm-categories-scroll::-webkit-scrollbar,
+.dm-icons-grid-scroll::-webkit-scrollbar,
+.editor-v2-panel-host::-webkit-scrollbar {
+  width: 1px !important;
+  height: 1px !important;
+}
+
+.editor-v2-panel *::-webkit-scrollbar-track,
+.editor-v2-panel::-webkit-scrollbar-track,
+.dm-categories-scroll::-webkit-scrollbar-track,
+.dm-icons-grid-scroll::-webkit-scrollbar-track,
+.editor-v2-panel-host::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+.editor-v2-panel *::-webkit-scrollbar-thumb,
+.editor-v2-panel::-webkit-scrollbar-thumb,
+.dm-categories-scroll::-webkit-scrollbar-thumb,
+.dm-icons-grid-scroll::-webkit-scrollbar-thumb,
+.editor-v2-panel-host::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-radius: 0.5px !important;
+}
+
+.editor-v2-panel *::-webkit-scrollbar-thumb:hover,
+.editor-v2-panel::-webkit-scrollbar-thumb:hover,
+.dm-categories-scroll::-webkit-scrollbar-thumb:hover,
+.dm-icons-grid-scroll::-webkit-scrollbar-thumb:hover,
+.editor-v2-panel-host::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Firefox очень тонкий скролл */
+.editor-v2-panel,
+.editor-v2-panel *,
+.dm-categories-scroll,
+.dm-icons-grid-scroll,
+.editor-v2-panel-host {
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(255, 255, 255, 0.12) transparent !important;
+}
+
+/* =============================================
+   СТИЛИ ДЛЯ COLOR PICKER POPUP
+   ============================================= */
+
+/* Стили для кастомного color picker popup (для библиотек react-colorful, react-color и т.д.) */
+.dm-color-popup {
+  background: #0f1714 !important;
+  padding: 12px !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.45) !important;
+  border: 1px solid rgba(255,255,255,0.06) !important;
+}
+
+.dm-color-popup .react-colorful {
+  width: 200px !important;
+  height: 150px !important;
+}
+
+.dm-color-popup .react-colorful__saturation {
+  border-radius: 8px !important;
+  margin-bottom: 8px !important;
+}
+
+.dm-color-popup .react-colorful__hue {
+  border-radius: 6px !important;
+  height: 12px !important;
+}
+
+.dm-color-popup .react-colorful__pointer {
+  width: 16px !important;
+  height: 16px !important;
+  border: 2px solid #00e49b !important; /* фирменный бирюзовый DMOTION */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+.dm-color-popup .react-colorful__saturation-pointer {
+  border: 2px solid #00e49b !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+.dm-color-popup input {
+  background: #0c1210 !important;
+  color: #fff !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+  border-radius: 6px !important;
+}
+
+/* Стили для браузерного color picker input */
+input[type="color"],
+.dm-color-input {
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper,
+.dm-color-input::-webkit-color-swatch-wrapper {
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 4px !important;
+}
+
+input[type="color"]::-webkit-color-swatch,
+.dm-color-input::-webkit-color-swatch {
+  border: none !important;
+  border-radius: 4px !important;
+}
+
+/* Обертка для color picker */
+.dm-color-picker-wrapper {
+  position: relative;
+  display: inline-block;
+}

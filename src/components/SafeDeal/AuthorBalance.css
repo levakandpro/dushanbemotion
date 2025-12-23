@@ -1,0 +1,375 @@
+/* src/components/SafeDeal/AuthorBalance.css */
+
+.author-balance {
+  min-height: 100vh;
+  background: #f5f5f7;
+  padding: 24px;
+}
+
+.author-balance--loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #86868b;
+}
+
+.author-balance__header {
+  max-width: 800px;
+  margin: 0 auto 24px;
+}
+
+.author-balance__header h1 {
+  margin: 0 0 8px;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.author-balance__header p {
+  margin: 0;
+  color: #86868b;
+  font-size: 15px;
+}
+
+.author-balance__cards {
+  max-width: 800px;
+  margin: 0 auto 24px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 16px;
+}
+
+.author-balance__card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.author-balance__card--main {
+  background: linear-gradient(135deg, #007aff 0%, #5856d6 100%);
+  color: #fff;
+}
+
+.author-balance__card-label {
+  display: block;
+  font-size: 13px;
+  opacity: 0.8;
+  margin-bottom: 8px;
+}
+
+.author-balance__card--main .author-balance__card-label {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.author-balance__card-value {
+  display: block;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.author-balance__card-value--success {
+  color: #30d158;
+}
+
+.author-balance__payout-btn {
+  margin-top: 16px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.author-balance__payout-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.author-balance__info {
+  max-width: 800px;
+  margin: 0 auto 24px;
+  display: flex;
+  gap: 14px;
+  padding: 16px 20px;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.author-balance__info span {
+  font-size: 24px;
+}
+
+.author-balance__info strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.author-balance__info p {
+  margin: 0;
+  font-size: 13px;
+  color: #666;
+}
+
+.author-balance__section {
+  max-width: 800px;
+  margin: 0 auto 24px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.author-balance__section h2 {
+  margin: 0 0 20px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.author-balance__payouts {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.author-balance__payout {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: #f9f9f9;
+  border-radius: 12px;
+}
+
+.author-balance__payout-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.author-balance__payout-amount {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.author-balance__payout-status {
+  padding: 4px 10px;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.author-balance__payout-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 13px;
+  color: #86868b;
+}
+
+.author-balance__transactions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.author-balance__tx {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.author-balance__tx:last-child {
+  border-bottom: none;
+}
+
+.author-balance__tx-icon {
+  font-size: 20px;
+}
+
+.author-balance__tx-info {
+  flex: 1;
+}
+
+.author-balance__tx-desc {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.author-balance__tx-date {
+  font-size: 12px;
+  color: #86868b;
+}
+
+.author-balance__tx-amount {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.author-balance__tx-amount.positive {
+  color: #30d158;
+}
+
+.author-balance__tx-amount.negative {
+  color: #ff3b30;
+}
+
+.author-balance__empty {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 60px 20px;
+  background: #fff;
+  border-radius: 16px;
+  color: #86868b;
+}
+
+.author-balance__empty span {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.author-balance__empty p {
+  margin: 0 0 8px;
+  font-size: 18px;
+  color: #1d1d1f;
+}
+
+/* Modal */
+.author-balance__modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.author-balance__modal {
+  background: #fff;
+  border-radius: 20px;
+  padding: 32px;
+  max-width: 400px;
+  width: 100%;
+}
+
+.author-balance__modal h3 {
+  margin: 0 0 24px;
+  font-size: 22px;
+  text-align: center;
+}
+
+.author-balance__modal-amount {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: #f5f5f7;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.author-balance__modal-amount span {
+  font-size: 14px;
+  color: #666;
+}
+
+.author-balance__modal-amount strong {
+  font-size: 24px;
+  font-weight: 700;
+  color: #30d158;
+}
+
+.author-balance__modal-field {
+  margin-bottom: 16px;
+}
+
+.author-balance__modal-field label {
+  display: block;
+  font-size: 13px;
+  color: #86868b;
+  margin-bottom: 8px;
+}
+
+.author-balance__modal-methods {
+  display: flex;
+  gap: 8px;
+}
+
+.author-balance__modal-methods button {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  background: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.author-balance__modal-methods button.active {
+  background: #007aff;
+  color: #fff;
+  border-color: #007aff;
+}
+
+.author-balance__modal-field textarea {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  font-size: 14px;
+  resize: none;
+  font-family: inherit;
+}
+
+.author-balance__modal-warning {
+  padding: 12px 14px;
+  background: #fff8e1;
+  border-radius: 10px;
+  font-size: 13px;
+  color: #f57c00;
+  margin-bottom: 20px;
+}
+
+.author-balance__modal-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.author-balance__modal-actions button {
+  flex: 1;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  background: #007aff;
+  color: #fff;
+}
+
+.author-balance__modal-actions button:disabled {
+  opacity: 0.5;
+}
+
+.author-balance__modal-actions button.secondary {
+  background: #f5f5f7;
+  color: #1d1d1f;
+}
+
+@media (max-width: 600px) {
+  .author-balance__cards {
+    grid-template-columns: 1fr;
+  }
+}
+

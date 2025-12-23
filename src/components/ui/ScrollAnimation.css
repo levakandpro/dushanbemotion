@@ -1,0 +1,95 @@
+/* Scroll Reveal Animations */
+.scroll-reveal {
+  opacity: 0;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.scroll-reveal.is-visible {
+  opacity: 1;
+}
+
+/* Fade Up */
+.scroll-reveal--fadeUp {
+  transform: translateY(30px);
+}
+.scroll-reveal--fadeUp.is-visible {
+  transform: translateY(0);
+}
+
+/* Fade Down */
+.scroll-reveal--fadeDown {
+  transform: translateY(-30px);
+}
+.scroll-reveal--fadeDown.is-visible {
+  transform: translateY(0);
+}
+
+/* Fade Left */
+.scroll-reveal--fadeLeft {
+  transform: translateX(30px);
+}
+.scroll-reveal--fadeLeft.is-visible {
+  transform: translateX(0);
+}
+
+/* Fade Right */
+.scroll-reveal--fadeRight {
+  transform: translateX(-30px);
+}
+.scroll-reveal--fadeRight.is-visible {
+  transform: translateX(0);
+}
+
+/* Scale Up */
+.scroll-reveal--scaleUp {
+  transform: scale(0.9);
+}
+.scroll-reveal--scaleUp.is-visible {
+  transform: scale(1);
+}
+
+/* Zoom In */
+.scroll-reveal--zoomIn {
+  transform: scale(0.5);
+}
+.scroll-reveal--zoomIn.is-visible {
+  transform: scale(1);
+}
+
+/* Flip */
+.scroll-reveal--flip {
+  transform: perspective(500px) rotateX(90deg);
+}
+.scroll-reveal--flip.is-visible {
+  transform: perspective(500px) rotateX(0);
+}
+
+/* Slide Up */
+.scroll-reveal--slideUp {
+  transform: translateY(100%);
+}
+.scroll-reveal--slideUp.is-visible {
+  transform: translateY(0);
+}
+
+/* Bounce */
+.scroll-reveal--bounce.is-visible {
+  animation: bounceIn 0.6s ease;
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

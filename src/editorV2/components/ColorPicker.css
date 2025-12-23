@@ -1,0 +1,122 @@
+/* Основной контейнер пипетки */
+.dm-color-picker-root {
+  /* Фикс: принудительно выносим окно влево от панели настроек */
+  position: absolute;
+  right: calc(100% + 12px); 
+  top: 0;
+  
+  width: 230px;
+  background: rgba(13, 13, 17, 0.85); /* Глубокий темный */
+  backdrop-filter: blur(20px) saturate(160%); /* Эффект матового стекла */
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  z-index: 10005;
+  animation: pickerSlideIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes pickerSlideIn {
+  from { opacity: 0; transform: translateX(10px) scale(0.95); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+/* Поле выбора цвета */
+.dm-color-main-field {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  border-radius: 8px;
+  cursor: crosshair;
+  margin-bottom: 12px;
+  overflow: hidden;
+  /* Градиенты для насыщенности и яркости */
+  background-image: 
+    linear-gradient(to bottom, transparent, #000),
+    linear-gradient(to right, #fff, transparent);
+}
+
+/* Круг-маркер */
+.dm-color-cursor {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.5);
+  pointer-events: none;
+}
+
+/* Полоса спектра (Hue) */
+.dm-hue-slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(to right, #f00 0%, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%);
+  outline: none;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+
+.dm-hue-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border: 2px solid #111;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+
+/* Футер: HEX и Пипетка */
+.dm-color-footer {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.dm-hex-display {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+}
+
+.dm-hash { color: #444; margin-right: 4px; font-weight: 700; font-family: monospace; }
+
+.dm-hex-display input {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-family: 'Inter', monospace;
+  font-size: 12px;
+  outline: none;
+  width: 100%;
+  text-transform: uppercase;
+}
+
+.dm-eyedropper-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #888;
+  border-radius: 6px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.dm-eyedropper-btn:hover {
+  background: #00ffa2; /* Твой фирменный зеленый */
+  color: #000;
+  border-color: #00ffa2;
+}

@@ -1,0 +1,67 @@
+﻿# Cloudflare Worker Configuration for Stickers + Frames (Pixabay/Pexels proxy)
+
+name = "stickers-manifest"
+main = "src/stickers/worker/index.js"
+compatibility_date = "2024-01-01"
+
+# Р•СЃР»Рё РІРѕСЂРєРµСЂ РёСЃРїРѕР»СЊР·СѓРµС‚ СЃРѕРІСЂРµРјРµРЅРЅС‹Рµ С„РёС‡Рё (Node.js API Рё С‚.Рї.),
+# РјРѕР¶РЅРѕ РІРєР»СЋС‡РёС‚СЊ СЃРѕРІРјРµСЃС‚РёРјРѕСЃС‚СЊ:
+# compatibility_flags = ["nodejs_compat"]
+
+# Telegram secrets:
+#   wrangler secret put TELEGRAM_BOT_TOKEN --name stickers-manifest
+# Optional (defaults to 776344290):
+#   wrangler secret put TELEGRAM_CHAT_ID --name stickers-manifest
+
+# Р-Р°РїСѓСЃРє РЅР° *.workers.dev (РґР»СЏ С‚РµСЃС‚Р°)
+workers_dev = true
+
+# R2 Bucket Bindings
+[[r2_buckets]]
+binding = "STICKERS_BUCKET"
+bucket_name = "stickers"
+
+[[r2_buckets]]
+binding = "IMAGES_BUCKET"
+bucket_name = "images"
+
+[[r2_buckets]]
+binding = "SHARES_BUCKET"
+bucket_name = "shares"
+
+[[r2_buckets]]
+binding = "SCENES_BUCKET"
+bucket_name = "foni"
+
+[[r2_buckets]]
+binding = "MUSIC_BUCKET"
+bucket_name = "music"
+
+[[r2_buckets]]
+binding = "COVERS_BUCKET"
+bucket_name = "oblojki"
+
+[[r2_buckets]]
+binding = "FUTAJ_BUCKET"
+bucket_name = "futaj"
+
+# Environment Variables (РќР• СЃРµРєСЂРµС‚С‹)
+[vars]
+STICKERS_PUBLIC_BASE_URL = "https://pub-78c4a70555844788bca12cc4cee974d4.r2.dev"
+SCENES_PUBLIC_BASE_URL = "https://pub-b69ef7c5697c44e2ab311a83cae5c18a.r2.dev"
+MUSIC_PUBLIC_BASE_URL = ""
+COVERS_PUBLIC_BASE_URL = "https://pub-75e6eb0c8af547fcb116b49df5bc7264.r2.dev"
+
+# РџСЂР°РІРёР»СЊРЅС‹Р№ РїСѓР±Р»РёС‡РЅС‹Р№ URL R2 Р‘Р•Р- /stickers вЂ” РїСЂРµС„РёРєСЃ РґРѕР±Р°РІР»СЏРµС‚СЃСЏ РёР· РєР»СЋС‡Р° РѕР±СЉРµРєС‚Р°.
+# РС‚РѕРіРѕРІС‹Р№ URL:
+#   https://pub-78c4a70555844788bca12cc4cee974d4.r2.dev/stickers/animals/file.svg
+
+# Pexels API Key вЂ” Р”РћР‘РђР’Р›РЇР•РўРЎРЇ РљРђРљ SECRET, Р° РќР• СЃСЋРґР°:
+#   wrangler secret put PEXELS_API_KEY
+#
+# Pixabay API Key вЂ” РўРћР–Р• SECRET:
+#   wrangler secret put PIXABAY_API_KEY
+#
+# РљР»СЋС‡Рё СЃСЋРґР° РќР• Р’РџРРЎР«Р’РђР•Рњ, С‚РѕР»СЊРєРѕ С‡РµСЂРµР·:
+#   npx wrangler secret put PEXELS_API_KEY
+#   npx wrangler secret put PIXABAY_API_KEY

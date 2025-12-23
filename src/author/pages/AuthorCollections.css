@@ -1,0 +1,101 @@
+@font-face {
+  font-family: 'Robofan';
+  src: url('../editorV2/fonts/Robofan.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.au-collections {
+  display: flex;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.au-collections__sidebar {
+  flex: 0 0 240px;
+  min-width: 240px;
+}
+
+.au-collections__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.au-collections__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  color: rgba(230, 237, 234, 0.7);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+  width: 100%;
+}
+
+.au-collections__item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: rgba(230, 237, 234, 0.9);
+}
+
+.au-collections__item.is-active {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: rgba(230, 237, 234, 1);
+}
+
+.au-collections__itemName {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.au-collections__itemBadge {
+  font-size: 11px;
+  padding: 2px 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  margin-left: 8px;
+  color: rgba(230, 237, 234, 0.6);
+}
+
+.au-collections__empty {
+  padding: 24px;
+  text-align: center;
+  color: rgba(230, 237, 234, 0.5);
+  font-size: 14px;
+}
+
+.au-collections__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.au-collections__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.au-collections__title {
+  font-size: 24px;
+  font-weight: 600;
+  color: rgba(230, 237, 234, 1);
+  margin: 0;
+}
+
+.au-collections__count {
+  font-size: 14px;
+  color: rgba(230, 237, 234, 0.6);
+}
+
+.au-workCard__footer {
+  background: transparent !important;
+}
+

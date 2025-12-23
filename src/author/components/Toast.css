@@ -1,0 +1,48 @@
+/* ================= TOAST NOTIFICATIONS ================= */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 999999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.toast {
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(230,237,234,.95);
+  box-shadow: 0 4px 20px rgba(0,0,0,.4);
+  animation: toastSlideIn .2s ease-out;
+  pointer-events: auto;
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.toast--success {
+  background: linear-gradient(135deg, #1a3a30 0%, #1a2a25 100%);
+  border: 1px solid rgba(61,191,160,.3);
+}
+
+.toast--error {
+  background: linear-gradient(135deg, #3a1a1a 0%, #2a1a1a 100%);
+  border: 1px solid rgba(229,115,115,.3);
+}
+
+.toast--info {
+  background: linear-gradient(135deg, #1a2a3a 0%, #1a2530 100%);
+  border: 1px solid rgba(100,150,220,.3);
+}

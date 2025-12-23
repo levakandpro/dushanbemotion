@@ -1,0 +1,110 @@
+/* Hearts Container */
+.hearts-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 999999;
+  overflow: visible;
+}
+
+/* Flying Heart */
+.flying-heart {
+  position: fixed;
+  pointer-events: none;
+  animation: flyHeart var(--duration, 1s) ease-out forwards;
+  transform-origin: center;
+  z-index: 999999;
+}
+
+.flying-heart svg {
+  width: 24px;
+  height: 24px;
+}
+
+@keyframes flyHeart {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.2);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(var(--scale, 1.2));
+  }
+  100% {
+    opacity: 0;
+    transform: translate(
+      calc(-50% + var(--tx, 0px)),
+      calc(-50% + var(--ty, 0px))
+    ) scale(calc(var(--scale, 1) * 0.5)) rotate(var(--rotate, 0deg));
+  }
+}
+
+/* Like Button */
+.like-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 20px;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.like-btn:hover {
+  background: rgba(255, 100, 100, 0.1);
+}
+
+.like-btn__icon {
+  font-size: 18px;
+  transition: transform 0.2s ease;
+}
+
+.like-btn:hover .like-btn__icon {
+  transform: scale(1.2);
+}
+
+.like-btn.is-liked .like-btn__icon {
+  animation: heartPop 0.3s ease;
+}
+
+@keyframes heartPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+
+.like-btn__count {
+  color: #888;
+  font-size: 12px;
+}
+
+.like-btn.is-liked .like-btn__count {
+  color: #ff6b6b;
+}
+
+/* Size variants */
+.like-btn--small {
+  padding: 2px 4px;
+}
+.like-btn--small .like-btn__icon {
+  font-size: 14px;
+}
+.like-btn--small .like-btn__count {
+  font-size: 10px;
+}
+
+.like-btn--large {
+  padding: 8px 16px;
+}
+.like-btn--large .like-btn__icon {
+  font-size: 24px;
+}
+.like-btn--large .like-btn__count {
+  font-size: 16px;
+}

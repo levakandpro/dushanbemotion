@@ -1,0 +1,70 @@
+/* src/shared/components/InfoTooltip.css */
+
+.info-tooltip-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.info-tooltip-icon {
+  width: 14px;
+  height: 14px;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: help;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+
+.info-tooltip-wrapper:hover .info-tooltip-icon {
+  color: rgba(92, 255, 212, 0.8);
+}
+
+.info-tooltip {
+  position: absolute;
+  left: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 4px 8px;
+  background: rgba(5, 13, 22, 0.98);
+  border: 1px solid rgba(92, 255, 212, 0.3);
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 11px;
+  line-height: 1.3;
+  white-space: nowrap;
+  z-index: 10000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  opacity: 1;
+  visibility: visible;
+}
+
+.info-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-right: 4px solid rgba(92, 255, 212, 0.3);
+}
+
+.info-tooltip::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right: 5px solid rgba(5, 13, 22, 0.98);
+  margin-right: -1px;
+}
+

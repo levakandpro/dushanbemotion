@@ -1,0 +1,191 @@
+.au-orders {
+  padding: 0;
+}
+
+.au-orders__badge {
+  background: #00e0ff;
+  color: #000;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.au-orders__filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.au-orders__filters button {
+  padding: 10px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(230, 237, 234, 0.6);
+  font-size: 13px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.au-orders__filters button:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+.au-orders__filters button.active {
+  background: rgba(0, 224, 255, 0.15);
+  border-color: rgba(0, 224, 255, 0.3);
+  color: #00e0ff;
+}
+
+.au-orders__loading {
+  padding: 60px;
+  text-align: center;
+  color: rgba(230, 237, 234, 0.5);
+}
+
+.au-orders__empty {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.au-orders__empty-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.au-orders__empty p {
+  font-size: 16px;
+  color: rgba(230, 237, 234, 0.7);
+  margin: 0 0 8px;
+}
+
+.au-orders__empty span {
+  font-size: 13px;
+  color: rgba(230, 237, 234, 0.45);
+}
+
+.au-orders__list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.au-orders__card {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.15s;
+}
+
+.au-orders__card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(0, 224, 255, 0.2);
+}
+
+.au-orders__card-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.au-orders__card-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.au-orders__card-client {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: rgba(230, 237, 234, 0.6);
+  margin-bottom: 6px;
+}
+
+.au-orders__card-avatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.au-orders__card-message {
+  font-size: 12px;
+  color: rgba(230, 237, 234, 0.45);
+  font-style: italic;
+  margin-top: 8px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+  max-width: 400px;
+}
+
+.au-orders__card-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  margin-left: 16px;
+}
+
+.au-orders__card-price {
+  text-align: right;
+}
+
+.au-orders__card-earnings {
+  font-size: 16px;
+  font-weight: 700;
+  color: #4caf50;
+}
+
+.au-orders__card-price small {
+  display: block;
+  font-size: 10px;
+  color: rgba(230, 237, 234, 0.45);
+}
+
+.au-orders__card-status {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.au-orders__card-date {
+  font-size: 11px;
+  color: rgba(230, 237, 234, 0.4);
+}
+
+.au-orders__info {
+  margin-top: 24px;
+}
+
+.au-orders__info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.au-orders__info-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: rgba(230, 237, 234, 0.7);
+}
+
+.au-orders__info-item span:first-child {
+  font-size: 18px;
+}
+

@@ -1,0 +1,121 @@
+/* ================= SERVICES PAGE ================= */
+.au-services-loading {
+  padding: 40px;
+  text-align: center;
+  color: rgba(230,237,234,.5);
+  font-size: 14px;
+}
+
+/* Services list */
+.au-services-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Service card */
+.au-service-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px 20px;
+  background: rgba(0,0,0,.14);
+  border: 1px solid rgba(42,124,105,.1);
+  border-radius: 12px;
+  transition: background .15s, border-color .15s;
+}
+.au-service-card:hover {
+  background: rgba(61,191,160,.04);
+  border-color: rgba(61,191,160,.18);
+}
+
+.au-service-card__main {
+  flex: 1;
+  min-width: 0;
+}
+.au-service-card__title {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(230,237,234,.92);
+  margin-bottom: 4px;
+}
+.au-service-card__desc {
+  font-size: 12px;
+  color: rgba(230,237,234,.5);
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+.au-service-card__meta {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+}
+.au-service-card__price {
+  font-weight: 700;
+  color: #3dbfa0;
+}
+.au-service-card__delivery {
+  color: rgba(230,237,234,.5);
+}
+
+.au-service-card__side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+.au-service-card__menu {
+  position: relative;
+}
+
+/* Service status */
+.au-service-status {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .3px;
+}
+.au-service-status.is-active {
+  background: rgba(61,191,160,.15);
+  color: #3dbfa0;
+}
+.au-service-status.is-paused {
+  background: rgba(255,200,50,.15);
+  color: rgba(255,200,50,.9);
+}
+.au-service-status.is-archived {
+  background: rgba(230,237,234,.08);
+  color: rgba(230,237,234,.4);
+}
+.au-service-status.is-draft {
+  background: rgba(100,150,200,.15);
+  color: rgba(150,180,220,.9);
+}
+
+/* Empty state */
+.au-services-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+.au-services-empty__icon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  opacity: .5;
+  margin-bottom: 16px;
+}
+.au-services-empty__text {
+  font-size: 14px;
+  color: rgba(230,237,234,.5);
+  max-width: 300px;
+  margin: 0 0 20px;
+  line-height: 1.5;
+}

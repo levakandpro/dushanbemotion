@@ -1,0 +1,137 @@
+/* src/editorV2/components/CollectionModal.css */
+
+.dm-modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(15px);
+  z-index: 10001;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+}
+
+.dm-modal-card {
+  background: #04120d; 
+  width: 100%;
+  max-width: 360px;
+  max-height: 85vh;
+  border-radius: 28px;
+  border: 1px solid rgba(0, 255, 162, 0.2);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.9);
+  position: relative;
+}
+
+/* ШАПКА */
+.dm-modal-header {
+  padding: 24px;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(255,255,255,0.02);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.dm-header-left { display: flex; align-items: center; gap: 12px; }
+.dm-header-title { display: flex; align-items: center; gap: 10px; }
+.dm-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 10px var(--accent); }
+.dm-header-title h3 { color: #fff; font-size: 12px; letter-spacing: 2.5px; margin: 0; font-weight: 800; }
+
+/* КНОПКИ НАВИГАЦИИ (Крестик и Стрелка) */
+.dm-nav-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.6);
+  width: 34px; height: 34px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dm-close-btn:hover {
+  background: rgba(255, 71, 87, 0.15);
+  color: #ff4757; border-color: rgba(255, 71, 87, 0.4);
+  transform: rotate(90deg);
+}
+
+.dm-back-btn:hover {
+  background: rgba(0, 255, 162, 0.1);
+  color: var(--accent); border-color: rgba(0, 255, 162, 0.4);
+  transform: translateX(-4px);
+}
+
+/* СПИСОК */
+.dm-modal-body { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+.dm-collections-scroll-area {
+  padding: 16px;
+  overflow-y: auto;
+  max-height: 380px;
+}
+
+.dm-collections-scroll-area::-webkit-scrollbar { width: 4px; }
+.dm-collections-scroll-area::-webkit-scrollbar-thumb { background: rgba(0, 255, 162, 0.15); border-radius: 10px; }
+
+.dm-collection-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 16px; border-radius: 14px; cursor: pointer;
+  margin-bottom: 8px; background: rgba(255,255,255,0.02);
+  border: 1px solid transparent; transition: 0.2s;
+}
+
+.dm-collection-item:hover {
+  background: rgba(0, 255, 162, 0.06);
+  border-color: rgba(0, 255, 162, 0.1);
+  transform: scale(1.01);
+}
+
+/* СИСТЕМНАЯ ПАПКА */
+.dm-system-col {
+  background: rgba(0, 255, 162, 0.04);
+  border: 1px solid rgba(0, 255, 162, 0.2);
+}
+
+.dm-icon-star { color: #ffca28; font-size: 18px; filter: drop-shadow(0 0 6px rgba(255, 202, 40, 0.4)); margin-right: 10px; }
+.dm-icon-folder { font-size: 18px; margin-right: 10px; opacity: 0.6; }
+.dm-col-name { color: rgba(255,255,255,0.9); font-size: 14px; font-weight: 500; }
+.dm-badge { font-size: 8px; background: var(--accent); color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 900; }
+
+/* ПОДВАЛ */
+.dm-modal-footer {
+  padding: 18px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  background: rgba(0,0,0,0.3);
+}
+
+.dm-add-new-btn {
+  width: 100%; background: rgba(0, 255, 162, 0.03);
+  border: 1px dashed rgba(0, 255, 162, 0.3); padding: 14px;
+  border-radius: 16px; color: var(--accent);
+  font-size: 10px; font-weight: 800; letter-spacing: 1.5px; cursor: pointer; transition: 0.3s;
+}
+
+.dm-add-new-btn:hover { background: var(--accent); color: #000; border-style: solid; box-shadow: 0 0 20px rgba(0, 255, 162, 0.2); }
+
+/* ФОРМА СОЗДАНИЯ */
+.dm-create-form { padding: 30px 20px; }
+.dm-create-form input {
+  width: 100%; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
+  padding: 14px; border-radius: 12px; color: #fff; font-size: 14px; margin-bottom: 20px;
+}
+.dm-create-form input:focus { outline: none; border-color: var(--accent); background: rgba(0, 255, 162, 0.02); }
+
+.dm-form-actions { display: flex; gap: 10px; }
+.dm-form-actions button { flex: 1; padding: 12px; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 11px; border: none; }
+.dm-btn-cancel { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.5); }
+.dm-btn-primary { background: var(--accent); color: #000; }
+
+/* TOAST */
+.dm-mini-toast {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: var(--accent); color: #000; padding: 14px;
+  text-align: center; font-weight: 900; font-size: 11px; letter-spacing: 1px;
+}
+
+.dm-loader-ring {
+  width: 40px; height: 40px; border: 3px solid rgba(0, 255, 162, 0.1);
+  border-top-color: var(--accent); border-radius: 50%; animation: dmSpin 1s linear infinite;
+}
+@keyframes dmSpin { to { transform: rotate(360deg); } }
