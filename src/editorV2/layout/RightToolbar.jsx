@@ -1,5 +1,7 @@
 ﻿// src/editorV2/layout/RightToolbar.jsx
 import React from 'react'
+
+// Импорты иконок из локальной директории assets
 import stic2Icon from '../../assets/stic2.svg'
 import musicNoteIcon from '../../assets/iconmusic/music-note-svgrepo-com.svg'
 import bgIcon from '../../assets/fon.svg'
