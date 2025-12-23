@@ -1965,4 +1965,47 @@
   .editor-v2-toolbar-scroll {
     scroll-behavior: smooth !important;
   }
+
+  /* ========== АНИМАЦИИ - МИРОВОЙ УРОВЕНЬ ========== */
+  
+  @keyframes slideUp {
+    from {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideDown {
+    from {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+  }
+
+  /* Плавное появление панелей */
+  .mobile-panel {
+    animation: slideUp 0.3s cubic-bezier(0.32, 0.72, 0, 1) !important;
+  }
+
+  /* Pull-to-close индикатор */
+  .mobile-panel::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+    z-index: 10000002;
+  }
 }

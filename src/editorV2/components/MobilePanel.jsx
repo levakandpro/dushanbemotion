@@ -7,19 +7,59 @@ import { useIsMobile } from '../../hooks/useMobileGestures'
 
 export default function MobilePanel({ isOpen, onClose, title, children, headerContent }) {
   const isMobile = useIsMobile()
+  const [pullDistance, setPullDistance] = React.useState(0)
+  const startY = React.useRef(0)
+  const isPulling = React.useRef(false)
+  
+  // Pull-to-close жест
+  const handleTouchStart = (e) => {
+    const touch = e.touches[0]
+    startY.current = touch.clientY
+    isPulling.current = true
+  }
+  
+  const handleTouchMove = (e) => {
+    if (!isPulling.current) return
+    const touch = e.touches[0]
+    const delta = touch.clientY - startY.current
+    // Только если тянем вниз и в начале панели
+    if (delta > 0 && e.target.scrollTop === 0) {
+      setPullDistance(Math.min(delta, 200))
+      e.preventDefault()
+    }
+  }
+  
+  const handleTouchEnd = () => {
+    isPulling.current = false
+    // Если потянули больше 100px - закрываем
+    if (pullDistance > 100) {
+      onClose()
+    }
+    setPullDistance(0)
+  }
   
   if (!isMobile || !isOpen) return null
 
   return (
-    <div className="mobile-panel" style={{
-      position: 'fixed',
-      inset: 0,
-      zIndex: 9999999,
-      display: 'flex',
-      flexDirection: 'column',
-      background: '#080a0c',
-      overflow: 'hidden',
-    }}>
+    <div 
+      className="mobile-panel" 
+      style={{
+        position: 'fixed',
+        inset: 0,
+        zIndex: 9999999,
+        display: 'flex',
+        flexDirection: 'column',
+        background: '#080a0c',
+        overflow: 'hidden',
+        animation: 'slideUp 0.3s cubic-bezier(0.32, 0.72, 0, 1)',
+        transform: `translateY(${pullDistance}px)`,
+        opacity: pullDistance > 50 ? 1 - (pullDistance / 200) : 1,
+        transition: pullDistance === 0 ? 'transform 0.3s, opacity 0.3s' : 'none',
+      }}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
       {/* Header всегда: кнопка назад в канвас */}
       <div style={{
         display: 'flex',
