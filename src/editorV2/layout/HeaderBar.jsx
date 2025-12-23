@@ -1,6 +1,7 @@
 ﻿import React, { useRef, useEffect, useState } from 'react'
 import { useNavigate, Link, NavLink } from 'react-router-dom'
-import LogoFiol from '../../assets/icons/logofiol.svg'
+// Прямой URL из public/ для стабильности
+const LogoFiol = '/logofiol.svg'
 import LionIcon from '../../assets/lion.svg'
 import { exportCanvas } from '../utils/canvasExport'
 import { getUserProfile, getCurrentUser } from '../../services/userService'
