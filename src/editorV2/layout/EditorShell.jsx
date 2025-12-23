@@ -391,11 +391,11 @@ export default function EditorShell({
   }, []);
   
   // ======== SITE STATS (реальные счётчики) ========
-  // Начальные значения НЕ 0 для предотвращения "пустого" UI
+  // Начальные значения - будут обновлены из БД
   const [siteStats, setSiteStats] = React.useState({
-    backgrounds: 15000,
-    videos: 3500,
-    users: 500,
+    backgrounds: 0,
+    videos: 0,
+    users: 0,
     online: 1
   })
   

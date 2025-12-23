@@ -9,7 +9,7 @@ import { supabase } from '../lib/supabaseClient'
 
 // Кэш последних успешных значений (чтобы не показывать 0 при ошибке)
 let statsCache = {
-  users: 500,      // fallback значение
+  users: 0,        // будет обновлено из БД
   online: 1,       // минимум 1
   backgrounds: 0,
   videos: 0,

@@ -30,8 +30,8 @@ export default function HeaderBar({
   const [isMusicPlaying, setIsMusicPlaying] = useState(false)
   const [isPremium, setIsPremium] = useState(false)
   const [isExporting, setIsExporting] = useState(false)
-  // Начальные значения НЕ 0, чтобы не показывать пустоту при загрузке
-  const [siteStats, setSiteStats] = useState({ users: 500, online: 1 })
+  // Начальные значения - будут обновлены из БД
+  const [siteStats, setSiteStats] = useState({ users: 0, online: 1 })
 
   // Проверяем PREMIUM статус пользователя
   useEffect(() => {
