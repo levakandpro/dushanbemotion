@@ -6,6 +6,7 @@ import { createStickerClip } from '../timeline/stickers/stickerTimelineState';
 import { makeShuffleSeed, stableShuffle } from '../utils/stableShuffle';
 import CollectionModal from '../components/CollectionModal';
 import CollabModal from '../components/CollabModal';
+import SwipeableGallery from '../components/SwipeableGallery';
 
 // Функция для получения размера канваса
 function getBaseFrameSize() {
@@ -129,6 +130,25 @@ const BACKGROUND_CATEGORIES_MAP = {
   bardak: "Бардак",
 };
 
+// Массив категорий для мобильных (горизонтальный скролл)
+const BACKGROUND_CATEGORIES = [
+  { label: "Люди", key: "people" },
+  { label: "Дастархан", key: "food" },
+  { label: "Животные", key: "animals" },
+  { label: "Природа", key: "nature" },
+  { label: "Культура", key: "culture" },
+  { label: "Арт", key: "illustrations" },
+  { label: "Текстуры", key: "textures" },
+  { label: "Наследие", key: "architecture" },
+  { label: "21 Век", key: "modern" },
+  { label: "Флаги", key: "flags" },
+  { label: "Рынок", key: "fo" },
+  { label: "Спорт", key: "sport" },
+  { label: "Музыка", key: "music" },
+  { label: "Любовь", key: "love" },
+  { label: "Бардак", key: "bardak" },
+];
+
 export default function BackgroundPanel({ project, onChangeProject, activeCategory = 'people', onPrefetchCategory, editorState }) {
   const toast = useToast()
   const loadMenuRef = useRef(null);
@@ -226,10 +246,13 @@ export default function BackgroundPanel({ project, onChangeProject, activeCatego
       const workerUrl = import.meta.env.VITE_WORKER_URL || 'https://stickers-manifest.natopchane.workers.dev';
       // Для мобильных используем папку mob/
       const isMobile = window.innerWidth <= 768;
+      
+      // ВАЖНО: для мобильных НЕ меняем category, Worker сам должен понимать структуру папок
       const categoryPath = isMobile ? `mob/${category}` : category;
       const apiUrl = `${workerUrl}/api/scenes?category=${encodeURIComponent(categoryPath)}`;
       
-      console.log('🎨 Fetching from:', apiUrl, isMobile ? '(MOBILE)' : '(DESKTOP)');
+      console.log('🎨 [DEBUG] Fetching:', apiUrl);
+      console.log('🎨 [DEBUG] isMobile:', isMobile, 'category:', category, 'categoryPath:', categoryPath);
       const response = await fetch(apiUrl, {
         signal: abortController.signal,
         // Нам важно быстро видеть новые добавления - не полагаемся на HTTP-кэш
@@ -454,17 +477,46 @@ export default function BackgroundPanel({ project, onChangeProject, activeCatego
         0
       ) + 1;
 
+      // Определяем, мобильный ли это фон (из папки mob/)
+      const isMobileBg = scene.url && scene.url.includes('/mob/');
+      
+      // Рассчитываем размеры для заполнения канваса
+      let bgWidth = frameWidth;
+      let bgHeight = frameHeight;
+      let bgX = 0;
+      let bgY = 0;
+      
+      if (isMobileBg) {
+        // Мобильные фоны - вертикальные 9:16
+        // Вычисляем масштаб чтобы заполнить канвас полностью
+        const imageAspect = 9 / 16; // 0.5625
+        const frameAspect = frameWidth / frameHeight;
+        
+        if (frameAspect > imageAspect) {
+          // Канвас шире чем изображение - масштабируем по ширине
+          bgWidth = frameWidth;
+          bgHeight = frameWidth / imageAspect;
+          bgX = 0;
+          bgY = (frameHeight - bgHeight) / 2;
+        } else {
+          // Канвас уже или равен - масштабируем по высоте
+          bgHeight = frameHeight;
+          bgWidth = frameHeight * imageAspect;
+          bgX = (frameWidth - bgWidth) / 2;
+          bgY = 0;
+        }
+      }
+      
       const newSticker = {
         id: `img_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         type: 'image',
         imageUrl,
         fileName: scene.fileName || scene.name || 'image',
-        x: 50,
-        y: 50,
-        // По умолчанию кладём фото как "cover" на весь кадр
-        width: frameWidth,
-        height: frameHeight,
-        fit: 'cover',
+        x: bgX,
+        y: bgY,
+        width: bgWidth,
+        height: bgHeight,
+        fit: 'cover', // Всегда cover - заполняет область полностью
         rotation: 0,
         flipX: false,
         flipY: false,
@@ -1323,17 +1375,38 @@ export default function BackgroundPanel({ project, onChangeProject, activeCatego
           )}
           
           {galleryState === "ready" && (
-            <div className="dm-backgrounds-grid">
-              <div 
-                className="dm-backgrounds-grid-items"
-                style={{
-                  gridTemplateColumns: gridColumns === 1 
-                    ? '1fr' 
-                    : gridColumns === 4 
-                    ? 'repeat(4, 1fr)' 
-                    : 'repeat(6, 1fr)'
-                }}
-              >
+            <>
+              {/* МОБИЛЬНАЯ ВЕРСИЯ: Swipeable Gallery (влево/вправо) */}
+              {window.innerWidth <= 768 ? (
+                <SwipeableGallery
+                  items={visibleScenes}
+                  onSelectItem={handleAddGalleryImage}
+                  renderItem={(scene) => (
+                    <img
+                      src={scene.url}
+                      alt=""
+                      style={{
+                        maxWidth: '100%',
+                        maxHeight: '100%',
+                        objectFit: 'contain',
+                        borderRadius: '12px'
+                      }}
+                    />
+                  )}
+                />
+              ) : (
+                /* ДЕСКТОП ВЕРСИЯ: Обычная сетка */
+                <div className="dm-backgrounds-grid">
+                  <div 
+                    className="dm-backgrounds-grid-items"
+                    style={{
+                      gridTemplateColumns: gridColumns === 1 
+                        ? '1fr' 
+                        : gridColumns === 4 
+                        ? 'repeat(4, 1fr)' 
+                        : 'repeat(6, 1fr)'
+                    }}
+                  >
                 {visibleScenes.length > 0 ? (
                   visibleScenes.map((scene, index) => {
                     const sceneKey = scene.key || scene.url || index;
@@ -1526,8 +1599,10 @@ export default function BackgroundPanel({ project, onChangeProject, activeCatego
                      <p>В этой категории пока нет фонов</p>
                   </div>
                 )}
-              </div>
-            </div>
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
       )}

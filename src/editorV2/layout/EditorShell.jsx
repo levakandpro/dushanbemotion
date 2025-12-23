@@ -1237,6 +1237,7 @@ export default function EditorShell({
           onChangeProject={onChangeProject}
           editorState={editorState}
           activeBackgroundCategory={activeBackgroundCategory}
+          setActiveBackgroundCategory={setActiveBackgroundCategory}
           setPreviewVideoAspect={setPreviewVideoAspect}
           stickerCategories={stickerCategories}
           activeStickerCategory={activeStickerCategory}
@@ -1248,7 +1249,7 @@ export default function EditorShell({
 }
 
 // Компонент MobilePanel с табами для текста и категориями для стикеров
-function MobilePanelWithTabs({ isOpen, onClose, activeTool, project, onChangeProject, editorState, activeBackgroundCategory, setPreviewVideoAspect, stickerCategories = [], activeStickerCategory, onStickerCategoryChange }) {
+function MobilePanelWithTabs({ isOpen, onClose, activeTool, project, onChangeProject, editorState, activeBackgroundCategory, setActiveBackgroundCategory, setPreviewVideoAspect, stickerCategories = [], activeStickerCategory, onStickerCategoryChange }) {
   const isMobile = useIsMobile()
   const { activeSection, setActiveSection } = useTextPanelTabs()
   
@@ -1293,6 +1294,64 @@ function MobilePanelWithTabs({ isOpen, onClose, activeTool, project, onChangePro
             }}
           >
             {section.label}
+          </button>
+        )
+      })}
+    </div>
+  ) : activeTool === 'background' ? (
+    <div style={{ 
+      display: 'flex', 
+      gap: 6, 
+      overflowX: 'auto', 
+      overflowY: 'hidden',
+      paddingLeft: 8, 
+      paddingRight: 8,
+      WebkitOverflowScrolling: 'touch',
+      scrollbarWidth: 'none',
+      msOverflowStyle: 'none',
+      width: '100%',
+      minWidth: 0,
+      touchAction: 'pan-x',
+      alignItems: 'center',
+    }}>
+      {[
+        { label: "Люди", key: "people" },
+        { label: "Дастархан", key: "food" },
+        { label: "Животные", key: "animals" },
+        { label: "Природа", key: "nature" },
+        { label: "Культура", key: "culture" },
+        { label: "Арт", key: "illustrations" },
+        { label: "Текстуры", key: "textures" },
+        { label: "Наследие", key: "architecture" },
+        { label: "21 Век", key: "modern" },
+        { label: "Флаги", key: "flags" },
+        { label: "Рынок", key: "fo" },
+        { label: "Спорт", key: "sport" },
+        { label: "Музыка", key: "music" },
+        { label: "Любовь", key: "love" },
+        { label: "Бардак", key: "bardak" },
+      ].map(cat => {
+        const isActive = cat.key === activeBackgroundCategory
+        return (
+          <button
+            key={cat.key}
+            onClick={() => setActiveBackgroundCategory(cat.key)}
+            style={{
+              padding: '8px 12px',
+              fontSize: 11,
+              fontWeight: 600,
+              borderRadius: 8,
+              background: isActive ? 'rgba(0, 255, 162, 0.15)' : 'rgba(255,255,255,0.06)',
+              border: isActive ? '1px solid rgba(0, 255, 162, 0.4)' : '1px solid rgba(255,255,255,0.1)',
+              color: isActive ? '#00ffa2' : 'rgba(255,255,255,0.6)',
+              whiteSpace: 'nowrap',
+              flexShrink: 0,
+              flexGrow: 0,
+              cursor: 'pointer',
+              minWidth: 'auto',
+            }}
+          >
+            {cat.label}
           </button>
         )
       })}

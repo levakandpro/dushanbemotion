@@ -46,7 +46,7 @@ import AuthorOrders from '../../author/pages/AuthorOrders'
 import AuthorBalance from '../../author/pages/AuthorBalance'
 
 // Splash page
-import IntroSplash from '../../editorV2/splash/IntroSplash'
+import IntroRouter from '../../editorV2/splash/IntroRouter'
 
 // Public Profile
 import PublicProfile from '../../author/pages/public/PublicProfile'
@@ -347,7 +347,7 @@ export default function AppRouter() {
           path="/"
           element={
             <PublicRoute allowAuth={true}>
-              <IntroSplash />
+              <IntroRouter />
             </PublicRoute>
           }
         />

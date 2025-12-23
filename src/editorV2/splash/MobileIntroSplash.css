@@ -1,0 +1,201 @@
+/* ============================================================================
+   D MOTION - МОБИЛЬНЫЙ INTRO ЭКРАН
+   ============================================================================ */
+
+.dm-mobile-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  background: #050807;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.dm-mobile-intro-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.dm-mobile-intro-container {
+  position: relative;
+  z-index: 2;
+  width: 90%;
+  max-width: 400px;
+  padding: 40px 24px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 32px;
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  animation: dm-mobile-intro-fadeIn 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dm-mobile-intro-title {
+  font-size: 38px;
+  font-weight: 900;
+  letter-spacing: 0.3em;
+  margin: 0 0 10px 0;
+  background: linear-gradient(135deg, #fff 0%, #1aff9c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 10px 20px rgba(26, 255, 156, 0.2);
+}
+
+.dm-mobile-intro-subtitle {
+  font-size: 14px;
+  opacity: 0.6;
+  margin-bottom: 30px;
+  line-height: 1.6;
+  font-weight: 300;
+  color: #fff;
+}
+
+.dm-mobile-intro-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 32px 0;
+  text-align: left;
+}
+
+.dm-mobile-intro-list li {
+  font-size: 15px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #fff;
+  opacity: 0;
+  animation: dm-mobile-intro-slideIn 0.5s ease forwards;
+}
+
+.dm-mobile-intro-list li:nth-child(1) { animation-delay: 0.4s; }
+.dm-mobile-intro-list li:nth-child(2) { animation-delay: 0.5s; }
+.dm-mobile-intro-list li:nth-child(3) { animation-delay: 0.6s; }
+.dm-mobile-intro-list li:nth-child(4) { animation-delay: 0.7s; }
+
+.dm-mobile-intro-list li::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: #1aff9c;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #1aff9c;
+  flex-shrink: 0;
+}
+
+.dm-mobile-intro-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.dm-mobile-intro-btn {
+  cursor: pointer;
+  position: relative;
+  padding: 18px;
+  border-radius: 16px;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.dm-mobile-intro-btn-web {
+  background: #1aff9c;
+  color: #002418;
+  box-shadow: 0 4px 15px rgba(26, 255, 156, 0.4);
+}
+
+.dm-mobile-intro-btn-web:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(26, 255, 156, 0.4);
+  filter: brightness(1.1);
+}
+
+.dm-mobile-intro-btn-mobile {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dm-mobile-intro-btn-mobile:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Эффект блика на кнопке */
+.dm-mobile-intro-btn::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 20%;
+  height: 200%;
+  background: rgba(255,255,255,0.2);
+  transform: rotate(30deg);
+  transition: all 0.5s;
+  pointer-events: none;
+}
+
+.dm-mobile-intro-btn:hover::after {
+  left: 120%;
+}
+
+/* Анимации */
+@keyframes dm-mobile-intro-fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px) scale(0.95); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0) scale(1); 
+  }
+}
+
+@keyframes dm-mobile-intro-slideIn {
+  from { 
+    opacity: 0; 
+    transform: translateX(-15px); 
+  }
+  to { 
+    opacity: 0.9; 
+    transform: translateX(0); 
+  }
+}
+
+/* Мобильная адаптация */
+@media (max-width: 480px) {
+  .dm-mobile-intro-container {
+    width: 95%;
+    padding: 32px 20px;
+  }
+
+  .dm-mobile-intro-title {
+    font-size: 32px;
+  }
+
+  .dm-mobile-intro-subtitle {
+    font-size: 13px;
+  }
+
+  .dm-mobile-intro-list li {
+    font-size: 14px;
+  }
+
+  .dm-mobile-intro-btn {
+    padding: 16px;
+    font-size: 15px;
+  }
+}
+

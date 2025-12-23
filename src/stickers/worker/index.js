@@ -1039,30 +1039,50 @@ async function handleScenesList(request, env, corsHeaders) {
     const url = new URL(request.url);
     const category = url.searchParams.get('category');
     
-    // Валидные категории
+    // Валидные категории (базовые)
     const validCategories = [
       'animals', 'architecture', 'bardak', 'culture', 'flags', 'fo',
       'food', 'illustrations', 'love', 'modern', 'music', 'nature',
       'people', 'sport', 'textures'
     ];
     
-    if (!category || !validCategories.includes(category)) {
+    // Проверяем: либо базовая категория, либо mob/категория
+    let actualCategory = category;
+    let isMobile = false;
+    let bucket = null;
+    
+    if (category && category.startsWith('mob/')) {
+      // Мобильная версия: используем отдельный bucket MOB_BUCKET
+      const baseCat = category.replace('mob/', '');
+      if (!validCategories.includes(baseCat)) {
+        return new Response(JSON.stringify({ 
+          error: 'Invalid or missing category parameter',
+          validCategories: validCategories.concat(validCategories.map(c => `mob/${c}`))
+        }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json', ...corsHeaders },
+        });
+      }
+      isMobile = true;
+      actualCategory = baseCat; // Убираем префикс mob/, так как bucket уже называется mob
+      bucket = env.MOB_BUCKET || env.SCENES_BUCKET; // Пробуем MOB_BUCKET, fallback на SCENES_BUCKET
+    } else if (!category || !validCategories.includes(category)) {
       return new Response(JSON.stringify({ 
         error: 'Invalid or missing category parameter',
-        validCategories: validCategories
+        validCategories: validCategories.concat(validCategories.map(c => `mob/${c}`))
       }), {
         status: 400,
         headers: { 'Content-Type': 'application/json', ...corsHeaders },
       });
+    } else {
+      // Десктоп версия: используем SCENES_BUCKET
+      bucket = env.SCENES_BUCKET || env.IMAGES_BUCKET || env.STICKERS_BUCKET;
     }
-    
-    // Используем SCENES_BUCKET или IMAGES_BUCKET как fallback
-    const bucket = env.SCENES_BUCKET || env.IMAGES_BUCKET || env.STICKERS_BUCKET;
     
     if (!bucket) {
       return new Response(JSON.stringify({ 
-        error: 'SCENES_BUCKET is not configured',
-        hint: 'Add SCENES_BUCKET binding to wrangler.toml'
+        error: isMobile ? 'MOB_BUCKET is not configured' : 'SCENES_BUCKET is not configured',
+        hint: 'Add bucket binding to wrangler.toml'
       }), {
         status: 500,
         headers: { 'Content-Type': 'application/json', ...corsHeaders },
@@ -1070,33 +1090,61 @@ async function handleScenesList(request, env, corsHeaders) {
     }
     
     // Base URL для публичных ссылок
-    const baseUrl = env.SCENES_PUBLIC_BASE_URL || 'https://pub-b69ef7c5697c44e2ab311a83cae5c18a.r2.dev';
+    const baseUrl = isMobile 
+      ? 'https://pub-b7213d411dcf4fe9a4da0bfb664b5d70.r2.dev' 
+      : (env.SCENES_PUBLIC_BASE_URL || 'https://pub-b69ef7c5697c44e2ab311a83cae5c18a.r2.dev');
     
-    // Формируем prefix
-    const prefix = `${category}/`;
+    // Формируем prefix (для мобильных используем actualCategory без mob/)
+    const prefix = `${actualCategory}/`;
     
-    console.log('🔍 Loading scenes from category:', category, 'prefix:', prefix);
+    console.log('🔍 [SCENES] Loading scenes from category:', category);
+    console.log('🔍 [SCENES] Actual category (for prefix):', actualCategory);
+    console.log('🔍 [SCENES] Prefix:', prefix);
+    console.log('🔍 [SCENES] isMobile:', isMobile);
+    console.log('🔍 [SCENES] Using bucket:', isMobile ? 'MOB_BUCKET' : 'SCENES_BUCKET');
+    console.log('🔍 [SCENES] Base URL:', baseUrl);
     
     // Получаем список файлов из R2
     const result = await bucket.list({ prefix });
     
-    console.log('📦 Found objects for prefix', prefix, ':', result.objects.length);
+    console.log('📦 [SCENES] Found objects for prefix', prefix, ':', result.objects.length);
+    
     if (result.objects.length > 0) {
-      console.log('📦 First few object keys:', result.objects.slice(0, 5).map(obj => obj.key));
+      console.log('📦 [SCENES] First 5 object keys:', result.objects.slice(0, 5).map(obj => obj.key));
+      // ДЕТАЛЬНЫЙ ЛОГ КАЖДОГО ОБЪЕКТА
+      result.objects.slice(0, 5).forEach((obj, i) => {
+        console.log(`  [${i}] key="${obj.key}" size=${obj.size} uploaded=${obj.uploaded}`);
+      });
+    } else {
+      console.log('❌ [SCENES] NO OBJECTS FOUND! Trying to list without prefix...');
+      // Проверим, что вообще есть в bucket
+      const testResult = await bucket.list({ limit: 10 });
+      console.log('📦 [SCENES] Test list (first 10 objects):', testResult.objects.length);
+      testResult.objects.forEach((obj, i) => {
+        console.log(`  [${i}] TEST key="${obj.key}"`);
+      });
     }
     
-    // Фильтруем только изображения
-    const imageExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.JPG', '.JPEG', '.PNG', '.WEBP', '.GIF'];
+    // Фильтруем только изображения (включая .jfif для мобильных)
+    const imageExtensions = [
+      '.jpg', '.jpeg', '.png', '.webp', '.gif', '.jfif', '.svg', 
+      '.JPG', '.JPEG', '.PNG', '.WEBP', '.GIF', '.JFIF', '.SVG'
+    ];
+    console.log('🔍 [SCENES] Filtering with extensions:', imageExtensions.join(', '));
+    
     const filtered = result.objects.filter(obj => {
       // Исключаем директории
       if (obj.key.endsWith('/')) {
-        console.log('⚠️ Skipping directory:', obj.key);
+        console.log('⚠️ [FILTER] Skipping directory:', obj.key);
         return false;
       }
       const name = obj.key.toLowerCase();
       const isImage = imageExtensions.some(ext => name.endsWith(ext.toLowerCase()));
+      console.log(`🔍 [FILTER] Checking "${obj.key}": isImage=${isImage}`);
       if (!isImage) {
-        console.log('⚠️ Skipping non-image file:', obj.key);
+        console.log('❌ [FILTER] Skipping non-image file:', obj.key);
+      } else {
+        console.log('✅ [FILTER] Accepted:', obj.key);
       }
       return isImage;
     });
@@ -1117,10 +1165,19 @@ async function handleScenesList(request, env, corsHeaders) {
     
     const response = {
       category: category,
-      items: items
+      items: items,
+      isMobile: isMobile,
+      debug: {
+        prefix: prefix,
+        actualCategory: actualCategory,
+        totalObjects: result.objects.length,
+        filteredCount: filtered.length,
+        firstKeys: result.objects.slice(0, 3).map(obj => obj.key),
+        bucketUsed: isMobile ? 'MOB_BUCKET' : 'SCENES_BUCKET'
+      }
     };
     
-    console.log('Returning', items.length, 'scenes for category', category);
+    console.log('✅ Returning', items.length, 'scenes for category', category, 'isMobile:', isMobile);
     
     return new Response(JSON.stringify(response), {
       headers: {

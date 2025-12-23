@@ -45,6 +45,10 @@ bucket_name = "oblojki"
 binding = "FUTAJ_BUCKET"
 bucket_name = "futaj"
 
+[[r2_buckets]]
+binding = "MOB_BUCKET"
+bucket_name = "mob"
+
 # Environment Variables (РќР• СЃРµРєСЂРµС‚С‹)
 [vars]
 STICKERS_PUBLIC_BASE_URL = "https://pub-78c4a70555844788bca12cc4cee974d4.r2.dev"
