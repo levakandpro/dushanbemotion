@@ -1878,4 +1878,91 @@
     width: 0 !important;
     height: 0 !important;
   }
+
+  /* ========== МОБИЛЬНЫЙ ТУЛБАР - МИРОВОЙ УРОВЕНЬ ========== */
+  
+  /* Тулбар занимает всю ширину внизу экрана */
+  .editor-v2-toolbar {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    height: 72px !important;
+    background: rgba(8, 10, 12, 0.98) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border-top: 1px solid rgba(61, 191, 160, 0.15) !important;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5) !important;
+    z-index: 1000 !important;
+    padding: 0 !important;
+  }
+
+  /* Горизонтальный скролл для инструментов */
+  .editor-v2-toolbar-scroll {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 4px !important;
+    height: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding: 8px 12px !important;
+    scroll-snap-type: x proximity !important;
+  }
+
+  /* Скрываем скроллбар */
+  .editor-v2-toolbar-scroll::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  /* Кнопки инструментов - большие для пальца (44x44 минимум) */
+  .editor-v2-tool-btn {
+    min-width: 64px !important;
+    min-height: 64px !important;
+    max-width: 68px !important;
+    padding: 8px 6px !important;
+    border-radius: 16px !important;
+    flex-shrink: 0 !important;
+    scroll-snap-align: start !important;
+    /* Идеальное выравнивание */
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+  }
+
+  /* Иконки крупнее */
+  .editor-v2-tool-icon-mask {
+    width: 28px !important;
+    height: 28px !important;
+    /* Идеальное центрирование */
+    display: block !important;
+    margin: 0 !important;
+  }
+
+  /* Лейбл компактнее */
+  .editor-v2-tool-label {
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+  }
+
+  /* Активная кнопка - ярче */
+  .editor-v2-tool-btn-active {
+    background: rgba(61, 191, 160, 0.2) !important;
+    transform: scale(1.05) !important;
+  }
+
+  /* Убираем стрелку прокрутки */
+  .editor-v2-toolbar::after {
+    display: none !important;
+  }
+
+  /* Плавный скролл для тулбара */
+  .editor-v2-toolbar-scroll {
+    scroll-behavior: smooth !important;
+  }
 }
