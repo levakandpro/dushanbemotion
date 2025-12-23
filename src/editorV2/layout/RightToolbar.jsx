@@ -1,14 +1,14 @@
 // src/editorV2/layout/RightToolbar.jsx
 import React from 'react'
 
-// Импорты иконок - правильные относительные пути
-import stic2Icon from '../assets/stic2.svg'
-import musicNoteIcon from '../assets/music-icon.svg'
-import bgIcon from '../assets/bg-icon.svg'
-import textIcon from '../assets/text-icon.svg'
-import videoIcon from '../assets/video-icon.svg'
-import iconsIcon from '../assets/icons-icon.svg'
-import bazaIcon from '../assets/baza.png'
+// Прямые URL к файлам из public/ - гарантированно работает!
+const stic2Icon = '/assets/stic2.svg'
+const musicNoteIcon = '/assets/music-icon.svg'
+const bgIcon = '/assets/bg-icon.svg'
+const textIcon = '/assets/text-icon.svg'
+const videoIcon = '/assets/video-icon.svg'
+const iconsIcon = '/assets/icons-icon.svg'
+const bazaIcon = '/assets/baza.png'
 
 const TOOLS = [
   { id: 'background', label: 'Фон', icon: '●', imageSrc: bgIcon },
