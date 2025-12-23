@@ -2,10 +2,10 @@
 import React from 'react'
 import stic2Icon from '../../assets/stic2.svg'
 import musicNoteIcon from '../../assets/iconmusic/music-note-svgrepo-com.svg'
-import bgIcon from '../../../assets/fon.svg'
-import textIcon from '../../../assets/text.svg'
-import videoIcon from '../../../assets/video.svg'
-import iconsIcon from '../../../assets/icon.svg'
+import bgIcon from '../../assets/fon.svg'
+import textIcon from '../../assets/text.svg'
+import videoIcon from '../../assets/video.svg'
+import iconsIcon from '../../assets/icon.svg'
 import bazaIcon from '../../assets/baza.png'
 
 const TOOLS = [
