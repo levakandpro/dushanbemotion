@@ -227,7 +227,7 @@ export default function BackgroundPanel({ project, onChangeProject, activeCatego
       // Для мобильных используем папку mob/
       const isMobile = window.innerWidth <= 768;
       const categoryPath = isMobile ? `mob/${category}` : category;
-      const apiUrl = `${workerUrl}/api/scenes?category=${categoryPath}`;
+      const apiUrl = `${workerUrl}/api/scenes?category=${encodeURIComponent(categoryPath)}`;
       
       console.log('🎨 Fetching from:', apiUrl, isMobile ? '(MOBILE)' : '(DESKTOP)');
       const response = await fetch(apiUrl, {
@@ -252,9 +252,9 @@ export default function BackgroundPanel({ project, onChangeProject, activeCatego
         console.error('HTTP error:', response.status, errorText);
         
         // Retry logic для временных ошибок (5xx, network errors)
-        const MAX_RETRIES = 2;
+        const MAX_RETRIES = 3;
         if (retryCount < MAX_RETRIES && (response.status >= 500 || response.status === 0)) {
-          const delay = Math.min(1000 * Math.pow(2, retryCount), 4000); // Exponential backoff: 1s, 2s, 4s
+          const delay = Math.min(1500 * Math.pow(2, retryCount), 6000); // Exponential backoff: 1.5s, 3s, 6s
           console.log(`🔄 Retrying in ${delay}ms...`);
           setTimeout(() => {
             loadScenes(category, retryCount + 1);
@@ -348,9 +348,9 @@ export default function BackgroundPanel({ project, onChangeProject, activeCatego
         return; // Не показываем ошибку для отмененных запросов
       }
       
-      const MAX_RETRIES = 2;
+      const MAX_RETRIES = 3;
       if (retryCount < MAX_RETRIES) {
-        const delay = Math.min(1000 * Math.pow(2, retryCount), 4000);
+        const delay = Math.min(1500 * Math.pow(2, retryCount), 6000);
         console.log(`🔄 Retrying after error in ${delay}ms...`);
         setTimeout(() => {
           loadScenes(category, retryCount + 1);
@@ -384,7 +384,7 @@ export default function BackgroundPanel({ project, onChangeProject, activeCatego
     // Для мобильных используем папку mob/
     const isMobile = window.innerWidth <= 768;
     const categoryPath = isMobile ? `mob/${category}` : category;
-    const apiUrl = `${workerUrl}/api/scenes?category=${categoryPath}`;
+    const apiUrl = `${workerUrl}/api/scenes?category=${encodeURIComponent(categoryPath)}`;
     
     fetch(apiUrl, { 
       cache: 'default',
@@ -1304,7 +1304,7 @@ export default function BackgroundPanel({ project, onChangeProject, activeCatego
                 <img src={logofiolIcon} alt="" className="dm-backgrounds-state-icon" />
                 <div className="dm-backgrounds-loading-spinner" />
               </div>
-              <p className="dm-backgrounds-state-text">Подождите секунду…</p>
+              <p className="dm-backgrounds-state-text">Секундочку, загружаем библиотеку D MOTION...</p>
             </div>
           )}
           
@@ -1318,7 +1318,7 @@ export default function BackgroundPanel({ project, onChangeProject, activeCatego
           {galleryState === "error" && (
             <div className="dm-backgrounds-state">
               <img src={logofiolIcon} alt="" className="dm-backgrounds-state-icon" />
-              <p className="dm-backgrounds-state-text">Проверьте соединение</p>
+              <p className="dm-backgrounds-state-text">Не удалось загрузить. Попробуйте обновить страницу.</p>
             </div>
           )}
           

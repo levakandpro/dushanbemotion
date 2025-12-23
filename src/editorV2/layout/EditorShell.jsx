@@ -1346,7 +1346,7 @@ function MobilePanelWithTabs({ isOpen, onClose, activeTool, project, onChangePro
       isOpen={isOpen && isMobile}
       onClose={onClose}
       title={
-        activeTool === 'background' ? 'Фон' :
+        activeTool === 'background' ? null :
         activeTool === 'text' ? null :
         activeTool === 'stickers' && stickerCategories.length > 0 ? null : // Убираем заголовок, если есть категории
         activeTool === 'stickers' ? 'Стикеры' :
