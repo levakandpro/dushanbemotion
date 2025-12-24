@@ -592,7 +592,7 @@ export default function TextPanel(props) {
   }
 
   return (
-    <div className="editor-v2-panel dm-text-panel">
+    <div className={`editor-v2-panel dm-text-panel ${activeSection === 'style' ? 'dm-text-panel-style-active' : ''} ${activeSection === 'effects' ? 'dm-text-panel-effects-active' : ''}`}>
       <div className="dm-text-panel-surface">
         {/* Табы секций - на мобильных перемещаются в header через CSS */}
         <div className="dm-text-panel-tabs-row">

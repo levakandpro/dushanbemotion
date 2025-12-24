@@ -24,7 +24,7 @@ function getBaseFrameSize() {
     return { width: finalWidth, height: finalHeight };
   } else {
     // Десктоп: горизонтальный формат 16:9
-    const max = 630;
+    const max = 800;
     return { width: max, height: Math.round((9 / 16) * max) };
   }
 }
@@ -499,8 +499,8 @@ export default function BackgroundPanel({ project, onChangeProject, activeCatego
         type: 'image',
         imageUrl,
         fileName: scene.fileName || scene.name || 'image',
-        x: 0,
-        y: 0,
+        x: 50,
+        y: 50,
         width: frameWidth,
         height: frameHeight,
         fit: 'cover', // Заполняет канвас полностью

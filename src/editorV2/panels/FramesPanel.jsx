@@ -266,7 +266,7 @@ export default function FramesPanel({ project, onChangeProject }) {
 
   // Вычисление размера канваса
   const getCanvasSize = () => {
-    const max = 700
+    const max = 800
     return { width: max, height: Math.round((9 / 16) * max) }
   }
 

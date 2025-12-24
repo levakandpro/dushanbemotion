@@ -36,7 +36,7 @@ function getBaseFrameSize(isMobileDevice = false) {
     return { width: finalWidth, height: finalHeight }
   }
   // Десктоп: горизонтальный формат 16:9
-  const max = 630
+  const max = 800
   return { width: max, height: Math.round((9 / 16) * max) }
 }
 
@@ -147,7 +147,7 @@ export default function EditorShell({
     const base = getBaseFrameSize(isMobile)
     // Убеждаемся, что base всегда имеет валидные размеры
     if (!base || !base.width || !base.height || base.width <= 0 || base.height <= 0) {
-      const fallback = { width: 630, height: 354 }
+      const fallback = { width: 800, height: 450 }
       return fallback // Fallback значения
     }
 
@@ -161,8 +161,8 @@ export default function EditorShell({
       if (Number.isFinite(w) && Number.isFinite(h) && w > 0 && h > 0) {
         const ratio = w / h
         if (Number.isFinite(ratio) && ratio > 0) {
-          const maxWidth = 630
-          const maxHeight = 590
+          const maxWidth = 800
+          const maxHeight = 750
           if (ratio >= 1) {
             // Горизонтальное видео
             const width = Math.min(maxWidth, maxHeight * ratio)
@@ -912,11 +912,12 @@ export default function EditorShell({
                       }
                     }}
                     style={{
-                      ...canvasFrameStyle,
-                      minWidth: canvasFrameStyle?.width || 630,
-                      minHeight: canvasFrameStyle?.height || 354,
-                      width: canvasFrameStyle?.width || 630,
-                      height: canvasFrameStyle?.height || 354,
+                      minWidth: 800,
+                      minHeight: 450,
+                      width: 800,
+                      height: 450,
+                      maxWidth: 800,
+                      maxHeight: 450,
                     }}
                   >
                       {/* Фон */}

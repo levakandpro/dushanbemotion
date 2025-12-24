@@ -373,11 +373,8 @@
   border-radius: 10px;
   overflow: hidden;
   z-index: 2; /* Убеждаемся, что frame виден */
-  min-width: 100px !important; /* Минимальная ширина для видимости */
-  min-height: 100px !important; /* Минимальная высота для видимости */
-  width: 630px !important; /* Фиксированная ширина для отладки */
-  height: 354px !important; /* Фиксированная высота для отладки */
-  background: #fafafa !important; /* Временный яркий фон для отладки */
+  min-width: 100px; /* Минимальная ширина для видимости */
+  min-height: 100px; /* Минимальная высота для видимости */
 
   box-shadow:
     0 0 0 1px rgba(255,255,255,0.1),

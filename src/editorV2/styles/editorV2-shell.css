@@ -104,6 +104,7 @@
   flex: 1;
   display: grid;
   grid-template-columns: 80px minmax(0, 1fr) 400px;
+  align-items: start; /* Выравнивание по верхнему краю для всех ячеек */
   overflow: hidden;
   min-height: 0;
   height: 100%; /* Добавляем высоту для grid */
@@ -463,7 +464,7 @@
 .dm-editor-canvas-area {
   position: relative;
   display: flex;
-  align-items: flex-start; /* Выравнивание по верхнему краю для синхронизации с правой панелью */
+  align-items: center; /* Центрирование по вертикали */
   justify-content: center;
   overflow: hidden;
   background: var(--dm-bg);
@@ -472,6 +473,20 @@
   height: 100%; /* Занимает всю доступную высоту */
   width: 100%; /* Занимает всю доступную ширину */
   z-index: 1; /* Убеждаемся, что канвас виден */
+}
+
+/* Поднимаем canvas когда активна вкладка стилей текста */
+.dm-editor-main:has(.dm-text-panel-style-active) .dm-editor-canvas-area {
+  align-items: flex-start;
+  padding-top: 0;
+  transform: translateY(-350px); /* Поднимаем canvas вверх */
+}
+
+/* Поднимаем canvas когда активна вкладка эффектов текста */
+.dm-editor-main:has(.dm-text-panel-effects-active) .dm-editor-canvas-area {
+  align-items: flex-start;
+  padding-top: 0;
+  transform: translateY(-180px); /* Поднимаем canvas вверх */
 }
 
 /* Выравнивание канваса по верхнему краю */
