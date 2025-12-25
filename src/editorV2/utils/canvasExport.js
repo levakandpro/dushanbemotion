@@ -176,6 +176,22 @@ export async function exportCanvas(format, filename = 'canvas') {
     
   } catch (error) {
     console.error('❌ Export error:', error)
+    // Восстанавливаем все перед возвратом false
+    imagesToRestore.forEach(({ img, originalSrc }) => {
+      img.src = originalSrc
+    })
+    bgToRestore.forEach(({ el, originalBg }) => {
+      el.style.backgroundImage = originalBg
+    })
+    checkerElements.forEach(({ el, bgImg }) => {
+      el.style.backgroundImage = bgImg
+    })
+    elementsToHide.forEach(({ el, visibility, className, hadClass }) => {
+      if (hadClass) el.classList.add(className)
+      else el.style.visibility = visibility || ''
+    })
+    if (stageElement) stageElement.style.transform = originalStageTransform
+    return false
   } finally {
     // Восстанавливаем img элементы
     imagesToRestore.forEach(({ img, originalSrc }) => {
