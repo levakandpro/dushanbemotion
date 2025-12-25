@@ -966,7 +966,7 @@ async function handleAvatarsManifest(request, env, corsHeaders) {
     }
     
     // Фильтруем только изображения и исключаем директории
-    const imageExtensions = ['.jpg', '.jpeg', '.png', '.webp'];
+    const imageExtensions = ['.jpg', '.jpeg', '.jfif', '.png', '.webp'];
     const filtered = result.objects.filter(obj => {
       // Исключаем директории
       if (obj.key.endsWith('/')) return false;

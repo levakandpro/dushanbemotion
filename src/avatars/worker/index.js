@@ -84,7 +84,7 @@ export default {
       }
 
       // Фильтруем только изображения и исключаем директории
-      const imageExtensions = ['.jpg', '.jpeg', '.png', '.webp'];
+      const imageExtensions = ['.jpg', '.jpeg', '.jfif', '.png', '.webp'];
       const items = result.objects
         .filter(obj => {
           // Исключаем директории
