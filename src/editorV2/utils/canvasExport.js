@@ -106,9 +106,27 @@ export async function exportCanvas(format, filename = 'canvas') {
       if (base64) {
         imagesToRestore.push({ img, originalSrc })
         img.src = base64
+        // Ждем загрузки изображения с таймаутом
         await new Promise(resolve => {
-          if (img.complete) resolve()
-          else img.onload = resolve
+          if (img.complete && img.naturalWidth > 0) {
+            resolve()
+          } else {
+            const timeout = setTimeout(() => {
+              img.onload = null
+              img.onerror = null
+              resolve() // Продолжаем даже если не загрузилось
+            }, 3000)
+            img.onload = () => {
+              clearTimeout(timeout)
+              img.onerror = null
+              resolve()
+            }
+            img.onerror = () => {
+              clearTimeout(timeout)
+              img.onload = null
+              resolve() // Продолжаем даже при ошибке
+            }
+          }
         })
         console.log('✓ img:', originalSrc.substring(0, 50))
       }
