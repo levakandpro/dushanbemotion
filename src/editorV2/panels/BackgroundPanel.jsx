@@ -2,7 +2,7 @@
 import { useToast } from "../context/ToastContext";
 import { useIsMobile } from '../../hooks/useMobileGestures';
 import logofiolIcon from '../../assets/icons/logofiol.svg';
-import { createStickerClip } from '../timeline/stickers/stickerTimelineState';
+import { createStickerClip } from '../utils/stickerClips';
 import { makeShuffleSeed, stableShuffle } from '../utils/stableShuffle';
 import CollectionModal from '../components/CollectionModal';
 import CollabModal from '../components/CollabModal';

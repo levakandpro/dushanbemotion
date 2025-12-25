@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useRef } from 'react';
 import { useStickersManifest } from './useStickersManifest';
 import { useStickerPreview } from '../../../editorV2/context/StickerPreviewContext';
-import { createStickerClip } from '../../../editorV2/timeline/stickers/stickerTimelineState';
+import { createStickerClip } from '../../../editorV2/utils/stickerClips';
 import { useAuth } from '../../../lib/useAuth';
 import greenIcon from '../../../assets/icons/green.svg';
 import Loader from '../../../components/ui/Loader';

@@ -1,7 +1,7 @@
 ﻿import React, { useRef, useCallback, useEffect } from 'react'
 import TimeRuler, { LEFT_OFFSET } from './TimeRuler'
 import AudioClipItem from './AudioClipItem'
-import VisualGroupTrack from '../timeline/VisualGroupTrack'
+import VisualGroupTrack from './VisualGroupTrack'
 import {
   calculateProjectDuration
 } from './audioTypes'

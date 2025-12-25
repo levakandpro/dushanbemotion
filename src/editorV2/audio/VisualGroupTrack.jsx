@@ -1,4 +1,4 @@
-﻿// src/editorV2/timeline/VisualGroupTrack.jsx
+// src/editorV2/audio/VisualGroupTrack.jsx
 
 import React, { useState, useMemo } from 'react'
 import VisualLayerRow from './VisualLayerRow'

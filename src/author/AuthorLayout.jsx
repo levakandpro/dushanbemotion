@@ -3,7 +3,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { supabase } from "../services/supabaseClient";
 import { useAuth } from "../lib/useAuth";
 import { getUserProfile } from "../services/userService";
-import { getCollabNotificationsCount } from "../services/collabService";
+// V1: Отключено (раздел Collabs скрыт)
+// import { getCollabNotificationsCount } from "../services/collabService";
 import Loader from "../components/ui/Loader";
 import "./AuthorLayout.css";
 import mark from "../editorV2/components/bazar/assets/ii.png";
@@ -147,7 +148,8 @@ export default function AuthorLayout({ children }) {
   const { user, loading: authLoading } = useAuth();
   const [profile, setProfile] = useState(null);
   const [profileLoading, setProfileLoading] = useState(true);
-  const [collabNotifications, setCollabNotifications] = useState(0);
+  // V1: Отключено (раздел Collabs скрыт)
+  // const [collabNotifications, setCollabNotifications] = useState(0);
   const [softToast, setSoftToast] = useState(null);
   const lastToastRef = useRef({ message: '', time: 0 });
   
@@ -160,57 +162,61 @@ export default function AuthorLayout({ children }) {
   const [showTariffs, setShowTariffs] = useState(false);
   const VIDEO_LIMIT = 10;
 
-  const loadCollabNotifications = useCallback(async () => {
-    if (!user) return;
-    try {
-      const count = await getCollabNotificationsCount(user.id);
-      setCollabNotifications(count);
-    } catch (error) {
-      console.error("Error loading collab notifications:", error);
-    }
-  }, [user]);
+  // V1: Отключено (раздел Collabs скрыт)
+  // const loadCollabNotifications = useCallback(async () => {
+  //   if (!user) return;
+  //   try {
+  //     const count = await getCollabNotificationsCount(user.id);
+  //     setCollabNotifications(count);
+  //   } catch (error) {
+  //     console.error("Error loading collab notifications:", error);
+  //   }
+  // }, [user]);
 
+  // V1: Отключено (раздел Collabs скрыт)
   // Воспроизвести звук уведомления
-  const playNotificationSound = useCallback(() => {
-    try {
-      if (collabNotificationSound) {
-        collabNotificationSound.volume = 0.3;
-        collabNotificationSound.currentTime = 0;
-        collabNotificationSound.play().catch(() => {});
-      }
-    } catch (e) {
-      console.error('Error playing notification sound:', e);
-    }
-  }, []);
+  // const playNotificationSound = useCallback(() => {
+  //   try {
+  //     if (collabNotificationSound) {
+  //       collabNotificationSound.volume = 0.3;
+  //       collabNotificationSound.currentTime = 0;
+  //       collabNotificationSound.play().catch(() => {});
+  //     }
+  //   } catch (e) {
+  //     console.error('Error playing notification sound:', e);
+  //   }
+  // }, []);
 
+  // V1: Отключено (раздел Collabs скрыт)
   // Показать soft toast с дедупликацией и звуком
-  const showSoftToast = useCallback((message) => {
-    const now = Date.now();
-    if (lastToastRef.current.message === message && now - lastToastRef.current.time < 5000) {
-      return; // Дедупликация: не показывать одинаковые сообщения в течение 5 сек
-    }
-    lastToastRef.current = { message, time: now };
-    setSoftToast(message);
-    playNotificationSound();
+  // const showSoftToast = useCallback((message) => {
+  //   const now = Date.now();
+  //   if (lastToastRef.current.message === message && now - lastToastRef.current.time < 5000) {
+  //     return; // Дедупликация: не показывать одинаковые сообщения в течение 5 сек
+  //   }
+  //   lastToastRef.current = { message, time: now };
+  //   setSoftToast(message);
+  //   playNotificationSound();
     
-    // Браузерное push уведомление если вкладка не активна
-    if (document.visibilityState !== 'visible' && 'Notification' in window && Notification.permission === 'granted') {
-      new Notification('Коллабы', {
-        body: message,
-        icon: '/logo192.png',
-        tag: 'collab-notification',
-        renotify: true
-      });
-    }
-  }, [playNotificationSound]);
+  //   // Браузерное push уведомление если вкладка не активна
+  //   if (document.visibilityState !== 'visible' && 'Notification' in window && Notification.permission === 'granted') {
+  //     new Notification('Коллабы', {
+  //       body: message,
+  //       icon: '/logo192.png',
+  //       tag: 'collab-notification',
+  //       renotify: true
+  //     });
+  //   }
+  // }, [playNotificationSound]);
 
   useEffect(() => {
     if (user && !authLoading) {
       loadProfile();
-      loadCollabNotifications();
+      // V1: Отключено (раздел Collabs скрыт)
+      // loadCollabNotifications();
       loadYoutubeCount();
     }
-  }, [user, authLoading, loadCollabNotifications]);
+  }, [user, authLoading]);
 
   const loadYoutubeCount = async () => {
     if (!user) return;
@@ -232,106 +238,109 @@ export default function AuthorLayout({ children }) {
     }
   };
 
+  // V1: Отключено (раздел Collabs скрыт)
   // Обновляем счётчик при переходе на страницу коллабов (после действий)
-  useEffect(() => {
-    if (location.pathname.startsWith("/author/collabs")) {
-      loadCollabNotifications();
-    }
-  }, [location.pathname, loadCollabNotifications]);
+  // useEffect(() => {
+  //   if (location.pathname.startsWith("/author/collabs")) {
+  //     loadCollabNotifications();
+  //   }
+  // }, [location.pathname, loadCollabNotifications]);
 
+  // V1: Отключено (раздел Collabs скрыт)
   // Realtime подписка на изменения collabs и collab_materials
-  useEffect(() => {
-    if (!user) return;
+  // useEffect(() => {
+  //   if (!user) return;
 
-    const channel = supabase
-      .channel('collab-notifications')
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'collabs' },
-        (payload) => {
-          const record = payload.new || payload.old;
-          const oldRecord = payload.old;
-          const newRecord = payload.new;
+  //   const channel = supabase
+  //     .channel('collab-notifications')
+  //     .on(
+  //       'postgres_changes',
+  //       { event: '*', schema: 'public', table: 'collabs' },
+  //       (payload) => {
+  //         const record = payload.new || payload.old;
+  //         const oldRecord = payload.old;
+  //         const newRecord = payload.new;
           
-          // Реагируем только если изменение касается текущего пользователя
-          if (record?.author1_id === user.id || record?.author2_id === user.id) {
-            loadCollabNotifications();
+  //         // Реагируем только если изменение касается текущего пользователя
+  //         if (record?.author1_id === user.id || record?.author2_id === user.id) {
+  //           loadCollabNotifications();
             
-            // Показываем toast только для событий от партнёра (не от себя)
-            if (payload.eventType === 'UPDATE' && newRecord && oldRecord) {
-              // Партнёр подтвердил участие
-              if (newRecord.status === 'active' && oldRecord.status === 'pending') {
-                showSoftToast('Партнёр подтвердил участие в коллабе');
-              }
-              // Партнёр запросил удаление
-              if (newRecord.status === 'delete_requested' && newRecord.delete_requested_by !== user.id) {
-                showSoftToast('Партнёр запросил удаление коллаба');
-              }
-              // Изменение долей подтверждено
-              if (oldRecord.pending_author1_share && !newRecord.pending_author1_share && 
-                  oldRecord.share_change_requested_by === user.id) {
-                showSoftToast('Изменение долей принято');
-              }
-              // Изменение долей отклонено
-              if (oldRecord.share_change_requested_by === user.id && 
-                  !newRecord.share_change_requested_by && 
-                  oldRecord.author1_share === newRecord.author1_share) {
-                showSoftToast('Изменение долей отклонено');
-              }
-            }
-            // Новый коллаб (приглашение)
-            if (payload.eventType === 'INSERT' && newRecord?.created_by !== user.id) {
-              showSoftToast('Вас пригласили в новый коллаб');
-            }
-          }
-        }
-      )
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'collab_materials' },
-        (payload) => {
-          const record = payload.new || payload.old;
-          const newRecord = payload.new;
-          const oldRecord = payload.old;
+  //           // Показываем toast только для событий от партнёра (не от себя)
+  //           if (payload.eventType === 'UPDATE' && newRecord && oldRecord) {
+  //             // Партнёр подтвердил участие
+  //             if (newRecord.status === 'active' && oldRecord.status === 'pending') {
+  //               showSoftToast('Партнёр подтвердил участие в коллабе');
+  //             }
+  //             // Партнёр запросил удаление
+  //             if (newRecord.status === 'delete_requested' && newRecord.delete_requested_by !== user.id) {
+  //               showSoftToast('Партнёр запросил удаление коллаба');
+  //             }
+  //             // Изменение долей подтверждено
+  //             if (oldRecord.pending_author1_share && !newRecord.pending_author1_share && 
+  //                 oldRecord.share_change_requested_by === user.id) {
+  //               showSoftToast('Изменение долей принято');
+  //             }
+  //             // Изменение долей отклонено
+  //             if (oldRecord.share_change_requested_by === user.id && 
+  //                 !newRecord.share_change_requested_by && 
+  //                 oldRecord.author1_share === newRecord.author1_share) {
+  //               showSoftToast('Изменение долей отклонено');
+  //             }
+  //           }
+  //           // Новый коллаб (приглашение)
+  //           if (payload.eventType === 'INSERT' && newRecord?.created_by !== user.id) {
+  //             showSoftToast('Вас пригласили в новый коллаб');
+  //           }
+  //         }
+  //       }
+  //     )
+  //     .on(
+  //       'postgres_changes',
+  //       { event: '*', schema: 'public', table: 'collab_materials' },
+  //       (payload) => {
+  //         const record = payload.new || payload.old;
+  //         const newRecord = payload.new;
+  //         const oldRecord = payload.old;
           
-          // Реагируем если материал ожидает подтверждения от текущего пользователя
-          // или если пользователь владелец материала
-          if (record?.pending_approval_from === user.id || record?.owner_id === user.id) {
-            loadCollabNotifications();
+  //         // Реагируем если материал ожидает подтверждения от текущего пользователя
+  //         // или если пользователь владелец материала
+  //         if (record?.pending_approval_from === user.id || record?.owner_id === user.id) {
+  //           loadCollabNotifications();
             
-            // Toast для владельца материала
-            if (payload.eventType === 'UPDATE' && newRecord && oldRecord) {
-              if (newRecord.owner_id === user.id) {
-                if (newRecord.status === 'approved' && oldRecord.status === 'pending') {
-                  showSoftToast('Материал подтверждён партнёром');
-                }
-                if (newRecord.status === 'rejected' && oldRecord.status === 'pending') {
-                  showSoftToast('Материал отклонён партнёром');
-                }
-              }
-            }
-            // Новый материал на подтверждение
-            if (payload.eventType === 'INSERT' && newRecord?.pending_approval_from === user.id) {
-              showSoftToast('Новый материал ожидает подтверждения');
-            }
-          }
-        }
-      )
-      .subscribe();
+  //           // Toast для владельца материала
+  //           if (payload.eventType === 'UPDATE' && newRecord && oldRecord) {
+  //             if (newRecord.owner_id === user.id) {
+  //               if (newRecord.status === 'approved' && oldRecord.status === 'pending') {
+  //                 showSoftToast('Материал подтверждён партнёром');
+  //               }
+  //               if (newRecord.status === 'rejected' && oldRecord.status === 'pending') {
+  //                 showSoftToast('Материал отклонён партнёром');
+  //               }
+  //             }
+  //           }
+  //           // Новый материал на подтверждение
+  //           if (payload.eventType === 'INSERT' && newRecord?.pending_approval_from === user.id) {
+  //             showSoftToast('Новый материал ожидает подтверждения');
+  //           }
+  //         }
+  //       }
+  //     )
+  //     .subscribe();
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [user, loadCollabNotifications, showSoftToast]);
+  //   return () => {
+  //     supabase.removeChannel(channel);
+  //   };
+  // }, [user, loadCollabNotifications, showSoftToast]);
 
   const nav = [
     { path: "/author", label: "Главная", icon: <Icon type="home" /> },
     { path: "/author/works", label: "Мои работы", icon: <Icon type="works" /> },
-    { path: "/author/orders", label: "Мои заказы", icon: <Icon type="orders" /> },
     { path: "/author/collections", label: "Коллекции", icon: <Icon type="collections" /> },
-    { path: "/author/services", label: "Услуги", icon: <Icon type="services" /> },
-    { path: "/author/collabs", label: "Коллабы", icon: <Icon type="collabs" /> },
-    { path: "/author/balance", label: "Баланс", icon: <Icon type="balance" /> },
+    // V1: скрыты разделы Services, Collabs, Balance
+    // { path: "/author/orders", label: "Мои заказы", icon: <Icon type="orders" /> },
+    // { path: "/author/services", label: "Услуги", icon: <Icon type="services" /> },
+    // { path: "/author/collabs", label: "Коллабы", icon: <Icon type="collabs" /> },
+    // { path: "/author/balance", label: "Баланс", icon: <Icon type="balance" /> },
   ];
 
   const isActive = (path) => {
@@ -357,10 +366,11 @@ export default function AuthorLayout({ children }) {
 
   return (
     <div className="au-layout">
+      {/* V1: Отключено (раздел Collabs скрыт) */}
       {/* Soft Toast для realtime уведомлений */}
-      {softToast && (
+      {/* {softToast && (
         <SoftToast message={softToast} onClose={() => setSoftToast(null)} />
-      )}
+      )} */}
       
       <aside className="au-side">
         <div className="au-side__top">
@@ -393,11 +403,12 @@ export default function AuthorLayout({ children }) {
             >
               <span className="au-navItem__icon">{it.icon}</span>
               <span className="au-navItem__label">{it.label}</span>
-              {it.path === "/author/collabs" && collabNotifications > 0 && (
+              {/* V1: Отключены уведомления коллабов (раздел скрыт) */}
+              {/* {it.path === "/author/collabs" && collabNotifications > 0 && (
                 <span className="au-navItem__badge">
                   {collabNotifications > 9 ? "9+" : collabNotifications}
                 </span>
-              )}
+              )} */}
               <span className="au-navItem__chev" aria-hidden="true">
                 ›
               </span>
