@@ -217,9 +217,9 @@ export default function ServiceViewPage() {
       <div className="sv-page">
         <div className="sv-error">
           <h2>{error || "Услуга не найдена"}</h2>
-          <button className="sv-btn" onClick={() => navigate("/bazar")}>
+          {/* <button className="sv-btn" onClick={() => navigate("/bazar")}>
             Вернуться в BAZAR
-          </button>
+          </button> */}
         </div>
       </div>
     );

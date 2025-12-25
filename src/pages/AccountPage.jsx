@@ -795,12 +795,12 @@ export default function AccountPage() {
                 ) : orders.length === 0 ? (
                   <div className="account-orders-empty">
                     <p>У вас пока нет заказов</p>
-                    <button 
+                    {/* <button 
                       className="account-btn account-btn--secondary"
                       onClick={() => navigate('/bazar')}
                     >
                       Найти услуги в BAZAR
-                    </button>
+                    </button> */}
                   </div>
                 ) : (
                   <div className="account-orders-list">

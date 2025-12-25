@@ -81,9 +81,9 @@ export default function SplashHeader({ onShowAuthModal }) {
             </Link>
           </div>
           <div className="dm-splash-header-right">
-            <Link to="/bazar" className="dm-splash-header-btn">
+            {/* <Link to="/bazar" className="dm-splash-header-btn">
               БАЗАР
-            </Link>
+            </Link> */}
             <Link to="/pricing" className="dm-splash-header-btn">
               ТАРИФЫ
             </Link>
@@ -201,13 +201,13 @@ export default function SplashHeader({ onShowAuthModal }) {
                       >
                         Редактор
                       </Link>
-                      <Link
+                      {/* <Link
                         to="/bazar"
                         className="dm-splash-header-menu-item"
                         onClick={() => setShowUserMenu(false)}
                       >
                         Настройки
-                      </Link>
+                      </Link> */}
                       <Link
                         to="/account"
                         className="dm-splash-header-menu-item"
