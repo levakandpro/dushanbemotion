@@ -2,7 +2,6 @@
 // Сервис Safe Deal для клиентской части
 
 import { supabase } from '../lib/supabaseClient'
-import { notifyNewOrder, notifyOrderCompleted, notifyDispute, notifyNewChatMessage, notifyPayoutRequest } from './telegramService'
 
 // ============================================
 // ЗАКАЗЫ
@@ -37,11 +36,16 @@ export async function createOrder(serviceId, clientId, authorId, price, message 
     
     // Отправляем уведомление в Telegram
     if (data) {
-      try {
-        await notifyNewOrder(data.id, price, 'Новая услуга')
-      } catch (e) {
-        console.error('Telegram error:', e)
-      }
+      import('./telegramService')
+        .then(({ notifyNewOrder }) => {
+          return notifyNewOrder(data.id, price, 'Новая услуга')
+        })
+        .then((result) => {
+          console.log('[safeDealService] Telegram notification sent:', result)
+        })
+        .catch((e) => {
+          console.error('[safeDealService] Telegram notification error:', e)
+        })
     }
     
     return data
@@ -135,20 +139,30 @@ export async function updateOrderStatus(orderId, status, userId) {
       await addToAuthorBalance(data.author_id, data.author_earnings, orderId)
       
       // Уведомление в Telegram о завершении заказа
-      try {
-        await notifyOrderCompleted(orderId, data.price, data.author_earnings)
-      } catch (e) {
-        console.error('Telegram error:', e)
-      }
+      import('./telegramService')
+        .then(({ notifyOrderCompleted }) => {
+          return notifyOrderCompleted(orderId, data.price, data.author_earnings)
+        })
+        .then((result) => {
+          console.log('[safeDealService] Telegram notification sent:', result)
+        })
+        .catch((e) => {
+          console.error('[safeDealService] Telegram notification error:', e)
+        })
     }
     
     // Уведомление о споре
     if (status === 'disputed' && data) {
-      try {
-        await notifyDispute(orderId, 'Клиент открыл спор')
-      } catch (e) {
-        console.error('Telegram error:', e)
-      }
+      import('./telegramService')
+        .then(({ notifyDispute }) => {
+          return notifyDispute(orderId, 'Клиент открыл спор')
+        })
+        .then((result) => {
+          console.log('[safeDealService] Telegram notification sent:', result)
+        })
+        .catch((e) => {
+          console.error('[safeDealService] Telegram notification error:', e)
+        })
     }
 
     return data
@@ -258,12 +272,17 @@ export async function sendOrderMessage(orderId, senderId, message, fileUrl = nul
     
     // Отправляем уведомление в Telegram
     if (data) {
-      try {
-        const senderName = data.sender?.display_name || data.sender?.username || 'Пользователь'
-        await notifyNewChatMessage(orderId, senderName, message)
-      } catch (e) {
-        console.error('Telegram error:', e)
-      }
+      const senderName = data.sender?.display_name || data.sender?.username || 'Пользователь'
+      import('./telegramService')
+        .then(({ notifyNewChatMessage }) => {
+          return notifyNewChatMessage(orderId, senderName, message)
+        })
+        .then((result) => {
+          console.log('[safeDealService] Telegram notification sent:', result)
+        })
+        .catch((e) => {
+          console.error('[safeDealService] Telegram notification error:', e)
+        })
     }
     
     return { blocked: false, message: data }
@@ -595,11 +614,16 @@ export async function requestPayout(authorId, amount, method, details) {
       })
     
     // Уведомление в Telegram
-    try {
-      await notifyPayoutRequest('Автор', amount)
-    } catch (e) {
-      console.error('Telegram error:', e)
-    }
+    import('./telegramService')
+      .then(({ notifyPayoutRequest }) => {
+        return notifyPayoutRequest('Автор', amount)
+      })
+      .then((result) => {
+        console.log('[safeDealService] Telegram notification sent:', result)
+      })
+      .catch((e) => {
+        console.error('[safeDealService] Telegram notification error:', e)
+      })
 
     return data
   } catch (error) {

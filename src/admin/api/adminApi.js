@@ -3,7 +3,6 @@
 
 import { supabase } from '../../lib/supabaseClient'
 import { deleteChatFiles } from '../../services/coverService'
-import { notifyPremiumPayment } from '../../services/telegramService'
 
 /**
  * Получает статистику для Dashboard
@@ -1053,15 +1052,21 @@ export async function createAdminNotification(type, title, message, metadata = {
     
     // Отправляем в Telegram для важных уведомлений
     if (type === 'premium_payment') {
-      try {
-        await notifyPremiumPayment(
-          metadata.user_id,
-          metadata.plan_id || 'premium',
-          metadata.payment_screenshot
-        )
-      } catch (e) {
-        console.error('Telegram error:', e)
-      }
+      // Используем динамический импорт для совместимости со всеми устройствами
+      import('../../services/telegramService')
+        .then(({ notifyPremiumPayment }) => {
+          return notifyPremiumPayment(
+            metadata.user_id,
+            metadata.plan_id || 'premium',
+            metadata.payment_screenshot
+          )
+        })
+        .then((result) => {
+          console.log('[AdminAPI] Telegram notification sent:', result)
+        })
+        .catch((e) => {
+          console.error('[AdminAPI] Telegram notification error:', e)
+        })
     }
   } catch (error) {
     console.error('Error creating notification:', error)

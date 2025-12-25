@@ -9,6 +9,7 @@ const TELEGRAM_CHAT_ID = '8247308735';
  */
 export async function sendTelegramMessage(text, parseMode = 'HTML') {
   try {
+    console.log('[Telegram] Sending message...', { hasToken: !!TELEGRAM_BOT_TOKEN, hasChatId: !!TELEGRAM_CHAT_ID });
     const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
     
     const response = await fetch(url, {
@@ -27,13 +28,14 @@ export async function sendTelegramMessage(text, parseMode = 'HTML') {
     const data = await response.json();
     
     if (!data.ok) {
-      console.error('Telegram API error:', data);
+      console.error('[Telegram] API error:', data);
       return false;
     }
     
+    console.log('[Telegram] Message sent successfully');
     return true;
   } catch (error) {
-    console.error('Error sending Telegram message:', error);
+    console.error('[Telegram] Error sending message:', error);
     return false;
   }
 }

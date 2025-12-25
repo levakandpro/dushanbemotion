@@ -4,7 +4,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '../../lib/supabaseClient';
 import { clearAdminNotifications, fetchUnreadAdminNotificationsCount, fetchAdminNotifications } from '../api/adminApi';
-import { notifyNewUser } from '../../services/telegramService';
 
 // Звук уведомления (тот же что для чата)
 const notificationSound = typeof Audio !== 'undefined' 
@@ -129,7 +128,16 @@ export function useAdminNotifications() {
           });
           
           // Отправляем в Telegram
-          notifyNewUser(payload.new.display_name, payload.new.username, payload.new.email).catch(e => console.error('Telegram error:', e))
+          import('../../services/telegramService')
+            .then(({ notifyNewUser }) => {
+              return notifyNewUser(payload.new.display_name, payload.new.username, payload.new.email)
+            })
+            .then((result) => {
+              console.log('[useAdminNotifications] Telegram notification sent:', result)
+            })
+            .catch((e) => {
+              console.error('[useAdminNotifications] Telegram notification error:', e)
+            })
         }
       )
       .subscribe();
