@@ -144,48 +144,45 @@ export default function EditorShell({
   }, [project?.videoLayers])
 
   const canvasFrameStyle = React.useMemo(() => {
-    const base = getBaseFrameSize(isMobile)
-    // Убеждаемся, что base всегда имеет валидные размеры
-    if (!base || !base.width || !base.height || base.width <= 0 || base.height <= 0) {
-      const fallback = { width: 800, height: 450 }
-      return fallback // Fallback значения
-    }
-
-    // Для PREMIUM видео — подстраиваем канвас под размер видео
-    const premiumLayer = lastPremiumVideoLayer || 
-      (selectedVideoLayer && selectedVideoLayer.subType === 'premium' ? selectedVideoLayer : null)
-    
-    if (premiumLayer) {
-      const w = Number(premiumLayer.width || 0)
-      const h = Number(premiumLayer.height || 0)
-      if (Number.isFinite(w) && Number.isFinite(h) && w > 0 && h > 0) {
-        const ratio = w / h
-        if (Number.isFinite(ratio) && ratio > 0) {
-          const maxWidth = 800
-          const maxHeight = 750
-          if (ratio >= 1) {
-            // Горизонтальное видео
-            const width = Math.min(maxWidth, maxHeight * ratio)
-            return { width: Math.max(1, Math.round(width)), height: Math.max(1, Math.round(width / ratio)) }
-          } else {
-            // Вертикальное видео
-            const height = Math.min(maxHeight, maxWidth / ratio)
-            return { width: Math.max(1, Math.round(height * ratio)), height: Math.max(1, Math.round(height)) }
+    // ДЛЯ ДЕСКТОПА: жестко фиксируем 800x450
+    if (!isMobile) {
+      // Для десктопа всегда 800x450, независимо от условий
+      const desktopBase = { width: 800, height: 450 }
+      
+      // Для PREMIUM видео — подстраиваем канвас под размер видео
+      const premiumLayer = lastPremiumVideoLayer || 
+        (selectedVideoLayer && selectedVideoLayer.subType === 'premium' ? selectedVideoLayer : null)
+      
+      if (premiumLayer) {
+        const w = Number(premiumLayer.width || 0)
+        const h = Number(premiumLayer.height || 0)
+        if (Number.isFinite(w) && Number.isFinite(h) && w > 0 && h > 0) {
+          const ratio = w / h
+          if (Number.isFinite(ratio) && ratio > 0) {
+            const maxWidth = 800
+            const maxHeight = 750
+            if (ratio >= 1) {
+              // Горизонтальное видео
+              const width = Math.min(maxWidth, maxHeight * ratio)
+              return { width: Math.max(1, Math.round(width)), height: Math.max(1, Math.round(width / ratio)) }
+            } else {
+              // Вертикальное видео
+              const height = Math.min(maxHeight, maxWidth / ratio)
+              return { width: Math.max(1, Math.round(height * ratio)), height: Math.max(1, Math.round(height)) }
+            }
           }
         }
       }
-    }
 
-    // Для инструмента Видео с превью
-    if (activeTool === 'beats') {
-      const previewW = Number(previewVideoAspect?.width || 0)
-      const previewH = Number(previewVideoAspect?.height || 0)
-      if (previewW > 0 && previewH > 0) {
-        const ratio = previewW / previewH
-        if (Number.isFinite(ratio) && ratio > 0) {
-          const baseW = Number(base?.width || 0)
-          const baseH = Number(base?.height || 0)
-          if (baseW > 0 && baseH > 0) {
+      // Для инструмента Видео с превью
+      if (activeTool === 'beats') {
+        const previewW = Number(previewVideoAspect?.width || 0)
+        const previewH = Number(previewVideoAspect?.height || 0)
+        if (previewW > 0 && previewH > 0) {
+          const ratio = previewW / previewH
+          if (Number.isFinite(ratio) && ratio > 0) {
+            const baseW = desktopBase.width
+            const baseH = desktopBase.height
             if (ratio >= 1) {
               const width = Math.min(baseW, baseH * ratio)
               return { width: Math.max(1, Math.round(width)), height: Math.max(1, Math.round(width / ratio)) }
@@ -195,9 +192,20 @@ export default function EditorShell({
           }
         }
       }
+      
+      // Стандартный размер для десктопа
+      return desktopBase
+    }
+    
+    // Для мобильных используем динамические размеры
+    const base = getBaseFrameSize(true)
+    // Убеждаемся, что base всегда имеет валидные размеры
+    if (!base || !base.width || !base.height || base.width <= 0 || base.height <= 0) {
+      const fallback = { width: 800, height: 450 }
+      return fallback // Fallback значения
     }
 
-    // Стандартный размер для остальных случаев
+    // Стандартный размер для мобильных
     return base
   }, [project?.aspectRatio, activeTool, selectedVideoLayer, lastPremiumVideoLayer, previewVideoAspect, isMobile])
 
