@@ -378,9 +378,6 @@ export default function AuthorLayout({ children }) {
           </div>
 
           <div className="au-side__quick">
-            {/* <Link className="au-ghostLink" to="/bazar">
-              BAZAR <Dot />
-            </Link> */}
             <Link className="au-ghostLink" to="/editor">
               Редактор <Dot />
             </Link>

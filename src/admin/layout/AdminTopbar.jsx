@@ -105,12 +105,7 @@ export default function AdminTopbar({
           )}
         </div>
 
-        {/* <button 
-          className="dm-admin-topbar__btn"
-          onClick={() => navigate('/bazar')}
-        >
-          🛒 BAZAR
-        </button> */}
+        {/*  */}
         <button 
           className="dm-admin-topbar__btn dm-admin-topbar__btn--primary"
           onClick={() => navigate('/editor')}

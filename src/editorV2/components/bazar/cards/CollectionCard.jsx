@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../BazarUI.css";
+import "../CollectionCard.css";
 
 const DEFAULT_COVER = "https://archive.org/download/dcol_20251214/dcol.jpg";
 const FALLBACK_IMG = "https://archive.org/download/collabs_20251214_0442/COLLABS.png";

@@ -773,7 +773,7 @@ export default function AccountPage() {
                 <div className="account-status account-status--user">
                   <span className="account-status-badge account-status-badge--user">Пользователь</span>
                   <p className="account-status-text">
-                    Хотите продавать свои работы на BAZAR?
+                    Хотите продавать свои работы?
                   </p>
                   <button 
                     className="account-btn account-btn--accent"
@@ -795,12 +795,6 @@ export default function AccountPage() {
                 ) : orders.length === 0 ? (
                   <div className="account-orders-empty">
                     <p>У вас пока нет заказов</p>
-                    {/* <button 
-                      className="account-btn account-btn--secondary"
-                      onClick={() => navigate('/bazar')}
-                    >
-                      Найти услуги в BAZAR
-                    </button> */}
                   </div>
                 ) : (
                   <div className="account-orders-list">

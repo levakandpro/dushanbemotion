@@ -266,9 +266,6 @@ export default function HeaderBar({
 
       {/* ЦЕНТР: навигационные кнопки */}
       <div className="editor-v2-header-center">
-        {/* <NavLink to="/bazar" className="editor-v2-header-nav-btn">
-          BAZAR
-        </NavLink> */}
         <div 
           className={`editor-v2-header-downloads ${showDownloadsMenu ? 'editor-v2-header-downloads-open' : ''}`}
           ref={downloadsMenuRef}

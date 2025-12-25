@@ -1,0 +1,233 @@
+/* Минимальный CSS для CollectionCard - только необходимые стили */
+
+:root {
+  --bz-stroke: rgba(255,255,255,.08);
+  --bz-stroke2: rgba(43,231,166,.22);
+  --bz-text: rgba(255,255,255,.92);
+  --bz-text3: rgba(255,255,255,.42);
+  --r16: 16px;
+  --shadow: 0 18px 50px rgba(0,0,0,.35);
+}
+
+/* Work card */
+.bz-work {
+  break-inside: avoid;
+  margin: 0 0 12px;
+  border-radius: var(--r16);
+  border: 1px solid var(--bz-stroke);
+  background: rgba(0,0,0,.18);
+  overflow: hidden;
+  box-shadow: 0 1px 0 rgba(255,255,255,.03) inset;
+  transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
+
+.bz-work:hover {
+  transform: translateY(-1px);
+  border-color: var(--bz-stroke2);
+  box-shadow: var(--shadow);
+}
+
+.bz-work--normal .bz-work__media {
+  aspect-ratio: 16 / 10;
+}
+
+.bz-work--mini .bz-work__media {
+  aspect-ratio: 1;
+}
+
+.bz-work--mini {
+  min-width: 140px;
+  max-width: 140px;
+}
+
+.bz-work--mini .bz-work__footer {
+  display: none;
+}
+
+.bz-work--mini .bz-work__overlay {
+  padding: 8px;
+}
+
+.bz-work--mini .bz-work__title {
+  font-size: 11px;
+}
+
+.bz-work__media {
+  position: relative;
+  background: rgba(255,255,255,.03);
+}
+
+.bz-work__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+  filter: saturate(1.03) contrast(1.02);
+}
+
+.bz-work__badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.18);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  color: rgba(255,255,255,.9);
+}
+
+.bz-work__overlay {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.62));
+  transition: opacity .15s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px;
+  pointer-events: none;
+}
+
+.bz-work:hover .bz-work__overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.bz-work__top {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.bz-fav {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0,0,0,.6);
+  color: rgba(255,255,255,.90);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .15s ease, background .15s ease;
+}
+
+.bz-fav svg {
+  width: 18px;
+  height: 18px;
+}
+
+.bz-fav:hover {
+  transform: scale(1.15);
+  background: rgba(0,0,0,.8);
+}
+
+.bz-fav:active {
+  transform: scale(0.95);
+}
+
+.bz-work__bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.bz-work__title {
+  color: var(--bz-text);
+  font-size: 13px;
+}
+
+.bz-work__stats {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.bz-work__stat {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.bz-work__stat svg {
+  opacity: 0.8;
+}
+
+.bz-collection-open {
+  background: linear-gradient(135deg, rgba(92, 255, 212, 0.2), rgba(61, 191, 160, 0.15));
+  border: 1px solid rgba(92, 255, 212, 0.4);
+  color: rgba(92, 255, 212, 0.95);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.15s, background 0.15s;
+}
+
+.bz-collection-open:hover {
+  transform: translateY(-1px);
+  background: linear-gradient(135deg, rgba(92, 255, 212, 0.3), rgba(61, 191, 160, 0.25));
+}
+
+.bz-work__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border-top: 1px solid rgba(255,255,255,.05);
+}
+
+.bz-authorMini {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.bz-authorMini--clickable {
+  cursor: pointer;
+}
+
+.bz-authorMini__name {
+  color: rgba(255,255,255,.78);
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 160px;
+}
+
+.bz-metrics {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.bz-stat {
+  border: 1px solid rgba(255,255,255,.06);
+  background: rgba(0,0,0,.18);
+  border-radius: 14px;
+  padding: 7px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+

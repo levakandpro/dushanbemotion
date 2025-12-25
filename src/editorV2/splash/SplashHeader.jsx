@@ -81,9 +81,6 @@ export default function SplashHeader({ onShowAuthModal }) {
             </Link>
           </div>
           <div className="dm-splash-header-right">
-            {/* <Link to="/bazar" className="dm-splash-header-btn">
-              БАЗАР
-            </Link> */}
             <Link to="/pricing" className="dm-splash-header-btn">
               ТАРИФЫ
             </Link>

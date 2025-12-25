@@ -28,8 +28,6 @@ import AccountPage from '../../pages/AccountPage'
 // Editor
 import EditorV2Screen from '../../editorV2/EditorV2Screen'
 import ViewProjectScreen from '../../editorV2/view/ViewProjectScreen'
-// import BazarPage from '../../pages/BazarPage'
-// import CollectionViewPage from '../../editorV2/screens/bazar/CollectionViewPage'
 import ServiceViewPage from '../../pages/ServiceViewPage'
 import OrderPage from '../../pages/OrderPage'
 import { MyOrders } from '../../components/SafeDeal'
@@ -47,9 +45,6 @@ import AuthorBalance from '../../author/pages/AuthorBalance'
 
 // Splash page
 import IntroRouter from '../../editorV2/splash/IntroRouter'
-
-// Public Profile
-// import PublicProfile from '../../author/pages/public/PublicProfile'
 
 // Pricing
 import PricingScreen from '../../pricing/PricingScreen'
@@ -222,13 +217,6 @@ export default function AppRouter() {
         {/* Просмотр shared проекта - публичный */}
         <Route path="/view/:shareId" element={<ViewProjectRoute />} />
 
-        {/* Public Profile */}
-        {/* <Route path="/u/:username" element={<PublicProfile />} /> */}
-
-        {/* Bazar - лента медиа */}
-        {/* <Route path="/bazar" element={<BazarPage />} /> */}
-        {/* <Route path="/bazar/collection/:collectionId" element={<CollectionViewPage />} /> */}
-        {/* <Route path="/bazar/service/:id" element={<ServiceViewPage />} /> */}
         <Route path="/service/:id" element={<ServiceViewPage />} />
         <Route path="/order/:id" element={<OrderPage />} />
         <Route
