@@ -87,7 +87,7 @@ export default function PromoModal({ isOpen, onClose }) {
           </p>
 
           <div className="promo-footer">
-            <div className="promo-price-main">160<small>TJS</small></div>
+            <div className="promo-price-main">120<small>TJS</small></div>
             <div className="promo-badge-special">
               <span className="promo-old-price">220 TJS</span>
               <span>Распродажа<br />31.12</span>

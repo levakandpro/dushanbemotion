@@ -487,7 +487,7 @@ export default function PricingScreen() {
                     <h2 className="dm-pricing-card__title">{premiumPlan?.name || 'PREMIUM'}</h2>
                   </div>
                   <div className="dm-pricing-card__price">
-                    <span className="dm-pricing-card__price-amount">{premiumPlan?.price || 160}</span>
+                    <span className="dm-pricing-card__price-amount">{premiumPlan?.price || 120}</span>
                     <span className="dm-pricing-card__price-currency">с / {premiumPlan?.interval === 'year' ? 'год' : 'месяц'}</span>
                   </div>
                   <ul className="dm-pricing-card__features">
