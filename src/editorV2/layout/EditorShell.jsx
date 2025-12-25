@@ -772,9 +772,26 @@ export default function EditorShell({
       hasProject: !!project, 
       activeTool, 
       isCleanView,
-      canvasFrameStyle 
+      canvasFrameStyle,
+      isMobile
     })
-  }, [project, activeTool, isCleanView, canvasFrameStyle])
+  }, [project, activeTool, isCleanView, canvasFrameStyle, isMobile])
+
+  // ПРИНУДИТЕЛЬНО устанавливаем размеры canvas-frame для десктопа
+  React.useEffect(() => {
+    if (!isMobile && canvasRef.current) {
+      const el = canvasRef.current
+      // Принудительно устанавливаем размеры через setProperty с important
+      el.style.setProperty('width', `${canvasFrameStyle.width}px`, 'important')
+      el.style.setProperty('height', `${canvasFrameStyle.height}px`, 'important')
+      el.style.setProperty('min-width', `${canvasFrameStyle.width}px`, 'important')
+      el.style.setProperty('min-height', `${canvasFrameStyle.height}px`, 'important')
+      el.style.setProperty('max-width', `${canvasFrameStyle.width}px`, 'important')
+      el.style.setProperty('max-height', `${canvasFrameStyle.height}px`, 'important')
+      
+      console.log('✅ Forced canvas frame size:', canvasFrameStyle)
+    }
+  }, [canvasFrameStyle, isMobile])
 
   return (
     <div 
