@@ -1,6 +1,7 @@
 ﻿// src/editorV2/splash/AuthModal.jsx
 import React, { useState } from 'react'
 import { supabase } from '../../lib/supabaseClient'
+import { getRedirectUrl } from '../../utils/getRedirectUrl'
 import './AuthModal.css'
 
 export default function AuthModal({ isOpen, onClose, onSuccess }) {
@@ -48,7 +49,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/confirmed`,
+          emailRedirectTo: getRedirectUrl('/auth/confirmed'),
         },
       })
 
@@ -86,7 +87,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
 
     try {
       const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/auth/reset-password`,
+        redirectTo: getRedirectUrl('/auth/reset-password'),
       })
 
       if (resetError) throw resetError
@@ -107,7 +108,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
       const { error: oauthError } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: getRedirectUrl('/auth/callback'),
         },
       })
 

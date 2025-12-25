@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
+import { getRedirectUrl } from '../utils/getRedirectUrl'
 import './Auth.css'
 import MobileBackButton from '../editorV2/components/MobileBackButton'
 
@@ -48,7 +49,7 @@ export default function Register() {
         options: {
           data: { full_name: fullName.trim() },
           // После подтверждения письма пусть ведёт на страницу "Email подтвержден"
-          emailRedirectTo: `${window.location.origin}/auth/confirmed`,
+          emailRedirectTo: getRedirectUrl('/auth/confirmed'),
         },
       })
 
@@ -84,7 +85,7 @@ export default function Register() {
       const { error: oauthError } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: getRedirectUrl('/auth/callback'),
         },
       })
 

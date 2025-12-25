@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
+import { getRedirectUrl } from '../utils/getRedirectUrl'
 import './Auth.css'
 
 export default function ForgotPassword() {
@@ -27,7 +28,7 @@ export default function ForgotPassword() {
       }
 
       const { error } = await supabase.auth.resetPasswordForEmail(cleanEmail, {
-        redirectTo: `${window.location.origin}/auth/reset-password`,
+        redirectTo: getRedirectUrl('/auth/reset-password'),
       })
 
       if (error) throw error
