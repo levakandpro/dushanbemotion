@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, Link, useSearchParams } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
+import { getRedirectUrl } from '../utils/getRedirectUrl'
 import { ADMIN_EMAILS } from './adminConfig'
 import './Auth.css'
 import MobileBackButton from '../editorV2/components/MobileBackButton'
