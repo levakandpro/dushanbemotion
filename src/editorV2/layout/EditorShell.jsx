@@ -912,12 +912,12 @@ export default function EditorShell({
                       }
                     }}
                     style={{
-                      minWidth: 800,
-                      minHeight: 450,
-                      width: 800,
-                      height: 450,
-                      maxWidth: 800,
-                      maxHeight: 450,
+                      minWidth: canvasFrameStyle.width,
+                      minHeight: canvasFrameStyle.height,
+                      width: canvasFrameStyle.width,
+                      height: canvasFrameStyle.height,
+                      maxWidth: canvasFrameStyle.width,
+                      maxHeight: canvasFrameStyle.height,
                     }}
                   >
                       {/* Фон */}
