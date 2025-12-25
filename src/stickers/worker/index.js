@@ -1227,7 +1227,7 @@ async function handleCoversList(request, env, corsHeaders) {
     console.log('📦 Found cover objects:', result.objects.length);
     
     // Фильтруем изображения и видео
-    const validExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.gif', '.mp4', '.webm'];
+    const validExtensions = ['.jpg', '.jpeg', '.jfif', '.png', '.webp', '.gif', '.mp4', '.webm'];
     const filtered = result.objects.filter(obj => {
       if (obj.key.endsWith('/')) return false;
       const name = obj.key.toLowerCase();
