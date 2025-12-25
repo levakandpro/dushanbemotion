@@ -33,6 +33,12 @@
     max-width: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
+    height: 100vh !important;
+    height: 100dvh !important; /* Для PWA и мобильных браузеров */
+    min-height: 100vh !important;
+    min-height: 100dvh !important;
+    background-color: #061410 !important; /* Темный фон бренда */
+    background: #061410 !important;
   }
   
   html::-webkit-scrollbar,
@@ -106,6 +112,46 @@
     scrollbar-width: none !important;
     -ms-overflow-style: none !important;
     overflow-x: hidden !important;
+  }
+  
+  /* Фон для root контейнера на мобильных */
+  #root {
+    background-color: #061410 !important;
+    background: #061410 !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    min-height: 100vh !important;
+    min-height: 100dvh !important;
+  }
+  
+  /* Фон для основных контейнеров редактора */
+  .editor-v2-root,
+  .dm-editor-root,
+  .dm-editor-shell {
+    background-color: #061410 !important;
+    background: #061410 !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    min-height: 100vh !important;
+    min-height: 100dvh !important;
+  }
+  
+  /* Убираем белый фон по умолчанию - только для основных контейнеров */
+  body,
+  html,
+  #root,
+  .editor-v2-root,
+  .dm-editor-root,
+  .dm-editor-shell {
+    background-color: #061410 !important;
+    background: #061410 !important;
+  }
+  
+  /* Убеждаемся, что дочерние элементы body и root не имеют белого фона */
+  body > div:not([class*="editor"]):not([class*="dm-"]),
+  #root > div:not([class*="editor"]):not([class*="dm-"]) {
+    background-color: #061410 !important;
+    background: #061410 !important;
   }
   
   /* MobilePanel контейнер */
@@ -1360,7 +1406,8 @@
     justify-content: space-between !important;
     height: 52px !important;
     min-height: 52px !important;
-    padding: 0 16px !important;
+    max-height: 52px !important;
+    padding: 0 8px !important;
     background: linear-gradient(180deg, rgba(8, 10, 12, 0.98) 0%, rgba(8, 10, 12, 0.95) 100%) !important;
     backdrop-filter: blur(20px) saturate(180%) !important;
     -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
@@ -1368,6 +1415,10 @@
     flex-shrink: 0 !important;
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease !important;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3) !important;
+    overflow: hidden !important;
+    position: relative !important;
+    width: 100% !important;
+    max-width: 100vw !important;
   }
 
   /* Auto-hide когда скроллят */
@@ -1379,12 +1430,25 @@
   .editor-v2-header-left {
     display: flex !important;
     align-items: center !important;
-    gap: 8px !important;
+    gap: 6px !important;
+    flex-shrink: 0 !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
   }
 
   .editor-v2-logo-icon {
-    width: 28px !important;
-    height: 28px !important;
+    width: 24px !important;
+    height: 24px !important;
+    flex-shrink: 0 !important;
+  }
+  
+  /* Кнопка назад в header */
+  .editor-v2-header-left .mobile-back-btn {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    flex-shrink: 0 !important;
+    padding: 0 !important;
   }
 
   .editor-v2-logo,
@@ -1399,6 +1463,8 @@
   .dm-header-stats {
     display: flex !important;
     align-items: center !important;
+    flex-shrink: 0 !important;
+    min-width: 0 !important;
   }
 
   .dm-header-stats-item:not(.dm-header-stats-online) {
@@ -1406,22 +1472,87 @@
   }
 
   .dm-header-stats-online {
-    font-size: 11px !important;
-    gap: 4px !important;
+    font-size: 10px !important;
+    gap: 3px !important;
+    padding: 4px 6px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+  
+  .dm-header-stats-online .dm-header-stats-label {
+    display: none !important; /* Скрываем текст "онлайн" на очень маленьких экранах */
+  }
+  
+  .dm-header-stats-value {
+    font-size: 10px !important;
+    font-weight: 600 !important;
+  }
+  
+  .dm-header-stats-dot {
+    width: 6px !important;
+    height: 6px !important;
+    flex-shrink: 0 !important;
   }
 
   .editor-v2-header-right {
     display: flex !important;
     align-items: center !important;
-    gap: 8px !important;
+    gap: 4px !important;
+    flex-shrink: 0 !important;
+    min-width: 0 !important;
+    overflow: visible !important;
+    max-width: 50% !important; /* Ограничиваем ширину правой части */
   }
 
   .editor-v2-header-right button {
-    padding: 8px 14px !important;
-    font-size: 12px !important;
+    padding: 6px 10px !important;
+    font-size: 11px !important;
     font-weight: 600 !important;
-    border-radius: 10px !important;
-    min-height: 36px !important;
+    border-radius: 8px !important;
+    min-height: 32px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+  
+  /* Кнопка кабинета в header */
+  .editor-v2-header-btn-account {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  
+  .editor-v2-header-btn-account svg {
+    width: 18px !important;
+    height: 18px !important;
+  }
+  
+  /* Скрываем лишние элементы в header-right на очень маленьких экранах */
+  @media (max-width: 360px) {
+    .editor-v2-header-right {
+      gap: 2px !important;
+    }
+    
+    .editor-v2-header-right button {
+      padding: 6px 8px !important;
+      font-size: 10px !important;
+      min-width: 30px !important;
+    }
+    
+    .dm-header-stats-online .dm-header-stats-label {
+      display: none !important;
+    }
+  }
+  
+  /* Для PWA - учитываем safe-area */
+  @supports (padding: max(0px)) {
+    .editor-v2-header {
+      padding-left: max(8px, env(safe-area-inset-left)) !important;
+      padding-right: max(8px, env(safe-area-inset-right)) !important;
+    }
   }
 
   /* ========== CANVAS AREA ========== */
@@ -1430,7 +1561,8 @@
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    padding: 12px !important;
+    padding: 8px !important;
+    padding-top: 44px !important; /* Место для миниатюрных категорий */
     padding-bottom: 72px !important;
     background: #0a0a0c !important;
     overflow: hidden !important;
@@ -1442,6 +1574,7 @@
     bottom: 72px !important;
     width: 100% !important;
     height: auto !important;
+    z-index: 1 !important;
   }
 
   .editor-v2-canvas-wrapper {
@@ -2082,20 +2215,22 @@
   }
 
   /* ============================================================================
-     МОБИЛЬНЫЕ КАТЕГОРИИ ФОНОВ (горизонтальный скролл)
+     МОБИЛЬНЫЕ КАТЕГОРИИ ФОНОВ (горизонтальный скролл) - МИНИАТЮРНЫЕ для PWA
      ============================================================================ */
   .dm-bg-mobile-categories {
     display: flex !important;
-    gap: 8px !important;
-    padding: 12px 16px !important;
+    gap: 4px !important;
+    padding: 6px 8px !important;
     overflow-x: auto !important;
     overflow-y: hidden !important;
     scroll-snap-type: x mandatory !important;
     -webkit-overflow-scrolling: touch !important;
     scrollbar-width: none !important;
     -ms-overflow-style: none !important;
-    background: rgba(0, 0, 0, 0.2) !important;
+    background: rgba(0, 0, 0, 0.3) !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    max-height: 36px !important;
+    flex-shrink: 0 !important;
   }
 
   .dm-bg-mobile-categories::-webkit-scrollbar {
@@ -2104,17 +2239,21 @@
 
   .dm-bg-mobile-category-btn {
     flex-shrink: 0 !important;
-    padding: 8px 16px !important;
-    border-radius: 20px !important;
+    padding: 4px 10px !important;
+    border-radius: 12px !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     background: rgba(255, 255, 255, 0.05) !important;
     color: rgba(255, 255, 255, 0.6) !important;
-    font-size: 13px !important;
+    font-size: 10px !important;
     font-weight: 500 !important;
     white-space: nowrap !important;
     scroll-snap-align: start !important;
     transition: all 0.2s ease !important;
     cursor: pointer !important;
+    height: 24px !important;
+    line-height: 16px !important;
+    display: flex !important;
+    align-items: center !important;
   }
 
   .dm-bg-mobile-category-btn-active {
@@ -2122,7 +2261,63 @@
     color: #000 !important;
     border-color: var(--dm-accent) !important;
     font-weight: 600 !important;
-    box-shadow: 0 0 12px rgba(0, 255, 162, 0.4) !important;
+    box-shadow: 0 0 8px rgba(0, 255, 162, 0.3) !important;
+  }
+  
+  /* Миниатюрные категории стикеров и других инструментов */
+  .dm-sticker-categories-rail,
+  .dm-premium-categories-rail {
+    display: none !important; /* Скрываем боковые рейлы категорий на мобильных */
+  }
+  
+  /* Компактные категории в панелях (стикеры, иконки и т.д.) */
+  .dm-categories-scroll,
+  [class*="categories-scroll"],
+  [class*="category-tabs"] {
+    max-height: 32px !important;
+    padding: 4px 8px !important;
+    margin-bottom: 4px !important;
+  }
+  
+  .dm-categories-scroll button,
+  [class*="category-btn"],
+  [class*="category-tab"] {
+    padding: 3px 8px !important;
+    font-size: 10px !important;
+    height: 24px !important;
+    line-height: 18px !important;
+    border-radius: 10px !important;
+  }
+  
+  /* Миниатюрные категории фонов - позиционирование над канвасом */
+  .dm-bg-mobile-categories {
+    position: fixed !important;
+    top: 52px !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 10 !important;
+    background: rgba(6, 20, 16, 0.95) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+  }
+  
+  /* Для PWA - категории должны быть всегда миниатюрными */
+  @media (display-mode: standalone) {
+    .dm-bg-mobile-categories {
+      max-height: 32px !important;
+      padding: 4px 6px !important;
+    }
+    
+    .dm-bg-mobile-category-btn {
+      padding: 3px 8px !important;
+      font-size: 9px !important;
+      height: 22px !important;
+    }
+    
+    /* Увеличиваем отступ канваса сверху для категорий */
+    .dm-editor-canvas-area {
+      padding-top: 40px !important;
+    }
   }
 
   /* Скрываем десктопную боковую панель категорий на мобильных */
