@@ -261,11 +261,14 @@
 .editor-v2-canvas-stage {
   width: 100%;
   height: 100%;
-  min-height: 200px; /* Минимальная высота для видимости */
+  /* Убираем min-height, чтобы не было конфликтов - размеры задаются родителем */
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
+  /* Фиксируем размеры для предсказуемого поведения */
+  min-height: 0;
+  min-width: 0;
 }
 
 .editor-v2-canvas-backdrop {
@@ -277,8 +280,9 @@
     0 0 0 1px rgba(0, 0, 0, 0.025);
   overflow: visible;
   position: relative;
-  min-width: 200px; /* Минимальная ширина для видимости */
-  min-height: 200px; /* Минимальная высота для видимости */
+  /* Убираем min-width/min-height - размеры задаются canvas-frame */
+  min-width: 0;
+  min-height: 0;
 }
 
 .editor-v2-canvas-frame {
@@ -352,20 +356,16 @@
   flex-direction: column;
   align-items: center;
   transition: transform 0.18s ease-out; /* плавное перетаскивание */
-  min-width: 200px; /* Минимальная ширина для видимости */
-  min-height: 200px; /* Минимальная высота для видимости */
+  /* Убираем min-width/min-height - размеры задаются canvas-frame */
+  min-width: 0;
+  min-height: 0;
 }
 
 /* ==========================================================================
    CANVAS FRAME (сама сцена)
    ========================================================================== */
 
-.editor-v2-canvas-stage {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+/* Дублирующее определение .editor-v2-canvas-stage удалено - используется выше */
 
 /* Кадр */
 .editor-v2-canvas-frame {
@@ -373,8 +373,10 @@
   border-radius: 10px;
   overflow: hidden;
   z-index: 2; /* Убеждаемся, что frame виден */
-  min-width: 100px; /* Минимальная ширина для видимости */
-  min-height: 100px; /* Минимальная высота для видимости */
+  /* Размеры задаются через inline style в EditorShell.jsx (800x450) */
+  /* Убираем min-width/min-height, чтобы не было конфликтов */
+  min-width: 0;
+  min-height: 0;
 
   box-shadow:
     0 0 0 1px rgba(255,255,255,0.1),

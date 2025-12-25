@@ -62,7 +62,8 @@
 .dm-editor-shell {
   display: flex !important;
   flex-direction: column;
-  height: 100% !important;
+  /* Фиксируем высоту: 100vh (корневой контейнер) */
+  height: 100vh !important;
   width: 100% !important;
   max-width: 100%;
   overflow: hidden;
@@ -107,7 +108,8 @@
   align-items: start; /* Выравнивание по верхнему краю для всех ячеек */
   overflow: hidden;
   min-height: 0;
-  height: 100%; /* Добавляем высоту для grid */
+  /* Фиксируем высоту: 100vh минус высота хедера (56px) */
+  height: calc(100vh - 56px);
   overflow-x: hidden !important;
   width: 100%;
   max-width: 100vw;
@@ -469,10 +471,12 @@
   overflow: hidden;
   background: var(--dm-bg);
   padding-top: 0; /* Убираем любые отступы сверху */
-  min-height: 400px; /* Минимальная высота для видимости канваса */
-  height: 100%; /* Занимает всю доступную высоту */
+  /* Фиксируем высоту: наследуем от родителя (dm-editor-main) */
+  height: 100%;
   width: 100%; /* Занимает всю доступную ширину */
   z-index: 1; /* Убеждаемся, что канвас виден */
+  /* Убираем min-height, чтобы не было конфликтов */
+  min-height: 0;
 }
 
 /* Поднимаем canvas когда активна вкладка стилей текста */
@@ -2688,6 +2692,9 @@
   background: var(--dm-bg);
   overflow: hidden;
   z-index: 1; /* Убеждаемся, что wrapper виден */
+  /* Фиксируем размеры для предсказуемого поведения */
+  min-height: 0;
+  min-width: 0;
 }
 
 .editor-v2-right {
