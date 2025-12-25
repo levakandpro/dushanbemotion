@@ -19,18 +19,34 @@ function toProxyUrl(url) {
 
 /**
  * Загружает изображение через прокси и возвращает base64
+ * С ограничением размера, чтобы избежать перегрузки браузера
  */
 async function fetchImageAsBase64(url) {
   try {
     const proxyUrl = toProxyUrl(url)
     const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 секунд таймаут
+    const timeoutId = setTimeout(() => controller.abort(), 5000) // Уменьшен до 5 секунд
     
     try {
       const response = await fetch(proxyUrl, { signal: controller.signal })
       clearTimeout(timeoutId)
       if (!response.ok) return null
+      
+      // Проверяем размер - если слишком большой, пропускаем
+      const contentLength = response.headers.get('content-length')
+      if (contentLength && parseInt(contentLength) > 5 * 1024 * 1024) { // 5MB лимит
+        console.warn('Image too large, skipping:', url.substring(0, 50))
+        return null
+      }
+      
       const blob = await response.blob()
+      
+      // Дополнительная проверка размера blob
+      if (blob.size > 5 * 1024 * 1024) {
+        console.warn('Image blob too large, skipping:', url.substring(0, 50))
+        return null
+      }
+      
       return new Promise((resolve) => {
         const reader = new FileReader()
         reader.onloadend = () => resolve(reader.result)
@@ -39,13 +55,13 @@ async function fetchImageAsBase64(url) {
       })
     } catch (fetchError) {
       clearTimeout(timeoutId)
-      if (fetchError.name === 'AbortError') {
-        console.warn('Image fetch timeout:', url)
+      if (fetchError.name !== 'AbortError') {
+        // Не логируем таймауты, чтобы не засорять консоль
+        return null
       }
       return null
     }
   } catch (e) {
-    console.warn('Failed to fetch image:', url, e)
     return null
   }
 }
@@ -106,45 +122,63 @@ export async function exportCanvas(format, filename = 'canvas') {
   })
 
   // Конвертируем все img элементы в base64 через прокси
+  // ОГРАНИЧИВАЕМ: обрабатываем только изображения, которые видны на канвасе
+  // Не трогаем изображения, которые уже в base64 или blob
   const imagesToRestore = []
   const bgToRestore = []
-  const images = canvasElement.querySelectorAll('img')
+  const images = Array.from(canvasElement.querySelectorAll('img')).filter(img => {
+    // Пропускаем изображения, которые уже в правильном формате
+    if (!img.src || img.src.startsWith('data:') || img.src.startsWith('blob:')) {
+      return false
+    }
+    // Пропускаем скрытые изображения
+    const rect = img.getBoundingClientRect()
+    return rect.width > 0 && rect.height > 0
+  })
   
-  console.log('📷 Converting', images.length, 'img elements via proxy...')
+  console.log('📷 Converting', images.length, 'visible img elements via proxy...')
   
+  // Обрабатываем изображения последовательно, не все сразу
   try {
     for (const img of images) {
-      if (img.src && !img.src.startsWith('data:') && !img.src.startsWith('blob:')) {
-        const originalSrc = img.src
-        try {
-          const base64 = await fetchImageAsBase64(img.src)
-          if (base64) {
-            imagesToRestore.push({ img, originalSrc })
-            img.src = base64
-            await new Promise(resolve => {
-              if (img.complete) resolve()
-              else {
-                const timeout = setTimeout(() => resolve(), 5000) // 5 секунд таймаут для загрузки
-                img.onload = () => {
-                  clearTimeout(timeout)
-                  resolve()
-                }
-                img.onerror = () => {
-                  clearTimeout(timeout)
-                  resolve()
-                }
+      const originalSrc = img.src
+      try {
+        const base64 = await fetchImageAsBase64(img.src)
+        if (base64) {
+          imagesToRestore.push({ img, originalSrc })
+          img.src = base64
+          // Ждем загрузки с таймаутом
+          await new Promise(resolve => {
+            if (img.complete) {
+              resolve()
+            } else {
+              const timeout = setTimeout(() => {
+                img.onload = null
+                img.onerror = null
+                resolve()
+              }, 3000) // Уменьшен таймаут до 3 секунд
+              img.onload = () => {
+                clearTimeout(timeout)
+                resolve()
               }
-            })
-            console.log('✓ img:', originalSrc.substring(0, 50))
-          }
-        } catch (imgError) {
-          console.warn('Failed to convert img:', img.src, imgError)
+              img.onerror = () => {
+                clearTimeout(timeout)
+                resolve()
+              }
+            }
+          })
         }
+      } catch (imgError) {
+        console.warn('Failed to convert img:', img.src.substring(0, 50), imgError)
       }
     }
 
     // Конвертируем CSS background-image в base64 через прокси
-    const allElements = canvasElement.querySelectorAll('*')
+    // Ограничиваемся только видимыми элементами с фоновыми изображениями
+    const allElements = Array.from(canvasElement.querySelectorAll('*')).filter(el => {
+      const rect = el.getBoundingClientRect()
+      return rect.width > 0 && rect.height > 0
+    })
     
     for (const el of allElements) {
       try {
@@ -158,12 +192,11 @@ export async function exportCanvas(format, filename = 'canvas') {
             if (base64) {
               bgToRestore.push({ el, originalBg: el.style.backgroundImage })
               el.style.backgroundImage = `url(${base64})`
-              console.log('✓ bg:', url.substring(0, 50))
             }
           }
         }
       } catch (bgError) {
-        console.warn('Failed to convert background:', bgError)
+        // Игнорируем ошибки фоновых изображений
       }
     }
   } catch (convertError) {
