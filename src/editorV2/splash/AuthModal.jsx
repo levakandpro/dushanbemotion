@@ -1,6 +1,7 @@
 ﻿// src/editorV2/splash/AuthModal.jsx
 import React, { useState } from 'react'
 import { supabase } from '../../lib/supabaseClient'
+import { notifyNewUser } from '../../services/telegramService'
 import './AuthModal.css'
 
 export default function AuthModal({ isOpen, onClose, onSuccess }) {
@@ -56,9 +57,11 @@ export default function AuthModal({ isOpen, onClose, onSuccess }) {
 
       if (data?.user) {
         // Отправляем уведомление в Telegram о новом пользователе
-        import('../../services/telegramService').then(({ notifyNewUser }) => {
-          notifyNewUser(null, null, email)
-        }).catch(e => console.error('Telegram error:', e))
+        try {
+          await notifyNewUser(null, null, email)
+        } catch (e) {
+          console.error('Telegram error:', e)
+        }
         
         setSuccessMessage('Письмо отправлено, подтвердите email')
         setEmail('')

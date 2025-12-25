@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
+import { notifyNewUser } from '../services/telegramService'
 import './Auth.css'
 import MobileBackButton from '../editorV2/components/MobileBackButton'
 
@@ -55,9 +56,11 @@ export default function Register() {
       if (error) throw error
 
       // Отправляем уведомление в Telegram о новом пользователе
-      import('../services/telegramService').then(({ notifyNewUser }) => {
-        notifyNewUser(fullName.trim(), null, cleanEmail)
-      }).catch(e => console.error('Telegram error:', e))
+      try {
+        await notifyNewUser(fullName.trim(), null, cleanEmail)
+      } catch (e) {
+        console.error('Telegram error:', e)
+      }
 
       // В Supabase обычно email_confirmed_at = null до подтверждения.
       // Поэтому сразу показываем понятное сообщение на login.

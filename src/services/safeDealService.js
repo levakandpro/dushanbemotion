@@ -2,6 +2,7 @@
 // Сервис Safe Deal для клиентской части
 
 import { supabase } from '../lib/supabaseClient'
+import { notifyNewOrder, notifyOrderCompleted, notifyDispute, notifyNewChatMessage, notifyPayoutRequest } from './telegramService'
 
 // ============================================
 // ЗАКАЗЫ
@@ -36,9 +37,11 @@ export async function createOrder(serviceId, clientId, authorId, price, message 
     
     // Отправляем уведомление в Telegram
     if (data) {
-      import('./telegramService').then(({ notifyNewOrder }) => {
-        notifyNewOrder(data.id, price, 'Новая услуга')
-      }).catch(e => console.error('Telegram error:', e))
+      try {
+        await notifyNewOrder(data.id, price, 'Новая услуга')
+      } catch (e) {
+        console.error('Telegram error:', e)
+      }
     }
     
     return data
@@ -132,16 +135,20 @@ export async function updateOrderStatus(orderId, status, userId) {
       await addToAuthorBalance(data.author_id, data.author_earnings, orderId)
       
       // Уведомление в Telegram о завершении заказа
-      import('./telegramService').then(({ notifyOrderCompleted }) => {
-        notifyOrderCompleted(orderId, data.price, data.author_earnings)
-      }).catch(e => console.error('Telegram error:', e))
+      try {
+        await notifyOrderCompleted(orderId, data.price, data.author_earnings)
+      } catch (e) {
+        console.error('Telegram error:', e)
+      }
     }
     
     // Уведомление о споре
     if (status === 'disputed' && data) {
-      import('./telegramService').then(({ notifyDispute }) => {
-        notifyDispute(orderId, 'Клиент открыл спор')
-      }).catch(e => console.error('Telegram error:', e))
+      try {
+        await notifyDispute(orderId, 'Клиент открыл спор')
+      } catch (e) {
+        console.error('Telegram error:', e)
+      }
     }
 
     return data
@@ -251,10 +258,12 @@ export async function sendOrderMessage(orderId, senderId, message, fileUrl = nul
     
     // Отправляем уведомление в Telegram
     if (data) {
-      import('./telegramService').then(({ notifyNewChatMessage }) => {
+      try {
         const senderName = data.sender?.display_name || data.sender?.username || 'Пользователь'
-        notifyNewChatMessage(orderId, senderName, message)
-      }).catch(e => console.error('Telegram error:', e))
+        await notifyNewChatMessage(orderId, senderName, message)
+      } catch (e) {
+        console.error('Telegram error:', e)
+      }
     }
     
     return { blocked: false, message: data }
@@ -586,9 +595,11 @@ export async function requestPayout(authorId, amount, method, details) {
       })
     
     // Уведомление в Telegram
-    import('./telegramService').then(({ notifyPayoutRequest }) => {
-      notifyPayoutRequest('Автор', amount)
-    }).catch(e => console.error('Telegram error:', e))
+    try {
+      await notifyPayoutRequest('Автор', amount)
+    } catch (e) {
+      console.error('Telegram error:', e)
+    }
 
     return data
   } catch (error) {
