@@ -8,6 +8,13 @@
  * @returns {string} Полный URL для редиректа
  */
 export function getRedirectUrl(path = '') {
+  // Проверяем доступность window (на случай SSR или раннего вызова)
+  if (typeof window === 'undefined') {
+    // Fallback для SSR или если window недоступен
+    const prodUrl = import.meta.env.VITE_SITE_URL || 'https://dushanbemotion.com'
+    return `${prodUrl}${path}`
+  }
+  
   // ВСЕГДА используем текущий origin - браузер сам определит правильный домен
   // Это работает и на production, и на localhost
   return `${window.location.origin}${path}`
