@@ -1,8 +1,8 @@
 // src/services/telegramService.js
 // Сервис для отправки уведомлений в Telegram
 
-const TELEGRAM_BOT_TOKEN = '8176176626:AAEoxnvMJmarT4jMfLoERfTdLgdIOYgrWQE';
-const TELEGRAM_CHAT_ID = '8247308735';
+const TELEGRAM_BOT_TOKEN = '7715062223:AAGXgKi3KD5SiYJHec3Dbs2SaZvdHQq1Jwo';
+const TELEGRAM_CHAT_ID = '776344290';
 
 /**
  * Отправить сообщение в Telegram
