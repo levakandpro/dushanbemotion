@@ -534,6 +534,13 @@ export default function ServiceViewPage() {
                       src={`/assets/qr/${selectedPaymentMethod}.png`} 
                       alt="QR код для оплаты"
                       className="sv-payment__qr-image"
+                      onError={(e) => {
+                        console.error('[ServiceViewPage] QR code image failed to load:', `/assets/qr/${selectedPaymentMethod}.png`);
+                        e.target.style.display = 'none';
+                      }}
+                      onLoad={() => {
+                        console.log('[ServiceViewPage] QR code image loaded:', `/assets/qr/${selectedPaymentMethod}.png`);
+                      }}
                     />
                     <p className="sv-payment__qr-amount">
                       Сумма: <strong>{service?.price} сомони</strong>

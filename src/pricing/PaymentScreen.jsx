@@ -247,6 +247,13 @@ export default function PaymentScreen() {
                   src={`/assets/qr/${selectedMethod}.png`} 
                   alt={`QR-код ${paymentMethods.find(m => m.id === selectedMethod)?.name}`}
                   className="dm-payment-qr__image"
+                  onError={(e) => {
+                    console.error('[PaymentScreen] QR code image failed to load:', `/assets/qr/${selectedMethod}.png`);
+                    e.target.style.display = 'none';
+                  }}
+                  onLoad={() => {
+                    console.log('[PaymentScreen] QR code image loaded:', `/assets/qr/${selectedMethod}.png`);
+                  }}
                 />
               </div>
               <p className="dm-payment-qr__amount">
@@ -479,6 +486,13 @@ export default function PaymentScreen() {
               <img 
                 src={`/assets/qr/${selectedMethod}.png`} 
                 alt={`QR-код ${paymentMethods.find(m => m.id === selectedMethod)?.name}`}
+                onError={(e) => {
+                  console.error('[PaymentScreen] QR code modal image failed to load:', `/assets/qr/${selectedMethod}.png`);
+                  e.target.style.display = 'none';
+                }}
+                onLoad={() => {
+                  console.log('[PaymentScreen] QR code modal image loaded:', `/assets/qr/${selectedMethod}.png`);
+                }}
               />
             </div>
             <p className="dm-payment-qr-modal__amount">
