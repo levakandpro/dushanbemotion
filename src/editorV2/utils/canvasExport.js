@@ -194,11 +194,32 @@ export async function exportCanvas(format, filename = 'canvas') {
     }
   }
 
-  await new Promise(r => setTimeout(r, 100))
+  // Проверяем видимость элементов перед экспортом
+  const allLayers = canvasElement.querySelectorAll('.dm-layer-text, .sticker-layer, .video-layer, .icon-layer, .frame-layer')
+  console.log('🔍 Found layers before export:', allLayers.length)
+  allLayers.forEach((layer, idx) => {
+    const computed = window.getComputedStyle(layer)
+    const rect = layer.getBoundingClientRect()
+    console.log(`Layer ${idx + 1}:`, {
+      display: computed.display,
+      visibility: computed.visibility,
+      opacity: computed.opacity,
+      width: rect.width,
+      height: rect.height,
+      visible: rect.width > 0 && rect.height > 0 && computed.display !== 'none' && computed.visibility !== 'hidden' && computed.opacity !== '0'
+    })
+  })
+
+  // Дополнительная задержка для завершения всех загрузок изображений
+  await new Promise(r => setTimeout(r, 300))
 
   try {
     let dataUrl
     let ext
+
+    // Проверяем размеры canvas перед экспортом
+    const canvasRect = canvasElement.getBoundingClientRect()
+    console.log('📐 Canvas dimensions:', { width: canvasRect.width, height: canvasRect.height })
 
     if (format === 'svg') {
       // SVG через modern-screenshot
@@ -208,22 +229,36 @@ export async function exportCanvas(format, filename = 'canvas') {
         backgroundColor: null
       })
       ext = 'svg'
+      console.log('✅ SVG export completed, size:', dataUrl.length)
     } else {
       // PNG/JPEG через html2canvas - высокое качество
       const html2canvas = (await import('html2canvas')).default
       
+      console.log('🖼️ Starting html2canvas export...')
       const canvas = await html2canvas(canvasElement, {
         backgroundColor: format === 'jpeg' ? '#ffffff' : null,
-        scale: 4, // Высокое качество (4x)
+        scale: 2, // Снижаем scale для надежности (было 4)
         useCORS: true,
         allowTaint: false,
-        logging: false,
-        imageTimeout: 15000
+        logging: true, // Включаем логирование для отладки
+        imageTimeout: 15000,
+        removeContainer: false,
+        foreignObjectRendering: false,
+        ignoreElements: (element) => {
+          // Игнорируем только UI элементы, но НЕ слои
+          return element.classList.contains('dm-text-handle') || 
+                 element.classList.contains('sticker-handle') ||
+                 element.classList.contains('editor-v2-canvas-grid')
+        }
       })
+
+      console.log('✅ html2canvas completed, canvas size:', canvas.width, 'x', canvas.height)
 
       dataUrl = format === 'jpeg' 
         ? canvas.toDataURL('image/jpeg', 0.95)
         : canvas.toDataURL('image/png')
+      
+      console.log('📊 Data URL size:', dataUrl.length, 'bytes')
       
       ext = format === 'jpeg' ? 'jpg' : 'png'
     }
