@@ -36,7 +36,7 @@ function getBaseFrameSize(isMobileDevice = false) {
     return { width: finalWidth, height: finalHeight }
   }
   // Десктоп: горизонтальный формат 16:9
-  const max = 800
+  const max = 640
   return { width: max, height: Math.round((9 / 16) * max) }
 }
 
@@ -144,10 +144,10 @@ export default function EditorShell({
   }, [project?.videoLayers])
 
   const canvasFrameStyle = React.useMemo(() => {
-    // ДЛЯ ДЕСКТОПА: жестко фиксируем 800x450
+    // ДЛЯ ДЕСКТОПА: жестко фиксируем 640x360
     if (!isMobile) {
-      // Для десктопа всегда 800x450, независимо от условий
-      const desktopBase = { width: 800, height: 450 }
+      // Для десктопа всегда 640x360, независимо от условий
+      const desktopBase = { width: 640, height: 360 }
       
       // Для PREMIUM видео — подстраиваем канвас под размер видео
       const premiumLayer = lastPremiumVideoLayer || 
@@ -159,8 +159,8 @@ export default function EditorShell({
         if (Number.isFinite(w) && Number.isFinite(h) && w > 0 && h > 0) {
           const ratio = w / h
           if (Number.isFinite(ratio) && ratio > 0) {
-            const maxWidth = 800
-            const maxHeight = 750
+            const maxWidth = 640
+            const maxHeight = 600
             if (ratio >= 1) {
               // Горизонтальное видео
               const width = Math.min(maxWidth, maxHeight * ratio)
@@ -201,7 +201,7 @@ export default function EditorShell({
     const base = getBaseFrameSize(true)
     // Убеждаемся, что base всегда имеет валидные размеры
     if (!base || !base.width || !base.height || base.width <= 0 || base.height <= 0) {
-      const fallback = { width: 800, height: 450 }
+      const fallback = { width: 640, height: 360 }
       return fallback // Fallback значения
     }
 
@@ -916,12 +916,12 @@ export default function EditorShell({
                 <div
                   className="editor-v2-canvas-backdrop"
                   style={{
-                    width: 800,
-                    height: 450,
-                    minWidth: 800,
-                    minHeight: 450,
-                    maxWidth: 800,
-                    maxHeight: 450,
+                    width: 640,
+                    height: 360,
+                    minWidth: 640,
+                    minHeight: 360,
+                    maxWidth: 640,
+                    maxHeight: 360,
                     flex: '0 0 auto',
                     alignSelf: 'center'
                   }}
