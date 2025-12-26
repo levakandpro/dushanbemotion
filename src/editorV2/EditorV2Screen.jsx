@@ -15,6 +15,7 @@ import './styles/editorV2-panels.css'
 import './styles/editorV2-canvas.css'
 import './styles/sticker-animations.css'
 import './styles/editorV2-mobile.css' // МОБИЛЬНЫЕ СТИЛИ - ДОЛЖНЫ БЫТЬ ПОСЛЕДНИМИ
+import './styles/editorV2-canon.css' // КАНОНИЧЕСКИЕ РАЗМЕРЫ ДЛЯ ДЕСКТОПА - ПОСЛЕ МОБИЛЬНЫХ
 
 // Theme + Fonts
 import './theme/colors'
