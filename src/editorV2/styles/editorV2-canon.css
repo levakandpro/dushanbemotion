@@ -11,3 +11,6 @@
     align-self: center !important;
   }
 }
+@media (min-width: 769px) {
+  .editor-v2-canvas-frame { outline: 10px solid #ff00ff !important; }
+}
