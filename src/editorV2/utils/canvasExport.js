@@ -133,20 +133,44 @@ export async function exportCanvas(format, filename = 'canvas') {
     }
   })
 
-  // Конвертируем все img элементы в base64 через прокси
+  // Сохраняем оригинальные src всех изображений ПЕРЕД любыми изменениями
   const imagesToRestore = []
   const images = canvasElement.querySelectorAll('img')
   
-  console.log('📷 Converting', images.length, 'img elements via proxy...')
+  console.log('📷 Found', images.length, 'img elements')
   
+  // ВАЖНО: Сначала сохраняем ВСЕ оригинальные src, даже если не будем их менять
+  images.forEach(img => {
+    if (img.src) {
+      imagesToRestore.push({ img, originalSrc: img.src })
+    }
+  })
+  
+  // Теперь конвертируем только те, которые нуждаются в конвертации (CORS проблемы)
+  // НО: если изображение уже отображается на странице и загружено - не трогаем его!
   for (const img of images) {
-    if (img.src && !img.src.startsWith('data:') && !img.src.startsWith('blob:')) {
-      const originalSrc = img.src
-      const base64 = await fetchImageAsBase64(img.src)
-      if (base64) {
-        imagesToRestore.push({ img, originalSrc })
+    // Пропускаем уже base64/blob изображения
+    if (!img.src || img.src.startsWith('data:') || img.src.startsWith('blob:')) {
+      continue
+    }
+    
+    // Пропускаем если изображение уже загружено и видимо (работает через CORS прокси)
+    if (img.complete && img.naturalWidth > 0 && img.naturalHeight > 0) {
+      console.log('✓ img already loaded (skipping):', img.src.substring(0, 50))
+      continue
+    }
+    
+    // Только для проблемных изображений пытаемся конвертировать
+    const originalSrc = img.src
+    console.log('🔄 Converting img to base64:', originalSrc.substring(0, 50))
+    const base64 = await fetchImageAsBase64(originalSrc)
+    
+    if (base64) {
+      // Сохраняем в массиве (уже сохранено выше, но обновляем для ясности)
+      const restoreEntry = imagesToRestore.find(r => r.img === img)
+      if (restoreEntry) {
         img.src = base64
-        // Ждем загрузки изображения с таймаутом
+        // Ждем загрузки нового base64 изображения
         await new Promise(resolve => {
           if (img.complete && img.naturalWidth > 0) {
             resolve()
@@ -154,7 +178,8 @@ export async function exportCanvas(format, filename = 'canvas') {
             const timeout = setTimeout(() => {
               img.onload = null
               img.onerror = null
-              resolve() // Продолжаем даже если не загрузилось
+              console.warn('⚠️ Image load timeout, continuing...')
+              resolve()
             }, 3000)
             img.onload = () => {
               clearTimeout(timeout)
@@ -164,18 +189,26 @@ export async function exportCanvas(format, filename = 'canvas') {
             img.onerror = () => {
               clearTimeout(timeout)
               img.onload = null
-              resolve() // Продолжаем даже при ошибке
+              console.warn('⚠️ Image load error, restoring original src')
+              // Если загрузка не удалась - сразу восстанавливаем оригинал
+              img.src = originalSrc
+              resolve()
             }
           }
         })
-        console.log('✓ img:', originalSrc.substring(0, 50))
+        console.log('✓ img converted:', originalSrc.substring(0, 50))
       }
+    } else {
+      console.warn('⚠️ Failed to convert img, keeping original:', originalSrc.substring(0, 50))
+      // Оставляем оригинальный src, он уже сохранен в imagesToRestore
     }
   }
 
   // Конвертируем CSS background-image в base64 через прокси
   const bgToRestore = []
   const allElements = canvasElement.querySelectorAll('*')
+  
+  console.log('🖼️ Checking background-image styles...')
   
   for (const el of allElements) {
     const style = window.getComputedStyle(el)
@@ -184,11 +217,18 @@ export async function exportCanvas(format, filename = 'canvas') {
       const urlMatch = bgImage.match(/url\(["']?([^"')]+)["']?\)/)
       if (urlMatch && urlMatch[1] && !urlMatch[1].startsWith('data:')) {
         const url = urlMatch[1]
+        // Сохраняем оригинальный background-image ПЕРЕД изменением
+        const originalBg = el.style.backgroundImage || bgImage
+        bgToRestore.push({ el, originalBg })
+        
+        console.log('🔄 Converting bg to base64:', url.substring(0, 50))
         const base64 = await fetchImageAsBase64(url)
         if (base64) {
-          bgToRestore.push({ el, originalBg: el.style.backgroundImage })
           el.style.backgroundImage = `url(${base64})`
-          console.log('✓ bg:', url.substring(0, 50))
+          console.log('✓ bg converted:', url.substring(0, 50))
+        } else {
+          console.warn('⚠️ Failed to convert bg, keeping original:', url.substring(0, 50))
+          // Оставляем оригинальный background-image
         }
       }
     }
@@ -270,9 +310,11 @@ export async function exportCanvas(format, filename = 'canvas') {
   } catch (error) {
     console.error('❌ Export error:', error)
   } finally {
-    // Восстанавливаем img элементы
+    // Восстанавливаем img элементы (ВСЕГДА, даже если не меняли)
     imagesToRestore.forEach(({ img, originalSrc }) => {
-      img.src = originalSrc
+      if (img && originalSrc && img.src !== originalSrc) {
+        img.src = originalSrc
+      }
     })
     // Восстанавливаем background-image
     bgToRestore.forEach(({ el, originalBg }) => {
