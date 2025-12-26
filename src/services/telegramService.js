@@ -192,6 +192,27 @@ export async function notifyNewUser(displayName, username, email) {
 }
 
 /**
+ * Уведомление о входе пользователя
+ */
+export async function notifyUserLogin(displayName, username, email, method = 'email') {
+  const methodEmoji = method === 'google' ? '🔵' : '📧';
+  const methodText = method === 'google' ? 'Google OAuth' : 'Email/Password';
+  
+  const message = `
+🔓 <b>ПОЛЬЗОВАТЕЛЬ ВОШЕЛ!</b>
+
+📛 Имя: <b>${displayName || 'Не указано'}</b>
+🔗 Username: @${username || 'нет'}
+📧 Email: ${email || 'не указан'}
+${methodEmoji} Способ: ${methodText}
+
+⏰ ${new Date().toLocaleString('ru-RU', { timeZone: 'Asia/Dushanbe' })}
+`;
+
+  return sendTelegramMessage(message);
+}
+
+/**
  * Ежедневная статистика
  */
 export async function notifyDailyStats(stats) {
