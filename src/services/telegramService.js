@@ -1,8 +1,10 @@
 // src/services/telegramService.js
 // Сервис для отправки уведомлений в Telegram
 
-const TELEGRAM_BOT_TOKEN = '7715062223:AAGXgKi3KD5SiYJHec3Dbs2SaZvdHQq1Jwo';
-const TELEGRAM_CHAT_ID = '776344290';
+// Проверьте токен в BotFather - текущий токен возвращает 401 Unauthorized
+// Используем токен из supabase/functions/telegram-bot/index.ts (fallback токен)
+const TELEGRAM_BOT_TOKEN = '8176176626:AAEoxnvMJmarT4jMfLoERfTdLgdIOYgrWQE';
+const TELEGRAM_CHAT_ID = '8247308735';
 
 /**
  * Отправить сообщение в Telegram
