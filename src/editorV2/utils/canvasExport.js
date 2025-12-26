@@ -250,8 +250,37 @@ export async function exportCanvas(format, filename = 'canvas') {
     })
   })
 
-  // Дополнительная задержка для завершения всех загрузок изображений
-  await new Promise(r => setTimeout(r, 300))
+  // Убеждаемся, что родительские контейнеры не скрывают содержимое
+  const backdropElement = canvasElement.closest('.editor-v2-canvas-backdrop')
+  const containersToFix = []
+  
+  // ВАЖНО: Временно меняем overflow на visible для всех контейнеров
+  // чтобы html2canvas мог захватить всё содержимое
+  const computedFrameStyle = window.getComputedStyle(canvasElement)
+  if (computedFrameStyle.overflow === 'hidden') {
+    containersToFix.push({ el: canvasElement, originalOverflow: canvasElement.style.overflow })
+    canvasElement.style.overflow = 'visible'
+  }
+  
+  if (backdropElement) {
+    const computed = window.getComputedStyle(backdropElement)
+    if (computed.overflow === 'hidden') {
+      containersToFix.push({ el: backdropElement, originalOverflow: backdropElement.style.overflow })
+      backdropElement.style.overflow = 'visible'
+    }
+  }
+  
+  // stageElement уже объявлен выше, используем его
+  if (stageElement) {
+    const computed = window.getComputedStyle(stageElement)
+    if (computed.overflow === 'hidden') {
+      containersToFix.push({ el: stageElement, originalOverflow: stageElement.style.overflow })
+      stageElement.style.overflow = 'visible'
+    }
+  }
+
+  // Дополнительная задержка для завершения всех загрузок изображений и применения стилей
+  await new Promise(r => setTimeout(r, 500))
 
   try {
     let dataUrl
@@ -260,6 +289,14 @@ export async function exportCanvas(format, filename = 'canvas') {
     // Проверяем размеры canvas перед экспортом
     const canvasRect = canvasElement.getBoundingClientRect()
     console.log('📐 Canvas dimensions:', { width: canvasRect.width, height: canvasRect.height })
+    
+    // Проверяем что внутри canvas есть видимые элементы
+    const visibleLayers = Array.from(canvasElement.querySelectorAll('.dm-layer-text, .sticker-layer, .video-layer, .icon-layer, .frame-layer')).filter(layer => {
+      const rect = layer.getBoundingClientRect()
+      const style = window.getComputedStyle(layer)
+      return rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0'
+    })
+    console.log('👁️ Visible layers count:', visibleLayers.length, 'out of', allLayers.length)
 
     if (format === 'svg') {
       // SVG через modern-screenshot
@@ -271,19 +308,19 @@ export async function exportCanvas(format, filename = 'canvas') {
       ext = 'svg'
       console.log('✅ SVG export completed, size:', dataUrl.length)
     } else {
-      // PNG/JPEG через html2canvas - высокое качество
+      // PNG/JPEG через html2canvas
       const html2canvas = (await import('html2canvas')).default
       
       console.log('🖼️ Starting html2canvas export...')
+      
+      // Упрощенные настройки для надежного захвата
       const canvas = await html2canvas(canvasElement, {
         backgroundColor: format === 'jpeg' ? '#ffffff' : null,
-        scale: 2, // Снижаем scale для надежности (было 4)
+        scale: 2,
         useCORS: true,
-        allowTaint: false,
-        logging: true, // Включаем логирование для отладки
-        imageTimeout: 15000,
-        removeContainer: false,
-        foreignObjectRendering: false,
+        allowTaint: true,
+        logging: true,
+        imageTimeout: 20000,
         ignoreElements: (element) => {
           // Игнорируем только UI элементы, но НЕ слои
           return element.classList.contains('dm-text-handle') || 
@@ -333,6 +370,10 @@ export async function exportCanvas(format, filename = 'canvas') {
       if (display !== undefined) el.style.display = display
       if (visibility !== undefined) el.style.visibility = visibility
       if (opacity !== undefined) el.style.opacity = opacity
+    })
+    // Восстанавливаем overflow контейнеров
+    containersToFix.forEach(({ el, originalOverflow }) => {
+      el.style.overflow = originalOverflow || ''
     })
     if (stageElement) stageElement.style.transform = originalStageTransform
   }
