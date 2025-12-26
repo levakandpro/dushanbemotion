@@ -72,12 +72,52 @@ export async function exportCanvas(format, filename = 'canvas') {
     el.classList.remove('sticker-layer-selected')
   })
 
+  canvasElement.querySelectorAll('.video-layer-selected').forEach(el => {
+    elementsToHide.push({ el, className: 'video-layer-selected', hadClass: true })
+    el.classList.remove('video-layer-selected')
+  })
+
+  canvasElement.querySelectorAll('.icon-layer-selected').forEach(el => {
+    elementsToHide.push({ el, className: 'icon-layer-selected', hadClass: true })
+    el.classList.remove('icon-layer-selected')
+  })
+
+  canvasElement.querySelectorAll('.frame-layer-selected').forEach(el => {
+    elementsToHide.push({ el, className: 'frame-layer-selected', hadClass: true })
+    el.classList.remove('frame-layer-selected')
+  })
+
   // Скрываем хэндлы и сетку
   const hideSelectors = ['.dm-text-handle', '.editor-v2-canvas-grid', '.sticker-handle']
   hideSelectors.forEach(sel => {
     canvasElement.querySelectorAll(sel).forEach(el => {
       elementsToHide.push({ el, visibility: el.style.visibility })
       el.style.visibility = 'hidden'
+    })
+  })
+
+  // Убеждаемся, что все слои видимы (на случай если они были скрыты)
+  const layersToShow = []
+  const layerSelectors = ['.dm-layer-text', '.sticker-layer', '.video-layer', '.icon-layer', '.frame-layer']
+  layerSelectors.forEach(sel => {
+    canvasElement.querySelectorAll(sel).forEach(el => {
+      const computedStyle = window.getComputedStyle(el)
+      const currentDisplay = computedStyle.display
+      const currentVisibility = computedStyle.visibility
+      const currentOpacity = computedStyle.opacity
+      
+      // Если элемент скрыт, делаем его видимым временно
+      if (currentDisplay === 'none' || currentVisibility === 'hidden' || currentOpacity === '0') {
+        layersToShow.push({ 
+          el, 
+          display: el.style.display, 
+          visibility: el.style.visibility,
+          opacity: el.style.opacity 
+        })
+        if (currentDisplay === 'none') el.style.display = ''
+        if (currentVisibility === 'hidden') el.style.visibility = 'visible'
+        if (currentOpacity === '0') el.style.opacity = '1'
+      }
     })
   })
 
@@ -209,7 +249,13 @@ export async function exportCanvas(format, filename = 'canvas') {
     })
     elementsToHide.forEach(({ el, visibility, className, hadClass }) => {
       if (hadClass) el.classList.add(className)
-      else el.style.visibility = visibility || ''
+      else el.style.visibility = visibility !== undefined ? visibility : ''
+    })
+    // Восстанавливаем видимость слоев, которые были скрыты
+    layersToShow.forEach(({ el, display, visibility, opacity }) => {
+      if (display !== undefined) el.style.display = display
+      if (visibility !== undefined) el.style.visibility = visibility
+      if (opacity !== undefined) el.style.opacity = opacity
     })
     if (stageElement) stageElement.style.transform = originalStageTransform
   }
