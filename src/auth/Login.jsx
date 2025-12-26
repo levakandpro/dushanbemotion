@@ -93,6 +93,31 @@ export default function Login() {
       }
 
       if (data?.user) {
+        // Отправляем уведомление в Telegram о входе пользователя
+        import('../services/telegramService')
+          .then(({ notifyUserLogin }) => {
+            // Получаем информацию о профиле для отправки уведомления
+            return supabase
+              .from('profiles')
+              .select('display_name, username')
+              .eq('id', data.user.id)
+              .single()
+              .then(({ data: profile }) => {
+                return notifyUserLogin(
+                  profile?.display_name || data.user.user_metadata?.full_name || data.user.user_metadata?.display_name,
+                  profile?.username,
+                  data.user.email,
+                  'email'
+                )
+              })
+          })
+          .then((result) => {
+            console.log('[Login] Telegram notification sent:', result)
+          })
+          .catch((e) => {
+            console.error('[Login] Telegram notification error:', e)
+          })
+
         // Если админ - направляем в админку
         if (ADMIN_EMAILS.includes(data.user.email?.toLowerCase())) {
           navigate('/admin')

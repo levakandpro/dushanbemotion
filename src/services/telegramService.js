@@ -196,6 +196,7 @@ export default {
   notifyDispute,
   notifyOrderCompleted,
   notifyNewUser,
+  notifyUserLogin,
   notifyDailyStats,
   sendTestMessage
 };

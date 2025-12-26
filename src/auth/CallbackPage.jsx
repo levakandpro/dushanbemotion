@@ -45,6 +45,23 @@ export default function CallbackPage() {
                 // Редиректим в зависимости от роли пользователя
                 const userProfile = await getCurrentUser()
                 if (userProfile) {
+                  // Отправляем уведомление в Telegram о входе пользователя (OAuth)
+                  import('../services/telegramService')
+                    .then(({ notifyUserLogin }) => {
+                      return notifyUserLogin(
+                        userProfile.display_name || userProfile.username,
+                        userProfile.username,
+                        retryData.session.user.email,
+                        'google'
+                      )
+                    })
+                    .then((result) => {
+                      console.log('[CallbackPage] Telegram notification sent (retry):', result)
+                    })
+                    .catch((e) => {
+                      console.error('[CallbackPage] Telegram notification error (retry):', e)
+                    })
+
                   if (ADMIN_EMAILS.includes(userProfile.email?.toLowerCase())) {
                     navigate('/admin', { replace: true })
                   } else {
@@ -72,6 +89,23 @@ export default function CallbackPage() {
         // Редиректим в зависимости от роли пользователя
         const userProfile = await getCurrentUser()
         if (userProfile) {
+          // Отправляем уведомление в Telegram о входе пользователя (OAuth)
+          import('../services/telegramService')
+            .then(({ notifyUserLogin }) => {
+              return notifyUserLogin(
+                userProfile.display_name || userProfile.username,
+                userProfile.username,
+                data.session.user.email,
+                'google'
+              )
+            })
+            .then((result) => {
+              console.log('[CallbackPage] Telegram notification sent:', result)
+            })
+            .catch((e) => {
+              console.error('[CallbackPage] Telegram notification error:', e)
+            })
+
           if (ADMIN_EMAILS.includes(userProfile.email?.toLowerCase())) {
             navigate('/admin', { replace: true })
           } else {
