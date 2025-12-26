@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Generate OG Image</title>
+</head>
+<body>
+  <canvas id="canvas" width="1200" height="630"></canvas>
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Dark green background (#0f4f30)
+    ctx.fillStyle = '#0f4f30';
+    ctx.fillRect(0, 0, 1200, 630);
+    
+    // White text "DushanbeMotion"
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 72px Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('DushanbeMotion', 600, 315);
+    
+    // Download as JPG
+    canvas.toBlob((blob) => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'og.jpg';
+      a.click();
+      URL.revokeObjectURL(url);
+    }, 'image/jpeg', 0.9);
+  </script>
+</body>
+</html>
+
