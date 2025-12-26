@@ -913,7 +913,19 @@ export default function EditorShell({
               style={{ transform: `translate(${offset.x}px, ${offset.y}px)` }}
             >
               <div className="editor-v2-canvas-stage" style={{ transform: `scale(${zoom})` }}>
-                <div className="editor-v2-canvas-backdrop">
+                <div
+                  className="editor-v2-canvas-backdrop"
+                  style={{
+                    width: 800,
+                    height: 450,
+                    minWidth: 800,
+                    minHeight: 450,
+                    maxWidth: 800,
+                    maxHeight: 450,
+                    flex: '0 0 auto',
+                    alignSelf: 'center'
+                  }}
+                >
                   <div 
                     className="editor-v2-canvas-frame" 
                     ref={(el) => {
