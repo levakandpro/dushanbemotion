@@ -94,28 +94,41 @@ export default function Login() {
 
       if (data?.user) {
         // Отправляем уведомление в Telegram о входе пользователя
+        console.log('[Login] User logged in, sending Telegram notification...', { userId: data.user.id, email: data.user.email });
+        
         import('../services/telegramService')
           .then(({ notifyUserLogin }) => {
+            console.log('[Login] notifyUserLogin function loaded');
             // Получаем информацию о профиле для отправки уведомления
             return supabase
               .from('profiles')
               .select('display_name, username')
               .eq('id', data.user.id)
               .single()
-              .then(({ data: profile }) => {
-                return notifyUserLogin(
-                  profile?.display_name || data.user.user_metadata?.full_name || data.user.user_metadata?.display_name,
-                  profile?.username,
-                  data.user.email,
-                  'email'
-                )
+              .then(({ data: profile, error: profileError }) => {
+                if (profileError) {
+                  console.warn('[Login] Profile fetch error:', profileError);
+                }
+                console.log('[Login] Profile data:', profile);
+                
+                const displayName = profile?.display_name || 
+                                  data.user.user_metadata?.full_name || 
+                                  data.user.user_metadata?.display_name ||
+                                  data.user.email?.split('@')[0] ||
+                                  'Не указано';
+                const username = profile?.username || null;
+                const email = data.user.email || 'не указан';
+                
+                console.log('[Login] Calling notifyUserLogin with:', { displayName, username, email });
+                return notifyUserLogin(displayName, username, email, 'email');
               })
           })
           .then((result) => {
-            console.log('[Login] Telegram notification sent:', result)
+            console.log('[Login] ✅ Telegram notification result:', result)
           })
           .catch((e) => {
-            console.error('[Login] Telegram notification error:', e)
+            console.error('[Login] ❌ Telegram notification error:', e);
+            console.error('[Login] Error stack:', e.stack);
           })
 
         // Если админ - направляем в админку

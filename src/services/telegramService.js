@@ -9,33 +9,63 @@ const TELEGRAM_CHAT_ID = '776344290';
  */
 export async function sendTelegramMessage(text, parseMode = 'HTML') {
   try {
-    console.log('[Telegram] Sending message...', { hasToken: !!TELEGRAM_BOT_TOKEN, hasChatId: !!TELEGRAM_CHAT_ID });
+    if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
+      console.error('[Telegram] Missing credentials:', { 
+        hasToken: !!TELEGRAM_BOT_TOKEN, 
+        hasChatId: !!TELEGRAM_CHAT_ID 
+      });
+      return false;
+    }
+
+    console.log('[Telegram] Sending message...', { 
+      hasToken: !!TELEGRAM_BOT_TOKEN, 
+      hasChatId: !!TELEGRAM_CHAT_ID,
+      textLength: text?.length || 0
+    });
+
     const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
     
+    const payload = {
+      chat_id: TELEGRAM_CHAT_ID,
+      text: text,
+      parse_mode: parseMode,
+      disable_web_page_preview: true
+    };
+
+    console.log('[Telegram] Request URL:', url.replace(TELEGRAM_BOT_TOKEN, '***'));
+    console.log('[Telegram] Request payload:', { ...payload, text: text?.substring(0, 100) + '...' });
+
     const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        chat_id: TELEGRAM_CHAT_ID,
-        text,
-        parse_mode: parseMode,
-        disable_web_page_preview: true
-      })
+      body: JSON.stringify(payload)
     });
 
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('[Telegram] HTTP error:', response.status, response.statusText, errorText);
+      return false;
+    }
+
     const data = await response.json();
+    console.log('[Telegram] Response:', data);
     
     if (!data.ok) {
       console.error('[Telegram] API error:', data);
       return false;
     }
     
-    console.log('[Telegram] Message sent successfully');
+    console.log('[Telegram] ✅ Message sent successfully, message_id:', data.result?.message_id);
     return true;
   } catch (error) {
-    console.error('[Telegram] Error sending message:', error);
+    console.error('[Telegram] ❌ Exception sending message:', error);
+    console.error('[Telegram] Error details:', {
+      message: error.message,
+      stack: error.stack,
+      name: error.name
+    });
     return false;
   }
 }

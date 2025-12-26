@@ -45,21 +45,28 @@ export default function CallbackPage() {
                 // Редиректим в зависимости от роли пользователя
                 const userProfile = await getCurrentUser()
                 if (userProfile) {
+                  console.log('[CallbackPage] User logged in via OAuth (retry), sending Telegram notification...', { 
+                    userId: retryData.session.user.id, 
+                    email: retryData.session.user.email 
+                  });
+                  
                   // Отправляем уведомление в Telegram о входе пользователя (OAuth)
                   import('../services/telegramService')
                     .then(({ notifyUserLogin }) => {
-                      return notifyUserLogin(
-                        userProfile.display_name || userProfile.username,
-                        userProfile.username,
-                        retryData.session.user.email,
-                        'google'
-                      )
+                      console.log('[CallbackPage] notifyUserLogin function loaded (retry)');
+                      const displayName = userProfile.display_name || userProfile.username || retryData.session.user.email?.split('@')[0] || 'Не указано';
+                      const username = userProfile.username || null;
+                      const email = retryData.session.user.email || 'не указан';
+                      
+                      console.log('[CallbackPage] Calling notifyUserLogin with (retry):', { displayName, username, email });
+                      return notifyUserLogin(displayName, username, email, 'google');
                     })
                     .then((result) => {
-                      console.log('[CallbackPage] Telegram notification sent (retry):', result)
+                      console.log('[CallbackPage] ✅ Telegram notification result (retry):', result)
                     })
                     .catch((e) => {
-                      console.error('[CallbackPage] Telegram notification error (retry):', e)
+                      console.error('[CallbackPage] ❌ Telegram notification error (retry):', e);
+                      console.error('[CallbackPage] Error stack (retry):', e.stack);
                     })
 
                   if (ADMIN_EMAILS.includes(userProfile.email?.toLowerCase())) {
@@ -89,21 +96,28 @@ export default function CallbackPage() {
         // Редиректим в зависимости от роли пользователя
         const userProfile = await getCurrentUser()
         if (userProfile) {
+          console.log('[CallbackPage] User logged in via OAuth, sending Telegram notification...', { 
+            userId: data.session.user.id, 
+            email: data.session.user.email 
+          });
+          
           // Отправляем уведомление в Telegram о входе пользователя (OAuth)
           import('../services/telegramService')
             .then(({ notifyUserLogin }) => {
-              return notifyUserLogin(
-                userProfile.display_name || userProfile.username,
-                userProfile.username,
-                data.session.user.email,
-                'google'
-              )
+              console.log('[CallbackPage] notifyUserLogin function loaded');
+              const displayName = userProfile.display_name || userProfile.username || data.session.user.email?.split('@')[0] || 'Не указано';
+              const username = userProfile.username || null;
+              const email = data.session.user.email || 'не указан';
+              
+              console.log('[CallbackPage] Calling notifyUserLogin with:', { displayName, username, email });
+              return notifyUserLogin(displayName, username, email, 'google');
             })
             .then((result) => {
-              console.log('[CallbackPage] Telegram notification sent:', result)
+              console.log('[CallbackPage] ✅ Telegram notification result:', result)
             })
             .catch((e) => {
-              console.error('[CallbackPage] Telegram notification error:', e)
+              console.error('[CallbackPage] ❌ Telegram notification error:', e);
+              console.error('[CallbackPage] Error stack:', e.stack);
             })
 
           if (ADMIN_EMAILS.includes(userProfile.email?.toLowerCase())) {
