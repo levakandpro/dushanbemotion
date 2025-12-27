@@ -232,6 +232,26 @@ export async function exportCanvas(format, filename = 'canvas') {
   await new Promise(r => setTimeout(r, 1000));
   
   // Принудительно показываем все элементы перед экспортом
+  console.log('All elements in canvas:', {
+    total: canvasElement.querySelectorAll('*').length,
+    children: canvasElement.children.length
+  });
+  
+  // Выводим в лог структуру DOM для отладки
+  console.log('Canvas element structure:', canvasElement);
+  
+  // Показываем все дочерние элементы
+  Array.from(canvasElement.children).forEach((child, i) => {
+    console.log(`Child ${i}:`, {
+      tag: child.tagName,
+      class: child.className,
+      id: child.id,
+      children: child.children.length,
+      display: window.getComputedStyle(child).display,
+      visibility: window.getComputedStyle(child).visibility,
+      opacity: window.getComputedStyle(child).opacity
+    });
+  });
   const allElements = canvasElement.querySelectorAll('*');
   const originalStyles = [];
   
@@ -257,24 +277,6 @@ export async function exportCanvas(format, filename = 'canvas') {
   try {
     let dataUrl
     let ext
-
-    // Проверяем размеры canvas перед экспортом
-    const canvasRect = canvasElement.getBoundingClientRect()
-    console.log('📐 Canvas dimensions:', { width: canvasRect.width, height: canvasRect.height })
-    
-    // Проверяем что внутри canvas есть видимые элементы
-    const allLayers = canvasElement.querySelectorAll('.dm-layer-text, .sticker-layer, .video-layer, .icon-layer, .frame-layer')
-    const visibleLayers = Array.from(allLayers).filter(layer => {
-      const rect = layer.getBoundingClientRect()
-      const style = window.getComputedStyle(layer)
-      return rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0'
-    })
-    console.log('👁️ Visible layers count:', visibleLayers.length, 'out of', allLayers.length)
-
-    if (format === 'svg') {
-      // SVG через modern-screenshot
-      const { domToSvg } = await import('modern-screenshot')
-      dataUrl = await domToSvg(canvasElement, {
         scale: 4,
         backgroundColor: null
       })
