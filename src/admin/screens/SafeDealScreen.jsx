@@ -47,9 +47,20 @@ export default function SafeDealScreen() {
     try {
       const [statsData, notifs] = await Promise.all([
         fetchSafeDealStats(),
-        fetchAdminNotifications({ limit: 50 })
+        fetchAdminNotifications({ limit: 100 })
       ]);
-      console.log('🔔 SafeDeal notifications:', notifs?.map(n => ({ id: n.id, type: n.type, user_id: n.user_id, metadata: n.metadata })));
+      const premiumPayments = notifs?.filter(n => n.type === 'premium_payment' && !n.is_read) || [];
+      console.log('🔔 SafeDeal notifications:', notifs?.length, 'total');
+      console.log('💳 Premium payments (unread):', premiumPayments.length);
+      if (premiumPayments.length > 0) {
+        console.log('💳 Premium payments details:', premiumPayments.map(n => ({ 
+          id: n.id, 
+          title: n.title, 
+          user_id: n.user_id, 
+          created_at: n.created_at,
+          has_screenshot: !!n.metadata?.payment_screenshot
+        })));
+      }
       setStats(statsData);
       setNotifications(notifs);
 
@@ -816,19 +827,27 @@ export default function SafeDealScreen() {
         }
         
         .dm-safedeal__section--premium {
-          background: linear-gradient(135deg, rgba(102,126,234,0.1) 0%, rgba(118,75,162,0.1) 100%);
-          border: 2px solid rgba(102,126,234,0.3);
+          background: linear-gradient(135deg, rgba(102,126,234,0.15) 0%, rgba(118,75,162,0.15) 100%);
+          border: 3px solid rgba(102,126,234,0.5);
           border-radius: 16px;
           padding: 20px;
           margin-bottom: 24px;
+          box-shadow: 0 4px 12px rgba(102,126,234,0.2);
         }
         .dm-safedeal__section--premium h3 {
           color: #667eea;
           margin-bottom: 16px;
+          font-size: 18px;
+          font-weight: 700;
         }
         .dm-safedeal__notif--premium {
           background: #fff;
-          border: 1px solid rgba(102,126,234,0.3);
+          border: 2px solid rgba(102,126,234,0.5);
+          box-shadow: 0 2px 8px rgba(102,126,234,0.15);
+        }
+        .dm-safedeal__notif--premium.dm-safedeal__notif--unread {
+          border-left: 4px solid #667eea;
+          background: linear-gradient(90deg, rgba(102,126,234,0.05) 0%, #fff 20px);
         }
         .dm-safedeal__btn--approve {
           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;

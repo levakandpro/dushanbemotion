@@ -36,15 +36,15 @@ export default function UsersScreen() {
     }
   }
 
-  // Определяем "новых" — зарегистрированы в последние 7 дней
-  const weekAgo = new Date();
-  weekAgo.setDate(weekAgo.getDate() - 7);
+  // Определяем "новых" — зарегистрированы в последние 24 часа
+  const dayAgo = new Date();
+  dayAgo.setHours(dayAgo.getHours() - 24);
 
   const filtered = users.filter(u => {
     if (filter === 'paid') return u.current_plan && u.current_plan !== 'free';
     if (filter === 'free') return !u.current_plan || u.current_plan === 'free';
     if (filter === 'authors') return u.is_author;
-    if (filter === 'new') return u.created_at && new Date(u.created_at) > weekAgo;
+    if (filter === 'new') return u.created_at && new Date(u.created_at) > dayAgo;
     return true;
   });
 
@@ -55,7 +55,7 @@ export default function UsersScreen() {
     if (u.current_plan === 'premium') return 'Premium';
     return 'Free';
   };
-  const isNew = (u) => u.created_at && new Date(u.created_at) > weekAgo;
+  const isNew = (u) => u.created_at && new Date(u.created_at) > dayAgo;
 
   return (
     <div className="dm-users">
@@ -239,7 +239,12 @@ export default function UsersScreen() {
         .dm-users__row--head:hover { background: #f5f5f7; }
         .dm-users__row--selected { background: #e8f4ff !important; }
         .dm-users__row--new {
-          background: linear-gradient(90deg, rgba(52,199,89,0.1) 0%, transparent 50%);
+          background: linear-gradient(90deg, rgba(52,199,89,0.2) 0%, rgba(52,199,89,0.05) 50%);
+          border-left: 3px solid #34c759;
+          font-weight: 500;
+        }
+        .dm-users__row--new:hover {
+          background: linear-gradient(90deg, rgba(52,199,89,0.25) 0%, rgba(52,199,89,0.08) 50%);
         }
         .dm-users__cell { display: flex; align-items: center; }
         .dm-users__cell:first-child { flex-direction: column; align-items: flex-start; }
