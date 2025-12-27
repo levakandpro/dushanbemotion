@@ -43,20 +43,21 @@ export default function CallbackPage() {
                 window.location.hash = ''
                 
                 // Редиректим в зависимости от роли пользователя
+                const userEmail = retryData.session.user.email?.toLowerCase()
                 const userProfile = await getCurrentUser()
                 if (userProfile) {
                   console.log('[CallbackPage] User logged in via OAuth (retry), sending Telegram notification...', { 
                     userId: retryData.session.user.id, 
-                    email: retryData.session.user.email 
+                    email: userEmail 
                   });
                   
                   // Отправляем уведомление в Telegram о входе пользователя (OAuth)
                   import('../services/telegramService')
                     .then(({ notifyUserLogin }) => {
                       console.log('[CallbackPage] notifyUserLogin function loaded (retry)');
-                      const displayName = userProfile.display_name || userProfile.username || retryData.session.user.email?.split('@')[0] || 'Не указано';
+                      const displayName = userProfile.display_name || userProfile.username || userEmail?.split('@')[0] || 'Не указано';
                       const username = userProfile.username || null;
-                      const email = retryData.session.user.email || 'не указан';
+                      const email = userEmail || 'не указан';
                       
                       console.log('[CallbackPage] Calling notifyUserLogin with (retry):', { displayName, username, email });
                       return notifyUserLogin(displayName, username, email, 'google');
@@ -69,7 +70,9 @@ export default function CallbackPage() {
                       console.error('[CallbackPage] Error stack (retry):', e.stack);
                     })
 
-                  if (ADMIN_EMAILS.includes(userProfile.email?.toLowerCase())) {
+                  // Проверяем email из сессии для редиректа админа
+                  if (userEmail && ADMIN_EMAILS.includes(userEmail)) {
+                    console.log('[CallbackPage] Admin detected, redirecting to /admin');
                     navigate('/admin', { replace: true })
                   } else {
                     navigate('/editor', { replace: true })
@@ -94,20 +97,21 @@ export default function CallbackPage() {
         window.location.hash = ''
         
         // Редиректим в зависимости от роли пользователя
+        const userEmail = data.session.user.email?.toLowerCase()
         const userProfile = await getCurrentUser()
         if (userProfile) {
           console.log('[CallbackPage] User logged in via OAuth, sending Telegram notification...', { 
             userId: data.session.user.id, 
-            email: data.session.user.email 
+            email: userEmail 
           });
           
           // Отправляем уведомление в Telegram о входе пользователя (OAuth)
           import('../services/telegramService')
             .then(({ notifyUserLogin }) => {
               console.log('[CallbackPage] notifyUserLogin function loaded');
-              const displayName = userProfile.display_name || userProfile.username || data.session.user.email?.split('@')[0] || 'Не указано';
+              const displayName = userProfile.display_name || userProfile.username || userEmail?.split('@')[0] || 'Не указано';
               const username = userProfile.username || null;
-              const email = data.session.user.email || 'не указан';
+              const email = userEmail || 'не указан';
               
               console.log('[CallbackPage] Calling notifyUserLogin with:', { displayName, username, email });
               return notifyUserLogin(displayName, username, email, 'google');
@@ -120,7 +124,9 @@ export default function CallbackPage() {
               console.error('[CallbackPage] Error stack:', e.stack);
             })
 
-          if (ADMIN_EMAILS.includes(userProfile.email?.toLowerCase())) {
+          // Проверяем email из сессии для редиректа админа
+          if (userEmail && ADMIN_EMAILS.includes(userEmail)) {
+            console.log('[CallbackPage] Admin detected, redirecting to /admin');
             navigate('/admin', { replace: true })
           } else {
             navigate('/editor', { replace: true })
