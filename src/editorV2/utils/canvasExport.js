@@ -140,106 +140,12 @@ export async function exportCanvas(format, filename = 'canvas') {
     }
   })
 
-  // Сохраняем оригинальные src всех изображений ПЕРЕД любыми изменениями
-  const imagesToRestore = []
-  const images = canvasElement.querySelectorAll('img')
-  
-  console.log('📷 Found', images.length, 'img elements')
-  
-  // ВАЖНО: Сначала сохраняем ВСЕ оригинальные src, даже если не будем их менять
-  images.forEach(img => {
-    if (img.src) {
-      imagesToRestore.push({ img, originalSrc: img.src })
-    }
-  })
-  
-  // Теперь конвертируем только те, которые нуждаются в конвертации (CORS проблемы)
-  // НО: если изображение уже отображается на странице и загружено - не трогаем его!
-  for (const img of images) {
-    // Пропускаем уже base64/blob изображения
-    if (!img.src || img.src.startsWith('data:') || img.src.startsWith('blob:')) {
-      continue
-    }
-    
-    // Пропускаем если изображение уже загружено и видимо (работает через CORS прокси)
-    if (img.complete && img.naturalWidth > 0 && img.naturalHeight > 0) {
-      console.log('✓ img already loaded (skipping):', img.src.substring(0, 50))
-      continue
-    }
-    
-    // Только для проблемных изображений пытаемся конвертировать
-    const originalSrc = img.src
-    console.log('🔄 Converting img to base64:', originalSrc.substring(0, 50))
-    const base64 = await fetchImageAsBase64(originalSrc)
-    
-    if (base64) {
-      // Сохраняем в массиве (уже сохранено выше, но обновляем для ясности)
-      const restoreEntry = imagesToRestore.find(r => r.img === img)
-      if (restoreEntry) {
-        img.src = base64
-        // Ждем загрузки нового base64 изображения
-        await new Promise(resolve => {
-          if (img.complete && img.naturalWidth > 0) {
-            resolve()
-          } else {
-            const timeout = setTimeout(() => {
-              img.onload = null
-              img.onerror = null
-              console.warn('⚠️ Image load timeout, continuing...')
-              resolve()
-            }, 3000)
-            img.onload = () => {
-              clearTimeout(timeout)
-              img.onerror = null
-              resolve()
-            }
-            img.onerror = () => {
-              clearTimeout(timeout)
-              img.onload = null
-              console.warn('⚠️ Image load error, restoring original src')
-              // Если загрузка не удалась - сразу восстанавливаем оригинал
-              img.src = originalSrc
-              resolve()
-            }
-          }
-        })
-        console.log('✓ img converted:', originalSrc.substring(0, 50))
-      }
-    } else {
-      console.warn('⚠️ Failed to convert img, keeping original:', originalSrc.substring(0, 50))
-      // Оставляем оригинальный src, он уже сохранен в imagesToRestore
-    }
-  }
+  // НЕ трогаем изображения - они уже загружены через CORS прокси и работают
+  // html2canvas с useCORS: true справится сам
+  console.log('📷 Images will be captured by html2canvas directly')
 
-  // Конвертируем CSS background-image в base64 через прокси
-  const bgToRestore = []
-  const allElements = canvasElement.querySelectorAll('*')
-  
-  console.log('🖼️ Checking background-image styles...')
-  
-  for (const el of allElements) {
-    const style = window.getComputedStyle(el)
-    const bgImage = style.backgroundImage
-    if (bgImage && bgImage !== 'none' && bgImage.includes('url(')) {
-      const urlMatch = bgImage.match(/url\(["']?([^"')]+)["']?\)/)
-      if (urlMatch && urlMatch[1] && !urlMatch[1].startsWith('data:')) {
-        const url = urlMatch[1]
-        // Сохраняем оригинальный background-image ПЕРЕД изменением
-        const originalBg = el.style.backgroundImage || bgImage
-        bgToRestore.push({ el, originalBg })
-        
-        console.log('🔄 Converting bg to base64:', url.substring(0, 50))
-        const base64 = await fetchImageAsBase64(url)
-        if (base64) {
-          el.style.backgroundImage = `url(${base64})`
-          console.log('✓ bg converted:', url.substring(0, 50))
-        } else {
-          console.warn('⚠️ Failed to convert bg, keeping original:', url.substring(0, 50))
-          // Оставляем оригинальный background-image
-        }
-      }
-    }
-  }
+  // НЕ трогаем background-image - html2canvas справится сам с useCORS: true
+  console.log('🖼️ Background images will be captured by html2canvas directly')
 
   // Проверяем видимость элементов перед экспортом
   const allLayers = canvasElement.querySelectorAll('.dm-layer-text, .sticker-layer, .video-layer, .icon-layer, .frame-layer')
@@ -286,8 +192,8 @@ export async function exportCanvas(format, filename = 'canvas') {
     }
   }
 
-  // Дополнительная задержка для завершения всех загрузок изображений и применения стилей
-  await new Promise(r => setTimeout(r, 500))
+  // Небольшая задержка для применения изменений стилей
+  await new Promise(r => setTimeout(r, 100))
 
   try {
     let dataUrl
@@ -298,7 +204,8 @@ export async function exportCanvas(format, filename = 'canvas') {
     console.log('📐 Canvas dimensions:', { width: canvasRect.width, height: canvasRect.height })
     
     // Проверяем что внутри canvas есть видимые элементы
-    const visibleLayers = Array.from(canvasElement.querySelectorAll('.dm-layer-text, .sticker-layer, .video-layer, .icon-layer, .frame-layer')).filter(layer => {
+    const allLayers = canvasElement.querySelectorAll('.dm-layer-text, .sticker-layer, .video-layer, .icon-layer, .frame-layer')
+    const visibleLayers = Array.from(allLayers).filter(layer => {
       const rect = layer.getBoundingClientRect()
       const style = window.getComputedStyle(layer)
       return rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0'
@@ -320,14 +227,16 @@ export async function exportCanvas(format, filename = 'canvas') {
       
       console.log('🖼️ Starting html2canvas export...')
       
-      // Упрощенные настройки для надежного захвата
+      // Простые настройки - html2canvas сам справится с изображениями через CORS прокси
       const canvas = await html2canvas(canvasElement, {
         backgroundColor: format === 'jpeg' ? '#ffffff' : null,
         scale: 2,
         useCORS: true,
         allowTaint: true,
-        logging: true,
-        imageTimeout: 20000,
+        logging: false,
+        imageTimeout: 10000,
+        removeContainer: false,
+        foreignObjectRendering: false,
         ignoreElements: (element) => {
           // Игнорируем только UI элементы, но НЕ слои
           return element.classList.contains('dm-text-handle') || 
@@ -367,16 +276,6 @@ export async function exportCanvas(format, filename = 'canvas') {
     // Не показываем alert здесь, чтобы HeaderBar мог показать toast
     return false
   } finally {
-    // Восстанавливаем img элементы (ВСЕГДА, даже если не меняли)
-    imagesToRestore.forEach(({ img, originalSrc }) => {
-      if (img && originalSrc && img.src !== originalSrc) {
-        img.src = originalSrc
-      }
-    })
-    // Восстанавливаем background-image
-    bgToRestore.forEach(({ el, originalBg }) => {
-      el.style.backgroundImage = originalBg
-    })
     // Восстанавливаем checkerboard
     checkerElements.forEach(({ el, bgImg }) => {
       el.style.backgroundImage = bgImg
