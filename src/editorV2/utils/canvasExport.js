@@ -1,5 +1,5 @@
 // src/editorV2/utils/canvasExport.js
-// Экспорт канваса через html2canvas
+// Экспорт канваса через html2canvas с fallback на dom-to-image-more
 
 const R2_STICKERS = 'https://pub-78c4a70555844788bca12cc4cee974d4.r2.dev'
 const R2_PEOPLE = 'https://pub-b69ef7c5697c44e2ab311a83cae5c18a.r2.dev'
@@ -64,6 +64,35 @@ export async function forceRepaint(element) {
   // Force reflow
   const dummy = element.offsetHeight;
   return new Promise(resolve => requestAnimationFrame(resolve));
+}
+
+// Альтернативный метод экспорта через dom-to-image-more
+async function exportWithDomToImage(canvasElement, format, filename) {
+  try {
+    console.log('🔄 Trying fallback export with dom-to-image-more...')
+    const domtoimage = await import('dom-to-image-more')
+    
+    let dataUrl
+    if (format === 'jpeg' || format === 'jpg') {
+      dataUrl = await domtoimage.toJpeg(canvasElement, { 
+        quality: 0.95,
+        bgcolor: '#ffffff'
+      })
+    } else {
+      dataUrl = await domtoimage.toPng(canvasElement)
+    }
+    
+    if (dataUrl && dataUrl.length > 100) {
+      const ext = format === 'jpeg' || format === 'jpg' ? 'jpg' : 'png'
+      downloadDataUrl(dataUrl, `${filename}.${ext}`)
+      console.log('✅ Fallback export successful with dom-to-image-more')
+      return true
+    }
+    return false
+  } catch (error) {
+    console.error('❌ Fallback export failed:', error)
+    return false
+  }
 }
 
 export async function exportCanvas(format, filename = 'canvas') {
@@ -353,9 +382,13 @@ export async function exportCanvas(format, filename = 'canvas') {
       }
       
       if (isEmpty) {
-        console.warn('⚠️ Внимание: экспортированный холст пуст!');
+        console.warn('⚠️ Внимание: экспортированный холст пуст! Пробуем резервный метод...');
         // Пробуем альтернативный метод, если основной не сработал
-        return await retryExport(canvasElement, format, filename);
+        const fallbackResult = await exportWithDomToImage(canvasElement, format, filename);
+        if (fallbackResult) {
+          return true;
+        }
+        throw new Error('Экспорт не удался: холст пуст');
       }
 
       if (!canvas || canvas.width === 0 || canvas.height === 0) {
@@ -384,6 +417,19 @@ export async function exportCanvas(format, filename = 'canvas') {
   } catch (error) {
     console.error('❌ Export error:', error)
     console.error('❌ Export error stack:', error.stack)
+    
+    // Пробуем резервный метод если основной не сработал
+    console.log('🔄 Trying fallback export method...')
+    try {
+      const fallbackResult = await exportWithDomToImage(canvasElement, format, filename)
+      if (fallbackResult) {
+        console.log('✅ Fallback export succeeded!')
+        return true
+      }
+    } catch (fallbackError) {
+      console.error('❌ Fallback export also failed:', fallbackError)
+    }
+    
     // Не показываем alert здесь, чтобы HeaderBar мог показать toast
     return false
   } finally {
