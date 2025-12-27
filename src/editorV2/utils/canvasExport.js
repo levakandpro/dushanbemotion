@@ -45,11 +45,18 @@ export async function exportCanvas(format, filename = 'canvas') {
   const canvasElement = document.querySelector('.editor-v2-canvas-frame')
   
   if (!canvasElement) {
-    console.error('Canvas element not found')
+    console.error('❌ Canvas element not found (.editor-v2-canvas-frame)')
     return false
   }
 
-  console.log('📸 Exporting canvas:', format)
+  // Проверяем что canvas видим
+  const rect = canvasElement.getBoundingClientRect()
+  if (rect.width === 0 || rect.height === 0) {
+    console.error('❌ Canvas element has zero dimensions:', rect)
+    return false
+  }
+
+  console.log('📸 Exporting canvas:', format, 'size:', rect.width, 'x', rect.height)
 
   // Временно убираем zoom
   const stageElement = document.querySelector('.editor-v2-canvas-stage')
@@ -331,6 +338,10 @@ export async function exportCanvas(format, filename = 'canvas') {
 
       console.log('✅ html2canvas completed, canvas size:', canvas.width, 'x', canvas.height)
 
+      if (!canvas || canvas.width === 0 || canvas.height === 0) {
+        throw new Error('html2canvas вернул пустой canvas')
+      }
+
       dataUrl = format === 'jpeg' 
         ? canvas.toDataURL('image/jpeg', 0.95)
         : canvas.toDataURL('image/png')
@@ -340,12 +351,21 @@ export async function exportCanvas(format, filename = 'canvas') {
       ext = format === 'jpeg' ? 'jpg' : 'png'
     }
     
+    if (!dataUrl || dataUrl.length < 100) {
+      console.error('❌ Export failed: invalid data URL')
+      throw new Error('Не удалось создать изображение для экспорта')
+    }
+    
     downloadDataUrl(dataUrl, `${filename}.${ext}`)
     
     console.log('✅ Export successful')
+    return true
     
   } catch (error) {
     console.error('❌ Export error:', error)
+    console.error('❌ Export error stack:', error.stack)
+    // Не показываем alert здесь, чтобы HeaderBar мог показать toast
+    return false
   } finally {
     // Восстанавливаем img элементы (ВСЕГДА, даже если не меняли)
     imagesToRestore.forEach(({ img, originalSrc }) => {
@@ -377,8 +397,6 @@ export async function exportCanvas(format, filename = 'canvas') {
     })
     if (stageElement) stageElement.style.transform = originalStageTransform
   }
-  
-  return true
 }
 
 /**
