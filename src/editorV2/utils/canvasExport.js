@@ -41,12 +41,48 @@ async function fetchImageAsBase64(url) {
 /**
  * Экспортирует канвас в указанном формате
  */
+// Helper function to wait for all images to load
+function waitForImages(element) {
+  const images = element.getElementsByTagName('img');
+  const imagePromises = [];
+  
+  for (const img of images) {
+    if (!img.complete) {
+      const promise = new Promise((resolve) => {
+        img.onload = resolve;
+        img.onerror = resolve; // Resolve even if image fails to load
+      });
+      imagePromises.push(promise);
+    }
+  }
+  
+  return Promise.all(imagePromises);
+}
+
+// Helper function to force repaint
+export async function forceRepaint(element) {
+  // Force reflow
+  const dummy = element.offsetHeight;
+  return new Promise(resolve => requestAnimationFrame(resolve));
+}
+
 export async function exportCanvas(format, filename = 'canvas') {
-  const canvasElement = document.querySelector('.editor-v2-canvas-frame')
+  // First wait a bit to ensure all React state updates are applied
+  await new Promise(resolve => setTimeout(resolve, 300));
+  
+  // Try to find the canvas element with more specific selector
+  let canvasElement = document.querySelector('.editor-v2-canvas-frame');
   
   if (!canvasElement) {
-    console.error('❌ Canvas element not found (.editor-v2-canvas-frame)')
-    return false
+    // Try alternative selectors if the main one fails
+    canvasElement = document.querySelector('.editor-v2-canvas') || 
+                   document.querySelector('.canvas-container') ||
+                   document.querySelector('canvas');
+  }
+  
+  if (!canvasElement) {
+    console.error('❌ Canvas element not found. Tried .editor-v2-canvas-frame, .editor-v2-canvas, .canvas-container, and canvas');
+    return false;
   }
 
   // Проверяем что canvas видим
@@ -192,8 +228,31 @@ export async function exportCanvas(format, filename = 'canvas') {
     }
   }
 
-  // Небольшая задержка для применения изменений стилей
-  await new Promise(r => setTimeout(r, 100))
+  // Даем браузеру время на отрисовку всех элементов
+  await new Promise(r => setTimeout(r, 1000));
+  
+  // Принудительно показываем все элементы перед экспортом
+  const allElements = canvasElement.querySelectorAll('*');
+  const originalStyles = [];
+  
+  allElements.forEach(el => {
+    // Сохраняем оригинальные стили
+    const style = window.getComputedStyle(el);
+    originalStyles.push({
+      element: el,
+      display: style.display,
+      visibility: style.visibility,
+      opacity: style.opacity
+    });
+    
+    // Принудительно показываем все элементы
+    if (style.display === 'none') el.style.display = 'block';
+    if (style.visibility === 'hidden') el.style.visibility = 'visible';
+    if (style.opacity === '0') el.style.opacity = '1';
+  });
+  
+  // Даем браузеру время на применение стилей
+  await new Promise(r => requestAnimationFrame(r));
 
   try {
     let dataUrl
@@ -227,25 +286,75 @@ export async function exportCanvas(format, filename = 'canvas') {
       
       console.log('🖼️ Starting html2canvas export...')
       
-      // Простые настройки - html2canvas сам справится с изображениями через CORS прокси
+      // Get the actual dimensions of the canvas content
+      const canvasRect = canvasElement.getBoundingClientRect();
+      const width = Math.ceil(canvasRect.width);
+      const height = Math.ceil(canvasRect.height);
+      
+      console.log(`📏 Canvas dimensions: ${width}x${height}`);
+      
+      if (width === 0 || height === 0) {
+        throw new Error('Canvas has zero dimensions');
+      }
+      
+      // Конфигурация html2canvas с улучшенной обработкой изображений
       const canvas = await html2canvas(canvasElement, {
         backgroundColor: format === 'jpeg' ? '#ffffff' : null,
         scale: 2,
         useCORS: true,
         allowTaint: true,
-        logging: false,
-        imageTimeout: 10000,
+        logging: true,
+        imageTimeout: 30000, // Увеличиваем таймаут для загрузки изображений
         removeContainer: false,
-        foreignObjectRendering: false,
+        foreignObjectRendering: true,
+        width: width,
+        height: height,
+        x: 0,
+        y: 0,
+        scrollX: 0,
+        scrollY: 0,
+        windowWidth: document.documentElement.scrollWidth,
+        windowHeight: document.documentElement.scrollHeight,
+        // Улучшенная обработка изображений
+        onclone: (clonedDoc) => {
+          // Убедимся, что все изображения загружены
+          const images = clonedDoc.images;
+          for (let i = 0; i < images.length; i++) {
+            if (!images[i].complete) {
+              images[i].src = images[i].src; // Перезагружаем изображение
+            }
+          }
+        },
+        // Игнорируем только UI элементы, но НЕ слои
         ignoreElements: (element) => {
-          // Игнорируем только UI элементы, но НЕ слои
-          return element.classList.contains('dm-text-handle') || 
-                 element.classList.contains('sticker-handle') ||
-                 element.classList.contains('editor-v2-canvas-grid')
+          return element.classList && (
+            element.classList.contains('dm-text-handle') ||
+            element.classList.contains('sticker-handle') ||
+            element.classList.contains('editor-v2-canvas-grid')
+          );
         }
       })
 
       console.log('✅ html2canvas completed, canvas size:', canvas.width, 'x', canvas.height)
+
+      // Проверяем, не пустой ли холст
+      const ctx = canvas.getContext('2d');
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+      let isEmpty = true;
+      
+      // Проверяем, есть ли на холсте непрозрачные пиксели
+      for (let i = 0; i < imageData.length; i += 4) {
+        if (imageData[i + 3] > 0) { // Проверяем альфа-канал
+          isEmpty = false;
+          break;
+        }
+      }
+      
+      if (isEmpty) {
+        console.warn('⚠️ Внимание: экспортированный холст пуст!');
+        // Пробуем альтернативный метод, если основной не сработал
+        return await retryExport(canvasElement, format, filename);
+      }
 
       if (!canvas || canvas.width === 0 || canvas.height === 0) {
         throw new Error('html2canvas вернул пустой canvas')
@@ -280,9 +389,15 @@ export async function exportCanvas(format, filename = 'canvas') {
     checkerElements.forEach(({ el, bgImg }) => {
       el.style.backgroundImage = bgImg
     })
-    elementsToHide.forEach(({ el, visibility, className, hadClass }) => {
+    // Восстанавливаем оригинальные стили
+    originalStyles.forEach(({ element, display, visibility, opacity }) => {
+      if (display !== undefined) element.style.display = display;
+      if (visibility !== undefined) element.style.visibility = visibility;
+      if (opacity !== undefined) element.style.opacity = opacity;
+    });
+    elementsToHide.forEach(({ el, className, hadClass, visibility }) => {
       if (hadClass) el.classList.add(className)
-      else el.style.visibility = visibility !== undefined ? visibility : ''
+      if (visibility !== undefined) el.style.visibility = visibility
     })
     // Восстанавливаем видимость слоев, которые были скрыты
     layersToShow.forEach(({ el, display, visibility, opacity }) => {
